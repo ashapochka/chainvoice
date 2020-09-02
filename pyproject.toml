@@ -10,10 +10,15 @@ invoke = "^1.4.1"
 ipython = "^7.18.1"
 fastapi = {extras = ["all"], version = "^0.61.1"}
 pytest = "^6.0.1"
+python-dotenv = "^0.14.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.1"
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = [
+    "poetry>=0.12",
+#    "setuptools!=50.0",
+    "wheel"
+]
 build-backend = "poetry.masonry.api"

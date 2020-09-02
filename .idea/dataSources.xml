@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="chainvoice@softserveinc-demo-chainvoice.postgres.database.azure.com" uuid="e8a6067f-6c4c-4808-9f9d-a118ed660601">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://softserveinc-demo-chainvoice.postgres.database.azure.com:5432/chainvoice</jdbc-url>
+    </data-source>
+  </component>
+</project>

@@ -35,5 +35,14 @@ appservice = {
     'plan_name': f"{app_name}-plan",
     'sku': 'B1',
     'webapp_name': f'{tenant_prefix}-{app_name}',
+    'webapp_fqdn': f'{tenant_prefix}-{app_name}.azurewebsites.net',
     'webapp_principal': '614a96a5-2ea4-4675-91c7-dc1552196cc9'
+}
+
+# postgresql database
+db = {
+    'sku': 'B_Gen5_1',
+    'server_name': f'{tenant_prefix}-{app_name}',
+    'db_name': f'{app_name}',
+    'admin_username': f'{app_name}_admin' # don't use 'admin' it's reserved
 }

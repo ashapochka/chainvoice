@@ -1,8 +1,11 @@
 import logging
+import os
 from invoke import task
+from dotenv import load_dotenv
 from .utils import run_command
 
 
+load_dotenv()
 logger = logging.getLogger(__name__)
 
 
@@ -158,4 +161,38 @@ def webapp_container_set(c):
               f'--resource-group {c.config.rg.name} ' \
               f'--docker-custom-image-name {c.config.image.acr_latest} ' \
               f'--docker-registry-server-url https://{c.config.cr.login_server}'
+    run_command(command, c, logger)
+
+
+@task
+def webapp_https_only(c):
+    command = f'az webapp update ' \
+              f'--name {c.config.appservice.webapp_name} ' \
+              f'--resource-group {c.config.rg.name} ' \
+              f'--https-only true'
+    run_command(command, c, logger)
+
+
+@task
+def db_up(c):
+    """
+    Create a resource group, if it doesn't already exist.
+    Create a Postgres server.
+    Create a default administrator account with a unique user name and password.
+    Create a database.
+    Enable access from your local IP address.
+    Enable access from Azure services.
+    Create a database user with access to the database.
+    :param c:
+    :return:
+    """
+    command = f'az postgres up ' \
+              f'--resource-group {c.config.rg.name} ' \
+              f'--location {c.config.rg.location} ' \
+              f'--sku-name {c.config.db.sku} ' \
+              f'--server-name {c.config.db.server_name} ' \
+              f'--database-name {c.config.db.db_name} ' \
+              f'--admin-user {c.config.db.admin_username} ' \
+              f'--admin-password {os.getenv("database_admin_password")} ' \
+              f'--ssl-enforcement Enabled'
     run_command(command, c, logger)

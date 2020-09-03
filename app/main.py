@@ -7,7 +7,7 @@ from .api import api_router
 db.create_schema()
 
 
-app = FastAPI(title = "Chainvoice - Invoicing on Blockchain Demo")
+app = FastAPI(title = "Chainvoice - Invoicing on Blockchain")
 
 app.add_middleware(
     CORSMiddleware,

@@ -36,10 +36,11 @@ catalogs = Table(
     metadata,
     Column('id', Integer, primary_key=True),
     Column('uid', UUID, index=True, unique=True, nullable=False),
-    Column('seller_id', None,
-           ForeignKey('parties.id', ondelete='CASCADE'),
-           nullable=False
-           ),
+    Column(
+        'seller_id', None,
+        ForeignKey('parties.id', ondelete='CASCADE'),
+        nullable=False
+    ),
     Column('name', String, index=True, unique=True, nullable=False)
 )
 
@@ -132,7 +133,7 @@ payments = Table(
         index=True,
         nullable=False
     ),
-    Column('amount_paid', Numeric(precision=10, scale=2), nullable=False),
+    Column('amount', Numeric(precision=10, scale=2), nullable=False),
     Column('paid_at', TIMESTAMP(timezone=True), index=True, nullable=False),
     Column('blockchain_tx_address', String, index=True, nullable=True)
 )

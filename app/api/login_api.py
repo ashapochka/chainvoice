@@ -20,7 +20,7 @@ async def login_access_token(
     OAuth2 compatible token login, get an access token for future requests
     """
     user = await user_service.authenticate(
-        db, form_data.username, form_data.password
+        db, None, form_data.username, form_data.password
     )
     if not user:
         raise HTTPException(

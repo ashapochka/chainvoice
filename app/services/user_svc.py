@@ -12,13 +12,15 @@ from .utils import new_uid
 
 class UserService(BaseService):
     async def get_one_by_username(
-            self, db: Database, username: str
+            self, db: Database, user: UserInDb, username: str
     ) -> Optional[UserInDb]:
         return UserInDb(
-            **await self.get_one_where(db, self.table.c.username == username)
+            **await self.get_one_where(
+                db, user, self.table.c.username == username
+            )
         )
 
-    async def create(self, db: Database, obj: UserCreate):
+    async def create(self, db: Database, user: UserInDb, obj: UserCreate):
         obj_data = jsonable_encoder(obj, exclude_unset=True)
         obj_data['uid'] = new_uid()
         obj_data['hashed_password'] = get_password_hash(obj.password)
@@ -27,7 +29,7 @@ class UserService(BaseService):
         async with db.transaction():
             return dict(id=await db.execute(query), uid=obj_data['uid'])
 
-    async def update_where(self, db: Database, where: Any, obj: UserUpdate):
+    async def update_where(self, db: Database, user: UserInDb, where: Any, obj: UserUpdate):
         obj_data = jsonable_encoder(obj, exclude_unset=True)
         if 'password' in obj_data:
             obj_data['hashed_password'] = get_password_hash(obj.password)
@@ -37,21 +39,23 @@ class UserService(BaseService):
             return await db.execute(query)
 
     async def authenticate(
-            self, db: Database, username: str, password: str
+            self, db: Database, user: UserInDb, username: str, password: str
     ) -> Optional[UserInDb]:
-        user = await self.get_one_by_username(db, username)
-        if not user:
+        new_user = await self.get_one_by_username(db, user, username)
+        if not new_user:
             return None
-        if not verify_password(password, user.hashed_password):
+        if not verify_password(password, new_user.hashed_password):
             return None
-        return user
+        return new_user
 
-    async def create_default_superuser(self, db: Database):
+    async def create_default_superuser(self, db: Database, user: UserInDb):
         settings = get_settings()
         async with db.transaction():
-            superuser = await self.get_one_by_username(db, settings.SU_USERNAME)
+            superuser = await self.get_one_by_username(
+                db, user, settings.SU_USERNAME
+            )
             if not superuser:
-                await self.create(db, UserCreate(
+                await self.create(db, user, UserCreate(
                     username=settings.SU_USERNAME,
                     password=settings.SU_PASSWORD,
                     email=settings.SU_EMAIL,

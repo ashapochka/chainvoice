@@ -23,7 +23,7 @@ app.include_router(api_router, prefix='/api')
 async def startup():
     db_client.create_schema()
     await db_client.connect()
-    await user_service.create_default_superuser(db_client.database)
+    await user_service.create_default_superuser(db_client.database, None)
 
 
 @app.on_event("shutdown")

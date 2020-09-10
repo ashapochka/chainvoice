@@ -4,6 +4,7 @@ from app.main import app
 from app import db
 
 
+@pytest.mark.skip
 @pytest.mark.asyncio
 async def test_get_note():
     note_id = 1

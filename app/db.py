@@ -9,9 +9,9 @@ from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.dialects.postgresql import (
     UUID, ENUM
 )
+
 from .config import get_settings
 
-database = Database(get_settings().database_url)
 metadata = MetaData()
 
 notes = Table(
@@ -29,6 +29,19 @@ parties = Table(
     Column('uid', UUID, index=True, unique=True, nullable=False),
     Column('name', String, index=True, unique=True, nullable=False),
     Column('blockchain_account_address', String, index=True, nullable=True),
+)
+
+users = Table(
+    'users',
+    metadata,
+    Column('id', Integer, primary_key=True),
+    Column('uid', UUID, index=True, unique=True, nullable=False),
+    Column('username', String, index=True, unique=True, nullable=False),
+    Column('hashed_password', String, nullable=False),
+    Column('email', String, index=True, nullable=True),
+    Column('name', String, index=True, nullable=True),
+    Column('is_active', Boolean, nullable=False, default=False),
+    Column('is_superuser', Boolean, nullable=False, default=False)
 )
 
 catalogs = Table(
@@ -149,18 +162,27 @@ blockchain_contracts = Table(
     Column('contract_abi', String, nullable=True)
 )
 
-engine = create_engine(
-    get_settings().database_url, pool_size=3, max_overflow=0
-)
+
+class DbClient:
+    metadata: MetaData = None
+    database: Database = None
+    engine = None
+
+    def __init__(self, metadata):
+        self.metadata = metadata
+        self.engine = create_engine(
+            get_settings().DATABASE_URL, pool_size=3, max_overflow=0
+        )
+        self.database = Database(get_settings().DATABASE_URL)
+
+    def create_schema(self):
+        self.metadata.create_all(self.engine)
+
+    async def connect(self):
+        await self.database.connect()
+
+    async def disconnect(self):
+        await self.database.disconnect()
 
 
-def create_schema():
-    metadata.create_all(engine)
-
-
-async def connect_databases():
-    await database.connect()
-
-
-async def disconnect_databases():
-    await database.disconnect()
+db_client = DbClient(metadata)

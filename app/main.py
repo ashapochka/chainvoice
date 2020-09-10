@@ -1,10 +1,9 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from . import db
-from .api import api_router
-
-
-db.create_schema()
+from app.db import db_client
+from app.api import api_router
+from app.services import user_service
 
 
 app = FastAPI(title = "Chainvoice - Invoicing on Blockchain")
@@ -22,9 +21,16 @@ app.include_router(api_router, prefix='/api')
 
 @app.on_event("startup")
 async def startup():
-    await db.connect_databases()
+    db_client.create_schema()
+    await db_client.connect()
+    await user_service.create_default_superuser(db_client.database)
 
 
 @app.on_event("shutdown")
 async def shutdown():
-    await db.disconnect_databases()
+    await db_client.disconnect()
+
+
+# for local debugging
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)

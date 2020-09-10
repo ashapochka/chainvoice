@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import (Depends, APIRouter)
-from ..deps import get_db
+from ..deps import (get_db, get_current_active_user)
 from ..services.party_svc import party_service
 from ..schemas.party import (PartyCreate, PartyUpdate, PartyGet)
 
@@ -11,6 +11,7 @@ router = APIRouter()
 @router.get("/", response_model=List[PartyGet])
 async def get_many(
         db=Depends(get_db),
+        user=Depends(get_current_active_user),
         offset: int = 0, limit: int = 20):
     return await party_service.get_many(db, offset, limit)
 

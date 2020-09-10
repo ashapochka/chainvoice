@@ -1,6 +1,6 @@
 from typing import Optional
 
-from .base import BaseSchema
+from .base import (BaseSchema, UID)
 
 
 class Token(BaseSchema):
@@ -9,4 +9,4 @@ class Token(BaseSchema):
 
 
 class TokenPayload(BaseSchema):
-    sub: Optional[int] = None
+    sub: Optional[UID] = None

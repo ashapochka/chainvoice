@@ -32,7 +32,7 @@ async def get_current_user(
     user = await user_service.get_one_by_uid(db, uid=token_data.sub)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return user
+    return schemas.UserInDb(**user)
 
 
 def get_current_active_user(

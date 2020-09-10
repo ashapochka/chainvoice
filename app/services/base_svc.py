@@ -28,7 +28,7 @@ class BaseService:
         return await self.get_one_where(db, self.table.c.id == obj_id)
 
     async def get_one_by_uid(self, db: Database, uid: str):
-        return await self.get_one_where(db, self.table.c.uid == uid)
+        return await self.get_one_where(db, self.table.c.uid == str(uid))
 
     async def create(self, db: Database, obj: BaseModel):
         obj_data = jsonable_encoder(obj, exclude_unset=True)

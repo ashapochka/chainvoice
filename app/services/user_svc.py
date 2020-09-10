@@ -14,7 +14,9 @@ class UserService(BaseService):
     async def get_one_by_username(
             self, db: Database, username: str
     ) -> Optional[UserInDb]:
-        return await self.get_one_where(db, self.table.c.username == username)
+        return UserInDb(
+            **await self.get_one_where(db, self.table.c.username == username)
+        )
 
     async def create(self, db: Database, obj: UserCreate):
         obj_data = jsonable_encoder(obj, exclude_unset=True)

@@ -171,9 +171,9 @@ class DbClient:
     def __init__(self, metadata):
         self.metadata = metadata
         self.engine = create_engine(
-            get_settings().DATABASE_URL, pool_size=3, max_overflow=0
+            get_settings().database_url, pool_size=3, max_overflow=0
         )
-        self.database = Database(get_settings().DATABASE_URL)
+        self.database = Database(get_settings().database_url)
 
     def create_schema(self):
         self.metadata.create_all(self.engine)

@@ -52,14 +52,14 @@ class UserService(BaseService):
         settings = get_settings()
         async with db.transaction():
             superuser = await self.get_one_by_username(
-                db, user, settings.SU_USERNAME
+                db, user, settings.su_username
             )
             if not superuser:
                 await self.create(db, user, UserCreate(
-                    username=settings.SU_USERNAME,
-                    password=settings.SU_PASSWORD,
-                    email=settings.SU_EMAIL,
-                    name=settings.SU_NAME,
+                    username=settings.su_username,
+                    password=settings.su_password,
+                    email=settings.su_email,
+                    name=settings.su_name,
                     is_active=True,
                     is_superuser=True
                 ))

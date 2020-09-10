@@ -29,7 +29,7 @@ async def login_access_token(
     elif not user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     access_token_expires = timedelta(
-        minutes=get_settings().ACCESS_TOKEN_EXPIRE_MINUTES
+        minutes=get_settings().access_token_expire_minutes
     )
     return {
         "access_token": create_access_token(

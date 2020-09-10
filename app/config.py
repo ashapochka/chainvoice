@@ -3,24 +3,26 @@ import secrets
 from pydantic import (
     BaseSettings, PostgresDsn
 )
+from fastapi_utils.api_settings import APISettings
 
 
-class Settings(BaseSettings):
+class Settings(APISettings):
     # jwt token settings
-    SECRET_KEY: str = secrets.token_urlsafe(32)
+    secret_key: str = secrets.token_urlsafe(32)
     # 60 minutes * 24 hours * 8 days = 8 days
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    access_token_expire_minutes: int = 60 * 24 * 8
 
     # database settings
-    DATABASE_URL: PostgresDsn
+    database_url: PostgresDsn
 
     # superuser settings
-    SU_USERNAME: str
-    SU_PASSWORD: str
-    SU_EMAIL: str
-    SU_NAME: str
+    su_username: str
+    su_password: str
+    su_email: str
+    su_name: str
 
     class Config:
+        env_prefix = ''
         env_file = '.env'
 
 

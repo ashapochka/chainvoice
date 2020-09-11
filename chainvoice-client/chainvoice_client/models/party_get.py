@@ -6,13 +6,7 @@ from typing import Any, Dict, Optional
 
 @dataclass
 class PartyGet:
-    """ Intended for use as a base class for externally-facing models.
-
-Any models that inherit from this class will:
-* accept fields using snake_case or camelCase keys
-* use camelCase keys in the generated OpenAPI spec
-* have orm_mode on by default
-    * Because of this, FastAPI will automatically attempt to parse returned orm instances into the model """
+    """  """
 
     uid: str
     name: Optional[str] = None
@@ -26,7 +20,7 @@ Any models that inherit from this class will:
         return {
             "uid": uid,
             "name": name,
-            "blockchainAccountAddress": blockchain_account_address,
+            "blockchain_account_address": blockchain_account_address,
         }
 
     @staticmethod
@@ -35,6 +29,6 @@ Any models that inherit from this class will:
 
         name = d.get("name")
 
-        blockchain_account_address = d.get("blockchainAccountAddress")
+        blockchain_account_address = d.get("blockchain_account_address")
 
         return PartyGet(uid=uid, name=name, blockchain_account_address=blockchain_account_address,)

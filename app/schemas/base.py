@@ -12,7 +12,7 @@ class UID(str):
         return cls(v)
 
 
-class BaseSchema(APIModel):
+class BaseSchema(BaseModel):
     class Config:
         orm_mode = False
 

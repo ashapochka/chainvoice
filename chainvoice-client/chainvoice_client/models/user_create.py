@@ -6,13 +6,7 @@ from typing import Any, Dict, Optional
 
 @dataclass
 class UserCreate:
-    """ Intended for use as a base class for externally-facing models.
-
-Any models that inherit from this class will:
-* accept fields using snake_case or camelCase keys
-* use camelCase keys in the generated OpenAPI spec
-* have orm_mode on by default
-    * Because of this, FastAPI will automatically attempt to parse returned orm instances into the model """
+    """  """
 
     username: str
     password: str
@@ -34,8 +28,8 @@ Any models that inherit from this class will:
             "password": password,
             "email": email,
             "name": name,
-            "isActive": is_active,
-            "isSuperuser": is_superuser,
+            "is_active": is_active,
+            "is_superuser": is_superuser,
         }
 
     @staticmethod
@@ -48,9 +42,9 @@ Any models that inherit from this class will:
 
         name = d.get("name")
 
-        is_active = d.get("isActive")
+        is_active = d.get("is_active")
 
-        is_superuser = d.get("isSuperuser")
+        is_superuser = d.get("is_superuser")
 
         return UserCreate(
             username=username,

@@ -22,7 +22,7 @@ class Settings(APISettings):
     su_name: str
 
     class Config:
-        env_prefix = ''
+        env_prefix = 'chainvoice_'
         env_file = '.env'
 
 

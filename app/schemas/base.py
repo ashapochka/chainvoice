@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from fastapi_utils.api_model import APIModel
 
 
 class UID(str):
@@ -11,8 +12,9 @@ class UID(str):
         return cls(v)
 
 
-class BaseSchema(BaseModel):
-    pass
+class BaseSchema(APIModel):
+    class Config:
+        orm_mode = False
 
 
 class UIDSchema(BaseSchema):

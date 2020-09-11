@@ -4,6 +4,7 @@ from databases import Database
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql import select
 
 from ..db import parties
 from .utils import new_uid
@@ -19,13 +20,16 @@ class BaseService:
     async def get_many(
             self, db: Database, user: UserInDb, offset: int, limit: int
     ):
-        query = self.table.select().offset(offset).limit(limit)
+        query = self._select_query().offset(offset).limit(limit)
         result = await db.fetch_all(query)
         return result
 
     async def get_one_where(self, db: Database, user: UserInDb, where):
-        query = self.table.select().where(where)
+        query = self._select_query().where(where)
         return await db.fetch_one(query)
+
+    def _select_query(self):
+        return self.table.select()
 
     async def get_one(self, db: Database, user: UserInDb, obj_id: Any):
         return await self.get_one_where(db, user, self.table.c.id == obj_id)
@@ -70,4 +74,8 @@ class BaseService:
 
     async def delete_by_uid(self, db: Database, user: UserInDb, uid: str):
         return await self.delete_where(db, user, self.table.c.uid == str(uid))
+
+    async def get_id_by_uid(self, db: Database, table: Table, uid: str):
+        query = select([table.c.id]).where(table.c.uid == str(uid))
+        return await db.fetch_val(query, column=0)
 

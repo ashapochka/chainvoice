@@ -18,3 +18,19 @@ def password_gen(c, length=16):
                 and sum(c.isdigit() for c in password) >= 3):
             break
     print(password)
+
+
+@task
+def clientsdk_generate(c):
+    c.run(
+        'openapi-python-client generate '
+        '--url http://127.0.0.1:8000/openapi.json'
+    )
+
+
+@task
+def clientsdk_update(c):
+    c.run(
+        'openapi-python-client update '
+        '--url http://127.0.0.1:8000/openapi.json'
+    )

@@ -6,7 +6,7 @@ from app.api import api_router
 from app.services import user_service
 
 
-app = FastAPI(title = "Chainvoice - Invoicing on Blockchain")
+app = FastAPI(title = "Chainvoice")
 
 app.add_middleware(
     CORSMiddleware,

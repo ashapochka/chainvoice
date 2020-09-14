@@ -21,16 +21,13 @@ class UserService(BaseService):
         )
 
     async def create(self, db: Database, user: UserInDb, obj: UserCreate):
-        obj_data = jsonable_encoder(obj, exclude_unset=True)
-        obj_data['uid'] = new_uid()
+        obj_data = self._to_dict(obj)
         obj_data['hashed_password'] = get_password_hash(obj.password)
         del obj_data['password']
-        query = self.table.insert().values(**obj_data)
-        async with db.transaction():
-            return dict(id=await db.execute(query), uid=obj_data['uid'])
+        return await self._insert(db, obj_data)
 
     async def update_where(self, db: Database, user: UserInDb, where: Any, obj: UserUpdate):
-        obj_data = jsonable_encoder(obj, exclude_unset=True)
+        obj_data = self._to_dict(obj)
         if 'password' in obj_data:
             obj_data['hashed_password'] = get_password_hash(obj.password)
             del obj_data['password']

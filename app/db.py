@@ -71,6 +71,7 @@ catalog_items = Table(
     Column('price', Numeric(precision=10, scale=2), nullable=True)
 )
 
+# TODO: define uniqueness on (ref_id, seller_id, customer_id)
 orders = Table(
     'orders',
     metadata,

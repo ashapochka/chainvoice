@@ -17,7 +17,7 @@ class BaseAPI:
 
     async def _create_one(self, obj):
         result = await self.service.create(self.db, self.user, obj)
-        return {**obj.dict(), **result}
+        return {**obj.dict(), **result['obj']}
 
     async def _update_one(self, obj, uid):
         await self.service.update_by_uid(self.db, self.user, uid, obj)

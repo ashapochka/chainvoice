@@ -1,12 +1,11 @@
 from typing import Any
-from sqlalchemy import Table
+
 from databases import Database
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Table
 from sqlalchemy.sql import select
 
-from ..db import parties
 from .utils import new_uid
 from ..schemas import UserInDb
 
@@ -38,16 +37,23 @@ class BaseService:
         return await self.get_one_where(db, user, self.table.c.uid == str(uid))
 
     async def create(self, db: Database, user: UserInDb, obj: BaseModel):
-        obj_data = jsonable_encoder(obj, exclude_unset=True)
+        obj_data = self._to_dict(obj)
+        return await self._insert(db, obj_data)
+
+    @staticmethod
+    def _to_dict(obj):
+        return jsonable_encoder(obj, exclude_unset=True)
+
+    async def _insert(self, db, obj_data):
         obj_data['uid'] = new_uid()
         query = self.table.insert().values(**obj_data)
         async with db.transaction():
-            return dict(id=await db.execute(query), uid=obj_data['uid'])
+            return dict(id=await db.execute(query), obj=obj_data)
 
     async def update_where(
             self, db: Database, user: UserInDb, where: Any, obj: BaseModel
     ):
-        obj_data = jsonable_encoder(obj, exclude_unset=True)
+        obj_data = self._to_dict(obj)
         query = self.table.update().where(where).values(**obj_data)
         async with db.transaction():
             return await db.execute(query)
@@ -75,7 +81,19 @@ class BaseService:
     async def delete_by_uid(self, db: Database, user: UserInDb, uid: str):
         return await self.delete_where(db, user, self.table.c.uid == str(uid))
 
-    async def get_id_by_uid(self, db: Database, table: Table, uid: str):
+    @staticmethod
+    async def get_id_by_uid(db: Database, table: Table, uid: str):
         query = select([table.c.id]).where(table.c.uid == str(uid))
         return await db.fetch_val(query, column=0)
 
+    async def _uid_to_fk(
+            self, db, obj_data, parent_table, prefix, nullable=False
+    ):
+        uid_name = f'{prefix}_uid'
+        fk_name = f'{prefix}_id'
+        if nullable and uid_name not in obj_data:
+            return
+        obj_data[fk_name] = await self.get_id_by_uid(
+            db, parent_table, obj_data[uid_name]
+        )
+        del obj_data[uid_name]

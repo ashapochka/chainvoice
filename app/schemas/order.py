@@ -19,4 +19,4 @@ class OrderUpdate(OrderBase):
 
 
 class OrderGet(OrderBase, UIDSchema):
-    created_at: datetime
+    created_at: Optional[datetime]

@@ -1,5 +1,8 @@
 from fastapi import APIRouter
-from . import (notes, party_api, user_api, login_api, catalog_api)
+from . import (
+    notes, party_api, user_api,
+    login_api, catalog_api, order_api
+)
 
 
 api_router = APIRouter()
@@ -15,4 +18,7 @@ api_router.include_router(
 )
 api_router.include_router(
     catalog_api.router, prefix='/catalogs', tags=['catalogs']
+)
+api_router.include_router(
+    order_api.router, prefix='/orders', tags=['orders']
 )

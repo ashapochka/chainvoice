@@ -3,9 +3,9 @@ from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
-from ..services import order_service
+from ..services import catalog_item_service
 from ..schemas import (
-    OrderCreate, OrderUpdate, OrderGet,
+    CatalogItemCreate, CatalogItemUpdate, CatalogItemGet,
 )
 from .base_api import BaseAPI
 
@@ -14,35 +14,34 @@ router = InferringRouter()
 
 # noinspection PyTypeChecker
 @cbv(router)
-class OrderAPI(BaseAPI):
-    service = order_service
+class CatalogItemAPI(BaseAPI):
+    service = catalog_item_service
 
     @router.get('/')
     async def get_many(
             self, offset: int = 0, limit: int = 20,
-            seller_uid: str = None, customer_uid: str = None
-    ) -> List[OrderGet]:
+            catalog_uid: str = None
+    ) -> List[CatalogItemGet]:
         return await self._get_many(
-            limit, offset,
-            seller_uid=seller_uid, customer_uid=customer_uid
+            limit, offset, catalog_uid=catalog_uid
         )
 
     @router.get("/{uid}/")
     async def get_one(
             self, uid: str
-    ) -> OrderGet:
+    ) -> CatalogItemGet:
         return await self._get_one(uid)
 
     @router.post("/")
     async def create_one(
-            self, obj: OrderCreate
-    ) -> OrderGet:
+            self, obj: CatalogItemCreate
+    ) -> CatalogItemGet:
         return await self._create_one(obj)
 
     @router.put("/{uid}/")
     async def update_one(
-            self, uid: str, obj: OrderUpdate
-    ) -> OrderGet:
+            self, uid: str, obj: CatalogItemUpdate
+    ) -> CatalogItemGet:
         return await self._update_one(obj, uid)
 
     @router.delete("/{uid}/")

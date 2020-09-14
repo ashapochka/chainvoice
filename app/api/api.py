@@ -1,24 +1,29 @@
 from fastapi import APIRouter
 from . import (
-    notes, party_api, user_api,
-    login_api, catalog_api, order_api
+    party_api, user_api, login_api,
+    catalog_api, catalog_item_api,
+    order_api, order_item_api,
+    invoice_api, payment_api,
+    blockchain_contract_api
 )
+
+apis = [
+    (login_api, 'login'),
+    (blockchain_contract_api, 'blockchain-contracts'),
+    (user_api, 'users'),
+    (party_api, 'parties'),
+    (catalog_api, 'catalogs'),
+    (catalog_item_api, 'catalog-items'),
+    (order_api, 'orders'),
+    (order_item_api, 'order-items'),
+    (invoice_api, 'invoices'),
+    (payment_api, 'payments')
+]
 
 
 api_router = APIRouter()
-# api_router.include_router(notes.router, prefix='/notes', tags=['notes'])
-api_router.include_router(
-    login_api.router, prefix='/login', tags=['login']
-)
-api_router.include_router(
-    user_api.router, prefix='/users', tags=['users']
-)
-api_router.include_router(
-    party_api.router, prefix='/parties', tags=['parties']
-)
-api_router.include_router(
-    catalog_api.router, prefix='/catalogs', tags=['catalogs']
-)
-api_router.include_router(
-    order_api.router, prefix='/orders', tags=['orders']
-)
+
+for api in apis:
+    api_router.include_router(
+        api[0].router, prefix=f'/{api[1]}', tags=[api[1]]
+    )

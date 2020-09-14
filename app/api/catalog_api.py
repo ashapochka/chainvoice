@@ -19,9 +19,12 @@ class CatalogAPI(BaseAPI):
 
     @router.get('/')
     async def get_many(
-            self, offset: int = 0, limit: int = 20
+            self, offset: int = 0, limit: int = 20,
+            seller_uid: str = None
     ) -> List[CatalogGet]:
-        return await self._get_many(limit, offset)
+        return await self._get_many(
+            limit, offset, seller_uid=seller_uid
+        )
 
     @router.get("/{uid}/")
     async def get_one(

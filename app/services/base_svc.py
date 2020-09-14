@@ -3,8 +3,9 @@ from typing import Any
 from databases import Database
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from sqlalchemy import Table
+from sqlalchemy import (Table, and_)
 from sqlalchemy.sql import select
+from loguru import logger
 
 from .utils import new_uid
 from ..schemas import UserInDb
@@ -17,9 +18,21 @@ class BaseService:
         self.table = table
 
     async def get_many(
-            self, db: Database, user: UserInDb, offset: int, limit: int
+            self, db: Database, user: UserInDb,
+            offset: int, limit: int,
+            **kwargs
     ):
-        query = self._select_query().offset(offset).limit(limit)
+        query = self._select_query()
+        logger.debug(query)
+        if len(kwargs):
+            query_alias = query.alias()
+            where_clauses = [query_alias.c[key] == value for (key, value) in
+                             kwargs.items() if value is not None]
+            if len(where_clauses):
+                query = query.where(and_(*where_clauses))
+                logger.debug(query)
+        query = query.offset(offset).limit(limit)
+        logger.debug(query)
         result = await db.fetch_all(query)
         return result
 

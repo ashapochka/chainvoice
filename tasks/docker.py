@@ -14,7 +14,7 @@ def docker_build(c):
 def docker_run(c):
     rm_command = f'docker rm -f {c.config.image.name}1'
     run_command(rm_command, c, logger, warn=True)
-    command = f'docker run ' \
+    command = f'docker run -d ' \
               f'--name {c.config.image.name}1 ' \
               f'--env-file .env ' \
               f'--env MAX_WORKERS=2 ' \
@@ -24,7 +24,7 @@ def docker_run(c):
 
 @task
 def docker_logs(c):
-    command = f'docker logs {c.config.image.name}1'
+    command = f'docker logs --follow {c.config.image.name}1'
     run_command(command, c, logger)
 
 

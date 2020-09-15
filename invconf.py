@@ -46,3 +46,20 @@ db = {
     'db_name': f'{app_name}',
     'admin_username': f'{app_name}_admin' # don't use 'admin' it's reserved
 }
+
+# blockchain service
+# The blockchain member and consortium names
+# can contain only lowercase letters and numbers.
+# The first character must be a letter.
+# The value must be between 2 and 20 characters long.
+blockchain = {
+    'member_name': f'ssdemo{app_name}',
+    'sku': 'Basic',
+    'protocol': 'Quorum',
+    'consortium': f'ssdemo{app_name}ctium',
+}
+
+# key vault
+kv = {
+    'name': f'ssdemo-{app_name}'
+}

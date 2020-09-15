@@ -222,3 +222,33 @@ def db_up(c):
               f'--admin-password {os.getenv("database_admin_password")} ' \
               f'--ssl-enforcement Enabled'
     run_command(command, c, logger)
+
+
+@task
+def blockchain_member_create(c):
+    member_password = os.getenv("chainvoice_consortium_member_password")
+    account_password = os.getenv(
+        "chainvoice_consortium_management_account_password"
+    )
+    command = f'az blockchain member create ' \
+              f'--resource-group {c.config.rg.name} ' \
+              f'--name {c.config.blockchain.member_name} ' \
+              f'--location {c.config.rg.location} ' \
+              f'--password {member_password} ' \
+              f'--protocol {c.config.blockchain.protocol} ' \
+              f'--consortium {c.config.blockchain.consortium} ' \
+              f'--consortium-management-account-password {account_password} ' \
+              f'--sku {c.config.blockchain.sku} ' \
+              f'--tags {c.config.tags.owner}'
+    run_command(command, c, logger)
+
+
+@task
+def keyvault_create(c):
+    command = f'az keyvault create ' \
+              f'--name {c.config.kv.name} ' \
+              f'--resource-group {c.config.rg.name} ' \
+              f'--location {c.config.rg.location} ' \
+              f'--tags {c.config.tags.owner}'
+    run_command(command, c, logger)
+

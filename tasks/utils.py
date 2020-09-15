@@ -1,4 +1,4 @@
-def run_command(command, context, logger=None):
+def run_command(command, context, logger=None, **kwargs):
     if logger:
-        logger.debug('executing %s', command)
-    context.run(command)
+        logger.debug(f'executing {command}')
+    context.run(command, **kwargs)

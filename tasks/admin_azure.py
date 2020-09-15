@@ -1,12 +1,12 @@
-import logging
+from loguru import logger
 import os
 from invoke import task
 from dotenv import load_dotenv
 from .utils import run_command
+from app.config import get_settings
 
 
 load_dotenv()
-logger = logging.getLogger(__name__)
 
 
 @task
@@ -131,6 +131,32 @@ def webapp_settings_set(c, settings):
               f'--name {c.config.appservice.webapp_name} ' \
               f'--resource-group {c.config.rg.name} ' \
               f'--settings {settings}'
+    run_command(command, c, logger)
+
+
+@task
+def chainvoice_settings_set(c):
+    settings = get_settings().dict()
+    included_vars = [
+        'secret_key',
+        'access_token_expire_minutes',
+        'database_url',
+        'su_username',
+        'su_password',
+        'su_email',
+        'su_name'
+    ]
+    var_values = ' '.join(f'chainvoice_{name}="{settings[name]}"'
+                          for name in included_vars)
+    webapp_settings_set(c, var_values)
+
+
+@task
+def webapp_settings_list(c):
+    command = f'az webapp config appsettings list ' \
+              f'--name {c.config.appservice.webapp_name} ' \
+              f'--resource-group {c.config.rg.name} ' \
+              f'--output table'
     run_command(command, c, logger)
 
 

@@ -1,6 +1,9 @@
 import string
 import secrets
 from invoke import task
+from loguru import logger
+
+from .utils import run_command
 
 
 @task
@@ -34,3 +37,11 @@ def clientsdk_update(c):
         'openapi-python-client update '
         '--url http://127.0.0.1:8000/openapi.json'
     )
+
+@task
+def export_requirements(c):
+    command = 'poetry export ' \
+              '--format requirements.txt ' \
+              '--without-hashes ' \
+              '--output requirements.txt'
+    run_command(command, c, logger)

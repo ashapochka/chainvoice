@@ -3,7 +3,7 @@ from sqlalchemy import (
     MetaData,
     Table, Column, ForeignKey,
     Integer, String, Boolean, Numeric, Date,
-    create_engine
+    create_engine, pool
 )
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.dialects.postgresql import (
@@ -172,9 +172,12 @@ class DbClient:
     def __init__(self, metadata):
         self.metadata = metadata
         self.engine = create_engine(
-            get_settings().database_url, pool_size=3, max_overflow=0
+            get_settings().database_url,
+            poolclass=pool.NullPool
         )
-        self.database = Database(get_settings().database_url)
+        self.database = Database(
+            get_settings().database_url, min_size=1, max_size=1
+        )
 
     def create_schema(self):
         self.metadata.create_all(self.engine)

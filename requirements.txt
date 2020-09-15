@@ -1,0 +1,10 @@
+fastapi[all]==0.61.1
+python-dotenv==0.14.0
+sqlalchemy==1.3.19
+databases[postgresql]==0.3.2
+alembic==1.4.3
+passlib[argon2_cffi]==1.7.2
+python-jose[cryptography]==3.2.0
+argon2_cffi==20.1.0
+fastapi-utils==0.2.1
+loguru==0.5.2

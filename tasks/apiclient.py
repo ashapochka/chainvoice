@@ -11,7 +11,7 @@ from chainvoice_client.client import (
 )
 from chainvoice_client.models import (
     BodyLoginAccessTokenApiLoginAccessTokenPost,
-    PartyCreate
+    PartyCreate, PartyGet
 )
 from chainvoice_client.api.login import (
     login_access_token_api_login_access_token_post
@@ -39,6 +39,16 @@ def api_parties_get(c):
 def api_users_get(c):
     client = authenticate()
     pprint(get_many_api_users__get(client=client))
+
+
+@task
+def api_party_create(c, name):
+    client = authenticate()
+    party = create_one_api_parties__post(
+        client=client,
+        json_body=PartyCreate(name=name)
+    )
+    pprint(party.to_dict())
 
 
 @task

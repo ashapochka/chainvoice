@@ -21,6 +21,9 @@ class Settings(APISettings):
     su_email: str
     su_name: str
 
+    # key vault settings
+    key_vault_url: str
+
     class Config:
         env_prefix = 'chainvoice_'
         env_file = '.env'

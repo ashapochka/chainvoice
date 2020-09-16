@@ -6,4 +6,5 @@ from .order_svc import order_service
 from .order_item_svc import order_item_service
 from .party_svc import party_service
 from .payment_svc import payment_service
+from .secret_cvs import secret_service
 from .user_svc import user_service

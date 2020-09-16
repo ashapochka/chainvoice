@@ -52,6 +52,7 @@ def export_requirements(c):
 def try_quorum(c):
     from web3 import Web3
     from web3.middleware import geth_poa_middleware
+    import base64
 
     url = os.getenv("chainvoice_qnode_url")
     access_key = os.getenv("chainvoice_qnode_key")
@@ -59,6 +60,23 @@ def try_quorum(c):
     w3.middleware_onion.inject(geth_poa_middleware, layer=0)
     print(f'connected: {w3.isConnected()}')
     account = w3.eth.account.create()
-    print(f'address: {account.address}, key: {account.key}')
-    same_account = w3.eth.account.from_key(account.key)
-    print(f'address: {same_account.address}, key: {same_account.key}')
+    encoded_key = account.key.hex()
+    print(f'address: {account.address}, key: {encoded_key}')
+
+
+@task
+def try_kv(c):
+    from azure.identity import DefaultAzureCredential
+    from azure.keyvault.secrets import SecretClient
+
+    credential = DefaultAzureCredential()
+
+    # noinspection PyTypeChecker
+    secret_client = SecretClient(
+        vault_url=os.getenv('chainvoice_key_vault_url'),
+        credential=credential)
+    secret = secret_client.set_secret("secret-name", "secret-value")
+
+    print(secret.name)
+    print(secret.value)
+    print(secret.properties.version)

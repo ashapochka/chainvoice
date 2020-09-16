@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/ashapochka/chainvoice/issues"
   },
-  "homepage": "https://github.com/ashapochka/chainvoice#readme"
+  "homepage": "https://github.com/ashapochka/chainvoice#readme",
+  "devDependencies": {
+    "@openzeppelin/cli": "^2.8.2",
+    "@openzeppelin/contracts": "^3.2.0"
+  }
 }

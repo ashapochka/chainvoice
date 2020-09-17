@@ -1,0 +1,14 @@
+{
+  "contracts": {},
+  "solidityLibs": {},
+  "proxies": {
+    "chainvoice/Box": [
+      {
+        "address": "0x16F3547204CD90e7F14Bc97c3be301c4A80fb28d",
+        "kind": "NonProxy",
+        "bytecodeHash": "6bae927583e5815b3e3455cda3386476259c8310e8701abeade9b61b15d7762b"
+      }
+    ]
+  },
+  "manifestVersion": "2.2"
+}

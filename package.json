@@ -21,6 +21,12 @@
   "homepage": "https://github.com/ashapochka/chainvoice#readme",
   "devDependencies": {
     "@openzeppelin/cli": "^2.8.2",
-    "@openzeppelin/contracts": "^3.2.0"
+    "@openzeppelin/contracts": "^3.2.0",
+    "@truffle/hdwallet-provider": "^1.0.44",
+    "ganache-cli": "^6.10.2"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.6",
+    "dotenv": "^8.2.0"
   }
 }

@@ -7,6 +7,9 @@ from loguru import logger
 from .utils import run_command
 
 
+# https://docs.microsoft.com/en-us/azure/developer/python/configure-local-development-environment?tabs=bash
+
+
 @task
 def runapp(c):
     c.run('uvicorn app.main:app --reload')
@@ -62,6 +65,14 @@ def try_quorum(c):
     account = w3.eth.account.create()
     encoded_key = account.key.hex()
     print(f'address: {account.address}, key: {encoded_key}')
+
+
+@task
+def account_gen(c):
+    from eth_account import Account
+    account = Account.create()
+    print(f'address: {account.address}')
+    print(f'key: {account.key.hex()}')
 
 
 @task

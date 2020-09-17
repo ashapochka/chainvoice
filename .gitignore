@@ -926,3 +926,5 @@ Backup of *.doc*
 *.css.map
 *.sass.map
 *.scss.map
+
+.openzeppelin/.session

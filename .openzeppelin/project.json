@@ -1,6 +1,8 @@
 {
   "manifestVersion": "2.2",
-  "contracts": {},
+  "contracts": {
+    "InvoiceRegistry": "InvoiceRegistry"
+  },
   "dependencies": {},
   "name": "chainvoice",
   "version": "1.0.0",

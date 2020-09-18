@@ -13,6 +13,20 @@
         "kind": "NonProxy",
         "bytecodeHash": "6bae927583e5815b3e3455cda3386476259c8310e8701abeade9b61b15d7762b"
       }
+    ],
+    "chainvoice/ChainvoiceToken": [
+      {
+        "address": "0x73F2d403127a94747691179F21de551cc7c00E58",
+        "kind": "NonProxy",
+        "bytecodeHash": "e0539d6eedfa0ac65f88a450bbabc4a600c949c5bfe73666decefc19862531ec"
+      }
+    ],
+    "chainvoice/ChainvoiceERC1155": [
+      {
+        "address": "0x5B97B90Ef129e2c314B09387a10875F935B277b2",
+        "kind": "NonProxy",
+        "bytecodeHash": "841c1bec410649fce97032964b46fb5c9ad96af8f5f481ac3af4a2fdb3e6764f"
+      }
     ]
   },
   "manifestVersion": "2.2"

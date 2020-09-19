@@ -3,6 +3,7 @@
 pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155Holder.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -25,6 +26,8 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         InvoiceState state;
     }
 
+    address constant NULL_ADDRESS = address(0x0);
+    address immutable public tokenContract;
     mapping(bytes => Invoice) public invoices;
 
     event InvoiceRegistered(
@@ -67,6 +70,10 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         InvoiceState state
     );
 
+    constructor(address _tokenContract) public {
+        tokenContract = _tokenContract;
+    }
+
     function onERC1155Received(
         address operator,
         address from,
@@ -88,8 +95,16 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         uint256 tokenId,
         uint256 value
     ) public returns (bool) {
+        require(
+            tokenContract == NULL_ADDRESS || tokenContract == msg.sender,
+            "Invoice must be paid via the token contract"
+        );
         Invoice storage invoice = invoices[invoiceId];
         require(invoice.isRegistered, "Invoice not registered yet");
+        require(
+            tokenId == invoice.tokenId,
+            "Payment token id is different from invoice token id"
+        );
         require(
             invoice.state == InvoiceState.UNPAID,
             "Invoice does not accept payments"
@@ -102,6 +117,13 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         invoice.paidAmount = paidAmount.add(value);
         if (invoice.amount == invoice.paidAmount) {
             invoice.state = InvoiceState.PAID;
+        }
+        if (tokenContract != NULL_ADDRESS) {
+            IERC1155 erc1155 = IERC1155(tokenContract);
+            erc1155.safeTransferFrom(
+                address(this), invoice.seller,
+                invoice.tokenId, value, invoice.invoiceId
+            );
         }
         emit InvoicePaid(
             invoiceId, operator, from, invoice.seller, tokenId,
@@ -137,7 +159,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         require(invoice.isRegistered, "Invoice not registered yet");
         require(
             msg.sender == invoice.seller,
-                "Invoice publisher is different from seller"
+            "Invoice publisher is different from seller"
         );
         require(
             invoice.state == InvoiceState.DRAFT,
@@ -159,7 +181,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         require(invoice.isRegistered, "Invoice not registered yet");
         require(
             msg.sender == invoice.seller,
-                "Invoice canceller is different from seller"
+            "Invoice canceller is different from seller"
         );
         invoice.state = InvoiceState.CANCELED;
         emit InvoiceCanceled(

@@ -55,7 +55,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         InvoiceState state
     );
 
-    event PaymentProcessed(
+    event InvoicePaid(
         bytes invoiceId,
         address operator,
         address from,
@@ -74,19 +74,19 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         uint256 value,
         bytes memory data
     ) public virtual override returns (bytes4) {
-        if (processPayment(operator, from, id, value, data)) {
+        if (payInvoice(data, operator, from, id, value)) {
             return this.onERC1155Received.selector;
         } else {
             return 0;
         }
     }
 
-    function processPayment(
+    function payInvoice(
+        bytes memory invoiceId,
         address operator,
         address from,
         uint256 tokenId,
-        uint256 value,
-        bytes memory invoiceId
+        uint256 value
     ) public returns (bool) {
         Invoice storage invoice = invoices[invoiceId];
         require(invoice.isRegistered, "Invoice not registered yet");
@@ -103,7 +103,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         if (invoice.amount == invoice.paidAmount) {
             invoice.state = InvoiceState.PAID;
         }
-        emit PaymentProcessed(
+        emit InvoicePaid(
             invoiceId, operator, from, invoice.seller, tokenId,
             invoice.amount, paidAmount, value, invoice.state
         );
@@ -111,10 +111,11 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
     }
 
     function registerInvoice(
+        bytes memory invoiceId,
         address buyer,
         uint256 tokenId,
-        uint256 amount,
-        bytes memory invoiceId) public returns (bool){
+        uint256 amount
+    ) public returns (bool){
         Invoice storage invoice = invoices[invoiceId];
         require(!invoice.isRegistered, "Invoice already registered");
         invoice.isRegistered = true;

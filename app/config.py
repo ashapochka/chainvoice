@@ -1,7 +1,8 @@
+from typing import Optional
 from functools import lru_cache
 import secrets
 from pydantic import (
-    PostgresDsn, HttpUrl
+    PostgresDsn, HttpUrl, DirectoryPath
 )
 from fastapi_utils.api_settings import APISettings
 
@@ -30,6 +31,8 @@ class Settings(APISettings):
     qadmin_name: str
     qadmin_address: str
     qadmin_private_key: str
+    compiled_contracts_path: Optional[DirectoryPath]
+    erc1155_contract_address: str
 
     class Config:
         env_prefix = 'chainvoice_'

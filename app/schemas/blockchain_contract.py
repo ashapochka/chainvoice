@@ -1,9 +1,10 @@
 from typing import Optional
 
-from .base import (BaseSchema, UIDSchema)
+from .base import (BaseSchema, UIDSchema, UID)
 
 
 class BlockchainContractBase(BaseSchema):
+    owner_uid: Optional[UID] = None
     name: Optional[str] = None
     contract_address: Optional[str] = None
     contract_code: Optional[str] = None
@@ -12,6 +13,7 @@ class BlockchainContractBase(BaseSchema):
 
 class BlockchainContractCreate(BlockchainContractBase):
     name: str
+    owner_uid: UID
 
 
 class BlockchainContractUpdate(BlockchainContractBase):

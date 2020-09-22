@@ -6,8 +6,11 @@ from databases import Database
 
 from app.config import get_settings
 from app.contracts import ERC1155Contract
-from app.services import blockchain_contract_service
-from app.schemas import BlockchainContractGet
+from app.services import (blockchain_contract_service, party_service)
+from app.schemas import (
+    BlockchainContractGet, BlockchainContractCreate,
+    PartyGet
+)
 
 
 class BlockchainClient:
@@ -15,8 +18,9 @@ class BlockchainClient:
     erc1155_contract: ERC1155Contract
 
     def __init__(self):
-        qnode_url = get_settings().qnode_url
-        qnode_key = get_settings().qnode_key
+        s = get_settings()
+        qnode_url = s.qnode_url
+        qnode_key = s.qnode_key
         self.w3 = Web3(Web3.HTTPProvider(f'{qnode_url}/{qnode_key}'))
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
@@ -25,11 +29,28 @@ class BlockchainClient:
             await blockchain_contract_service.get_one_by_name(
                 db, None, "ChainvoiceERC1155"
             )
-
+        if contract_record is None:
+            s = get_settings()
+            contract_path = s.compiled_contracts_path / 'ChainvoiceERC1155.json'
+            with open(contract_path) as f:
+                compiled_contract = json.load(f)
+                contract_abi = compiled_contract['abi']
+            contract_address = s.erc1155_contract_address
+            qadmin_party: PartyGet = party_service.get_one_by_name(
+                db, None, 'qadmin'
+            )
+            new_record = BlockchainContractCreate(
+                owner_uid=qadmin_party.uid,
+                name='ChainvoiceERC1155',
+                contract_address=contract_address,
+                contract_abi=json.dumps(contract_abi)
+            )
+            blockchain_contract_service.create(db, None, new_record)
+        else:
+            contract_abi = contract_record.contract_abi
+            contract_address = contract_record.contract_address
         self.erc1155_contract = ERC1155Contract(
-            self.w3,
-            contract_record.contract_abi,
-            contract_record.contract_address
+            self.w3, contract_abi, contract_address
         )
 
 

@@ -929,3 +929,4 @@ Backup of *.doc*
 
 .openzeppelin/.session
 .openzeppelin/dev-*.json
+/.openzeppelin/.lock

@@ -1,7 +1,4 @@
 from logging.config import fileConfig
-import os
-
-import dotenv
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -20,16 +17,17 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+from app.db import metadata
+target_metadata = metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-dotenv.load_dotenv()
+from app.config import get_settings
 config.set_main_option(
     'sqlalchemy.url',
-    os.getenv('chainvoice_database_url')
+    get_settings().database_url.replace('%', '%%')
 )
 
 

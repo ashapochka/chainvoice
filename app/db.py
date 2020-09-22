@@ -31,6 +31,17 @@ parties = Table(
     Column('blockchain_account_address', String, index=True, nullable=True),
 )
 
+blockchain_contracts = Table(
+    'blockchain_contracts',
+    metadata,
+    Column('id', Integer, primary_key=True),
+    Column('uid', UUID, index=True, unique=True, nullable=False),
+    Column('name', String, index=True, unique=True, nullable=False),
+    Column('contract_address', String, index=True, nullable=True),
+    Column('contract_code', String, nullable=True),
+    Column('contract_abi', String, nullable=True)
+)
+
 users = Table(
     'users',
     metadata,
@@ -150,17 +161,6 @@ payments = Table(
     Column('amount', Numeric(precision=10, scale=2), nullable=False),
     Column('paid_at', TIMESTAMP(timezone=True), index=True, nullable=False),
     Column('blockchain_tx_address', String, index=True, nullable=True)
-)
-
-blockchain_contracts = Table(
-    'blockchain_contracts',
-    metadata,
-    Column('id', Integer, primary_key=True),
-    Column('uid', UUID, index=True, unique=True, nullable=False),
-    Column('name', String, index=True, unique=True, nullable=False),
-    Column('contract_address', String, index=True, nullable=True),
-    Column('contract_code', String, nullable=True),
-    Column('contract_abi', String, nullable=True)
 )
 
 

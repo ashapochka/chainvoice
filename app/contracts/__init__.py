@@ -1,0 +1,1 @@
+from .chainvoice_erc1155_sc import ERC1155Contract

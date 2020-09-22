@@ -55,6 +55,7 @@ def export_requirements(c):
 def try_quorum(c):
     from web3 import Web3
     from web3.middleware import geth_poa_middleware
+    from eth_account import Account
     import json
 
     url = os.getenv("chainvoice_qnode_url")
@@ -62,30 +63,25 @@ def try_quorum(c):
     w3 = Web3(Web3.HTTPProvider(f'{url}/{access_key}'))
     w3.middleware_onion.inject(geth_poa_middleware, layer=0)
     print(f'connected: {w3.isConnected()}')
-    with open('build/contracts/Box.json') as f:
+
+    with open('build/contracts/ChainvoiceERC1155.json') as f:
         compiled_contract = json.load(f)
-        box_abi = compiled_contract['abi']
-    contract_address = os.getenv('chainvoice_contract_address_box')
-    account_address = os.getenv('chainvoice_qadmin_address')
-    w3.eth.defaultAccount = account_address
-    account_key = os.getenv('chainvoice_qadmin_private_key')
-    box = w3.eth.contract(
-        address=contract_address,
-        abi=box_abi
+        contract_abi = compiled_contract['abi']
+    contract_address = os.getenv('chainvoice_ERC1155_contract_address')
+    from app.contracts import ERC1155Contract
+    erc1155 = ERC1155Contract(w3, contract_abi, contract_address)
+    owner_key = os.getenv('chainvoice_qadmin_private_key')
+    owner = Account.from_key(owner_key)
+    other_address = os.getenv('chainvoice_other_address')
+    token_id = 0
+    transfer_amount = 1_000
+    txn_receipt = erc1155.safe_transfer_from(
+        owner, owner.address, other_address,
+        token_id, transfer_amount, b'initial amount'
     )
-    contract_call = box.functions.store(11)
-    # print(f'estimated gas: {contract_call.estimateGas()}')
-    # return
-    nonce = w3.eth.getTransactionCount(account_address)
-    txn = contract_call.buildTransaction({
-        'nonce': nonce,
-        'gas': 100000
-    })
-    signed_txn = w3.eth.account.sign_transaction(txn, private_key=account_key)
-    txn_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-    print(f'txn_hash: {txn_hash}')
-    txn_receipt = w3.eth.waitForTransactionReceipt(txn_hash)
     print(f'txn_receipt: {txn_receipt}')
+    print(f'owner has: {erc1155.balance_of(owner.address, token_id)}')
+    print(f'other has: {erc1155.balance_of(other_address, token_id)}')
 
 
 @task

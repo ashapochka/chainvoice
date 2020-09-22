@@ -1,7 +1,7 @@
 from functools import lru_cache
 import secrets
 from pydantic import (
-    BaseSettings, PostgresDsn
+    PostgresDsn, HttpUrl
 )
 from fastapi_utils.api_settings import APISettings
 
@@ -23,6 +23,12 @@ class Settings(APISettings):
 
     # key vault settings
     key_vault_url: str
+
+    # quorum settings
+    qnode_url: HttpUrl
+    qnode_key: str
+    qadmin_address: str
+    qadmin_private_key: str
 
     class Config:
         env_prefix = 'chainvoice_'

@@ -10,6 +10,7 @@ class PartyBase(BaseSchema):
 
 class PartyCreate(PartyBase):
     name: str
+    blockchain_account_key: Optional[str] = None
 
 
 class PartyUpdate(PartyBase):

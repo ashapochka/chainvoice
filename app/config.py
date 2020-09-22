@@ -27,6 +27,7 @@ class Settings(APISettings):
     # quorum settings
     qnode_url: HttpUrl
     qnode_key: str
+    qadmin_name: str
     qadmin_address: str
     qadmin_private_key: str
 

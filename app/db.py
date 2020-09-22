@@ -39,7 +39,12 @@ blockchain_contracts = Table(
     Column('name', String, index=True, unique=True, nullable=False),
     Column('contract_address', String, index=True, nullable=True),
     Column('contract_code', String, nullable=True),
-    Column('contract_abi', String, nullable=True)
+    Column('contract_abi', String, nullable=True),
+    Column(
+        'owner_id', None,
+        ForeignKey('parties.id', ondelete='RESTRICT'),
+        nullable=False
+    )
 )
 
 users = Table(

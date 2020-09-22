@@ -1,4 +1,5 @@
 from fastapi import Depends
+from fastapi_utils.api_model import APIMessage
 from databases import Database
 
 from ..deps import (get_db, get_current_active_user)
@@ -8,6 +9,7 @@ from ..schemas import  UserInDb
 class BaseAPI:
     db: Database = Depends(get_db)
     user: UserInDb = Depends(get_current_active_user)
+    service = None
 
     async def _get_many(self, limit, offset, **kwargs):
         return await self.service.get_many(

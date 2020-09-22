@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db import db_client
 from app.api import api_router
-from app.services import user_service
+from app.services import (user_service, party_service)
+from app.blockchain import blockchain_client
 
 
 app = FastAPI(title = "Chainvoice")
@@ -24,6 +25,9 @@ async def startup():
     db_client.create_schema()
     await db_client.connect()
     await user_service.create_default_superuser(db_client.database, None)
+    await party_service.create_qadmin_party(db_client.database, None)
+    await blockchain_client.init_contracts(db_client.database)
+
 
 
 @app.on_event("shutdown")

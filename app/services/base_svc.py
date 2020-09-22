@@ -49,6 +49,9 @@ class BaseService:
     async def get_one_by_uid(self, db: Database, user: UserInDb, uid: str):
         return await self.get_one_where(db, user, self.table.c.uid == str(uid))
 
+    async def get_one_by_name(self, db: Database, user: UserInDb, name: str):
+        return await self.get_one_where(db, user, self.table.c.name == str(name))
+
     async def create(self, db: Database, user: UserInDb, obj: BaseModel):
         obj_data = self._to_dict(obj)
         return await self._insert(db, obj_data)

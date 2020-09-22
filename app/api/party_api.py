@@ -1,8 +1,11 @@
 from typing import List
+
+from fastapi import Depends
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
+from ..contracts import ERC1155Contract
 from ..services import party_service
 from ..schemas import (
     PartyCreate, PartyUpdate, PartyGet,
@@ -15,6 +18,7 @@ router = InferringRouter()
 # noinspection PyTypeChecker
 @cbv(router)
 class PartyAPI(BaseAPI):
+    erc1155_contract: ERC1155Contract = Depends()
     service = party_service
 
     @router.get('/')
@@ -31,9 +35,19 @@ class PartyAPI(BaseAPI):
 
     @router.post("/")
     async def create_one(
-            self, obj: PartyCreate
+            self, obj: PartyCreate,
+            create_blockchain_account: bool = True,
+            token_id: int = 0,
+            initial_amount: int = 1_000_000_00
     ) -> PartyGet:
-        return await self._create_one(obj)
+        result = await self.service.create(
+            self.db, self.user, obj,
+            create_blockchain_account=create_blockchain_account,
+            token_id=token_id,
+            initial_amount=initial_amount,
+            token_contract=self.erc1155_contract
+        )
+        return {**obj.dict(), **result['obj']}
 
     @router.put("/{uid}/")
     async def update_one(

@@ -5,7 +5,7 @@ from eth_account.account import LocalAccount
 
 from ..db import parties
 from .base_svc import BaseService
-from ..schemas import (UserInDb, PartyCreate, PartyGet)
+from ..schemas import (UserInDb, PartyCreate, PartyBalance)
 from .secret_cvs import secret_service
 from ..contracts import ERC1155Contract
 from ..config import get_settings
@@ -38,7 +38,9 @@ class PartyService(BaseService):
                 qadmin = await self.get_one_by_name(
                     db, user, get_settings().qadmin_name
                 )
-                assert_that(qadmin).is_not_none()
+                assert_that(
+                    qadmin, 'qadmin party is expected to always exist'
+                ).is_not_none()
                 qadmin_address = qadmin['blockchain_account_address']
                 assert_that(qadmin_address).is_not_none()
                 qadmin_key = secret_service.get_secret_value(qadmin_address)
@@ -79,6 +81,24 @@ class PartyService(BaseService):
                     ),
                     create_blockchain_account=False, initial_amount=0
                 )
+
+    async def get_token_balance(
+        self, db: Database, user: UserInDb,
+        uid: str, token_id: int = 0,
+        token_contract=None
+    ) -> PartyBalance:
+        party_record = await self.get_one_by_uid(db, user, uid)
+        assert_that(party_record, 'requested balance of non-existing party')
+        address = party_record['blockchain_account_address']
+        if not address:
+            token_amount = 0
+        else:
+            token_amount = token_contract.balance_of(address, token_id)
+        return PartyBalance(
+            token_amount=token_amount,
+            token_id=token_id,
+            **party_record
+        )
 
 
 party_service = PartyService(parties)

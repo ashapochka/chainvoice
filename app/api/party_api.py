@@ -9,7 +9,7 @@ from ..contracts import ERC1155Contract
 from ..deps import get_erc1155_contract
 from ..services import party_service
 from ..schemas import (
-    PartyCreate, PartyUpdate, PartyGet,
+    PartyCreate, PartyUpdate, PartyGet, PartyBalance
 )
 from .base_api import BaseAPI
 
@@ -33,6 +33,15 @@ class PartyAPI(BaseAPI):
             self, uid: str
     ) -> PartyGet:
         return await self._get_one(uid)
+
+    @router.get("/{uid}/token-balance/{token_id}")
+    async def get_token_balance(
+            self, uid: str, token_id: int = 0
+    ) -> PartyBalance:
+        return await self.service.get_token_balance(
+            self.db, self.user, uid, token_id,
+            token_contract=self.erc1155_contract
+        )
 
     @router.post("/")
     async def create_one(

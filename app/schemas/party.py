@@ -19,3 +19,8 @@ class PartyUpdate(PartyBase):
 
 class PartyGet(PartyBase, UIDSchema):
     pass
+
+
+class PartyBalance(PartyGet):
+    token_amount: int = 0
+    token_id: int = 0

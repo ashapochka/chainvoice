@@ -64,6 +64,14 @@ tests = ["coverage (>=5.0.2)", "hypothesis", "pytest"]
 
 [[package]]
 category = "main"
+description = "Simple assertion library for unit testing in python with a fluent API"
+name = "assertpy"
+optional = false
+python-versions = "*"
+version = "1.1"
+
+[[package]]
+category = "main"
 description = "Annotate AST trees with source code positions"
 name = "asttokens"
 optional = false
@@ -1767,7 +1775,7 @@ version = "1.0.2"
 dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 
 [metadata]
-content-hash = "c3cbab7b78772026bfe3e738beb3a6d7bc712ea836f509a4e81391fe421e5ae1"
+content-hash = "79ddfad35e68d15b8a391da1ecee18f1936c1e07229d15c5cd02663f13964f2c"
 lock-version = "1.0"
 python-versions = "^3.8"
 
@@ -1809,6 +1817,9 @@ argon2-cffi = [
     {file = "argon2_cffi-20.1.0-cp37-cp37m-win_amd64.whl", hash = "sha256:6678bb047373f52bcff02db8afab0d2a77d83bde61cfecea7c5c62e2335cb203"},
     {file = "argon2_cffi-20.1.0-cp38-cp38-win32.whl", hash = "sha256:77e909cc756ef81d6abb60524d259d959bab384832f0c651ed7dcb6e5ccdbb78"},
     {file = "argon2_cffi-20.1.0-cp38-cp38-win_amd64.whl", hash = "sha256:9dfd5197852530294ecb5795c97a823839258dfd5eb9420233c7cfedec2058f2"},
+]
+assertpy = [
+    {file = "assertpy-1.1.tar.gz", hash = "sha256:acc64329934ad71a3221de185517a43af33e373bb44dc05b5a9b174394ef4833"},
 ]
 asttokens = [
     {file = "asttokens-2.0.3-py2.py3-none-any.whl", hash = "sha256:f58af645756597143629a4ac1fe78bc670b4429018ad741ac1f4cfd4504fc436"},

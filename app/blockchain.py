@@ -25,10 +25,9 @@ class BlockchainClient:
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
     async def init_contracts(self, db: Database):
-        contract_record: BlockchainContractGet = \
-            await blockchain_contract_service.get_one_by_name(
-                db, None, "ChainvoiceERC1155"
-            )
+        contract_record = await blockchain_contract_service.get_one_by_name(
+            db, None, "ChainvoiceERC1155"
+        )
         if contract_record is None:
             s = get_settings()
             contract_path = s.compiled_contracts_path / 'ChainvoiceERC1155.json'
@@ -36,19 +35,21 @@ class BlockchainClient:
                 compiled_contract = json.load(f)
                 contract_abi = compiled_contract['abi']
             contract_address = s.erc1155_contract_address
-            qadmin_party: PartyGet = party_service.get_one_by_name(
+            qadmin = await party_service.get_one_by_name(
                 db, None, 'qadmin'
             )
+            qadmin_party = PartyGet(**qadmin)
             new_record = BlockchainContractCreate(
                 owner_uid=qadmin_party.uid,
                 name='ChainvoiceERC1155',
                 contract_address=contract_address,
                 contract_abi=json.dumps(contract_abi)
             )
-            blockchain_contract_service.create(db, None, new_record)
+            await blockchain_contract_service.create(db, None, new_record)
         else:
-            contract_abi = contract_record.contract_abi
-            contract_address = contract_record.contract_address
+            contract = BlockchainContractGet(**contract_record)
+            contract_abi = contract.contract_abi
+            contract_address = contract.contract_address
         self.erc1155_contract = ERC1155Contract(
             self.w3, contract_abi, contract_address
         )

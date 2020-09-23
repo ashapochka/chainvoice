@@ -1,3 +1,4 @@
+from assertpy import assert_that
 from databases import Database
 from eth_account import Account
 from eth_account.account import LocalAccount
@@ -29,15 +30,18 @@ class PartyService(BaseService):
         if account is not None:
             obj.blockchain_account_address = account.address
             self.save_blockchain_account(account)
-        result = await super().create(db, user, obj)
+        obj_data = self._to_dict(obj)
+        obj_data.pop('blockchain_account_key', '')
+        result = await self._insert(db, obj_data)
         if initial_amount > 0 and obj.blockchain_account_address is not None:
             if token_owner is None:
-                qadmin: PartyGet = await self.get_one_by_name(
+                qadmin = await self.get_one_by_name(
                     db, user, get_settings().qadmin_name
                 )
-                qadmin_key = secret_service.get_secret_value(
-                    qadmin.blockchain_account_address
-                )
+                assert_that(qadmin).is_not_none()
+                qadmin_address = qadmin['blockchain_account_address']
+                assert_that(qadmin_address).is_not_none()
+                qadmin_key = secret_service.get_secret_value(qadmin_address)
                 token_owner = Account.from_key(qadmin_key)
             token_contract.safe_transfer_from(
                 signer=token_owner,

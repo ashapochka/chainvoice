@@ -19,7 +19,7 @@ class InvoiceService(BaseService):
             invoices.c.ref_id,
             orders.c.uid.label('order_uid'),
             invoices.c.due_date,
-            invoice.c.state
+            invoices.c.state
         ]).select_from(
             invoices.join(orders)
         )

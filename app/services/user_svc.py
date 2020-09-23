@@ -26,7 +26,10 @@ class UserService(BaseService):
         del obj_data['password']
         return await self._insert(db, obj_data)
 
-    async def update_where(self, db: Database, user: UserInDb, where: Any, obj: UserUpdate):
+    async def update_where(
+            self, db: Database, user: UserInDb,
+            where: Any, obj: UserUpdate
+    ):
         obj_data = self._to_dict(obj)
         if 'password' in obj_data:
             obj_data['hashed_password'] = get_password_hash(obj.password)

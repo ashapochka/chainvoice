@@ -6,6 +6,7 @@ from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
 from ..contracts import ERC1155Contract
+from ..deps import get_erc1155_contract
 from ..services import party_service
 from ..schemas import (
     PartyCreate, PartyUpdate, PartyGet,
@@ -18,7 +19,7 @@ router = InferringRouter()
 # noinspection PyTypeChecker
 @cbv(router)
 class PartyAPI(BaseAPI):
-    erc1155_contract: ERC1155Contract = Depends()
+    erc1155_contract: ERC1155Contract = Depends(get_erc1155_contract)
     service = party_service
 
     @router.get('/')

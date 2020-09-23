@@ -9,12 +9,18 @@ from .db import db_client
 from .security import decode_token
 from . import schemas
 from .services import user_service
+from .blockchain import blockchain_client
+from .contracts import ERC1155Contract
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login/access-token")
 
 
 def get_db() -> Database:
     return db_client.database
+
+
+def get_erc1155_contract() -> ERC1155Contract:
+    return blockchain_client.erc1155_contract
 
 
 async def get_current_user(

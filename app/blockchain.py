@@ -51,7 +51,7 @@ class BlockchainClient:
             contract_abi = contract.contract_abi
             contract_address = contract.contract_address
         self.erc1155_contract = ERC1155Contract(
-            self.w3, contract_abi, contract_address
+            self.w3, contract_address, contract_abi
         )
 
 

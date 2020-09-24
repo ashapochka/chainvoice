@@ -137,9 +137,12 @@ class PartyService(BaseService):
             from_account, from_account.address, to_address,
             obj.token_id, obj.token_amount, obj.data
         )
-        logger.debug(f'txn receipt: {txn_receipt}')
+        txn_hash = txn_receipt.transactionHash.hex()
+        logger.debug(f'transfer txn hash: {txn_hash}')
+        txn_input = token_contract.decode_tx_input(txn_hash)
+        logger.debug(f'txn input: {txn_input}')
         return PartyTokenTransferReceipt(
-            **obj.dict(), txn_hash=txn_receipt.transactionHash.hex(),
+            **obj.dict(), txn_hash=txn_hash,
             from_uid=UID(uid), from_address=from_account.address,
             to_address=to_address
         )

@@ -8,18 +8,21 @@ from typing import Any, Dict, Optional
 class BlockchainContractCreate:
     """  """
 
+    owner_uid: str
     name: str
     contract_address: Optional[str] = None
     contract_code: Optional[str] = None
     contract_abi: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
+        owner_uid = self.owner_uid
         name = self.name
         contract_address = self.contract_address
         contract_code = self.contract_code
         contract_abi = self.contract_abi
 
         return {
+            "owner_uid": owner_uid,
             "name": name,
             "contract_address": contract_address,
             "contract_code": contract_code,
@@ -28,6 +31,8 @@ class BlockchainContractCreate:
 
     @staticmethod
     def from_dict(d: Dict[str, Any]) -> BlockchainContractCreate:
+        owner_uid = d["owner_uid"]
+
         name = d["name"]
 
         contract_address = d.get("contract_address")
@@ -37,5 +42,9 @@ class BlockchainContractCreate:
         contract_abi = d.get("contract_abi")
 
         return BlockchainContractCreate(
-            name=name, contract_address=contract_address, contract_code=contract_code, contract_abi=contract_abi,
+            owner_uid=owner_uid,
+            name=name,
+            contract_address=contract_address,
+            contract_code=contract_code,
+            contract_abi=contract_abi,
         )

@@ -9,6 +9,7 @@ class BlockchainContractGet:
     """  """
 
     uid: str
+    owner_uid: Optional[str] = None
     name: Optional[str] = None
     contract_address: Optional[str] = None
     contract_code: Optional[str] = None
@@ -16,6 +17,7 @@ class BlockchainContractGet:
 
     def to_dict(self) -> Dict[str, Any]:
         uid = self.uid
+        owner_uid = self.owner_uid
         name = self.name
         contract_address = self.contract_address
         contract_code = self.contract_code
@@ -23,6 +25,7 @@ class BlockchainContractGet:
 
         return {
             "uid": uid,
+            "owner_uid": owner_uid,
             "name": name,
             "contract_address": contract_address,
             "contract_code": contract_code,
@@ -32,6 +35,8 @@ class BlockchainContractGet:
     @staticmethod
     def from_dict(d: Dict[str, Any]) -> BlockchainContractGet:
         uid = d["uid"]
+
+        owner_uid = d.get("owner_uid")
 
         name = d.get("name")
 
@@ -43,6 +48,7 @@ class BlockchainContractGet:
 
         return BlockchainContractGet(
             uid=uid,
+            owner_uid=owner_uid,
             name=name,
             contract_address=contract_address,
             contract_code=contract_code,

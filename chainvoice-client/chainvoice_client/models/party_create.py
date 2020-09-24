@@ -10,14 +10,17 @@ class PartyCreate:
 
     name: str
     blockchain_account_address: Optional[str] = None
+    blockchain_account_key: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         name = self.name
         blockchain_account_address = self.blockchain_account_address
+        blockchain_account_key = self.blockchain_account_key
 
         return {
             "name": name,
             "blockchain_account_address": blockchain_account_address,
+            "blockchain_account_key": blockchain_account_key,
         }
 
     @staticmethod
@@ -26,4 +29,10 @@ class PartyCreate:
 
         blockchain_account_address = d.get("blockchain_account_address")
 
-        return PartyCreate(name=name, blockchain_account_address=blockchain_account_address,)
+        blockchain_account_key = d.get("blockchain_account_key")
+
+        return PartyCreate(
+            name=name,
+            blockchain_account_address=blockchain_account_address,
+            blockchain_account_key=blockchain_account_key,
+        )

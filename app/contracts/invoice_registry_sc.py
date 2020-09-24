@@ -31,7 +31,7 @@ class InvoiceRegistryContract(BaseContract):
 
     def publish_invoice(
             self, seller_account: LocalAccount, invoice_id: bytes
-    ):
+    ) -> TxReceipt:
         """
         publishInvoice(bytes memory invoiceId)
         :param seller_account:
@@ -45,7 +45,7 @@ class InvoiceRegistryContract(BaseContract):
 
     def cancel_invoice(
             self, seller_account: LocalAccount, invoice_id: bytes
-    ):
+    ) -> TxReceipt:
         """
         cancelInvoice(bytes memory invoiceId)
         :param seller_account:

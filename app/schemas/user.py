@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import EmailStr
+from pydantic import EmailStr, SecretStr
 from .base import (BaseSchema, UIDSchema)
 
 
@@ -15,12 +15,12 @@ class UserBase(BaseSchema):
 # Properties to receive via API on creation
 class UserCreate(UserBase):
     username: str
-    password: str
+    password: SecretStr
 
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
-    password: Optional[str] = None
+    password: Optional[SecretStr] = None
 
 
 class UserGet(UserBase, UIDSchema):

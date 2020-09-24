@@ -1,14 +1,20 @@
-from assertpy import assert_that
+from uuid import UUID
+
+from loguru import logger
 from databases import Database
 from eth_account import Account
 from eth_account.account import LocalAccount
 
 from ..db import parties
 from .base_svc import BaseService
-from ..schemas import (UserInDb, PartyCreate, PartyBalance)
+from ..schemas import (
+    UserInDb, PartyCreate, PartyTokenBalance, PartyTokenTransfer,
+    PartyTokenTransferReceipt, UID
+)
 from .secret_cvs import secret_service
 from ..contracts import ERC1155Contract
 from ..config import get_settings
+from .utils import raise_not_found_if_none, raise_not_found
 
 
 class PartyService(BaseService):
@@ -35,16 +41,15 @@ class PartyService(BaseService):
         result = await self._insert(db, obj_data)
         if initial_amount > 0 and obj.blockchain_account_address is not None:
             if token_owner is None:
+                qadmin_name = get_settings().qadmin_name
                 qadmin = await self.get_one_by_name(
-                    db, user, get_settings().qadmin_name
+                    db, user, qadmin_name
                 )
-                assert_that(
-                    qadmin, 'qadmin party is expected to always exist'
-                ).is_not_none()
-                qadmin_address = qadmin['blockchain_account_address']
-                assert_that(qadmin_address).is_not_none()
-                qadmin_key = secret_service.get_secret_value(qadmin_address)
-                token_owner = Account.from_key(qadmin_key)
+                raise_not_found_if_none(
+                    qadmin, 'party', qadmin_name,
+                    msg='quorum admin party expected to always exist'
+                )
+                token_owner = self.get_party_account(qadmin)
             token_contract.safe_transfer_from(
                 signer=token_owner,
                 from_address=token_owner.address,
@@ -54,6 +59,20 @@ class PartyService(BaseService):
                 data=b'initial amount transfer'
             )
         return result
+
+    @staticmethod
+    def get_party_address(party_record) -> str:
+        account_address = party_record['blockchain_account_address']
+        if not account_address:
+            raise_not_found('party account address', party_record['uid'])
+        return account_address
+
+    @staticmethod
+    def get_party_account(party_record) -> LocalAccount:
+        account_address = PartyService.get_party_address(party_record)
+        account_key = secret_service.get_secret_value(account_address)
+        account = Account.from_key(account_key)
+        return account
 
     @staticmethod
     def save_blockchain_account(account: LocalAccount):
@@ -84,20 +103,45 @@ class PartyService(BaseService):
 
     async def get_token_balance(
         self, db: Database, user: UserInDb,
-        uid: str, token_id: int = 0,
+        uid: UUID, token_id: int = 0,
         token_contract=None
-    ) -> PartyBalance:
-        party_record = await self.get_one_by_uid(db, user, uid)
-        assert_that(party_record, 'requested balance of non-existing party')
+    ) -> PartyTokenBalance:
+        party_record = await self.get_one_by_uid(
+            db, user, uid, raise_not_found=True, what='party'
+        )
         address = party_record['blockchain_account_address']
         if not address:
             token_amount = 0
         else:
             token_amount = token_contract.balance_of(address, token_id)
-        return PartyBalance(
+        return PartyTokenBalance(
             token_amount=token_amount,
             token_id=token_id,
             **party_record
+        )
+
+    async def transfer_tokens(
+            self, db: Database, user: UserInDb,
+            uid: UUID, obj: PartyTokenTransfer,
+            token_contract: ERC1155Contract = None
+    ) -> PartyTokenTransferReceipt:
+        from_record = await self.get_one_by_uid(
+            db, user, uid, raise_not_found=True, what='party'
+        )
+        from_account = self.get_party_account(from_record)
+        to_record = await self.get_one_by_uid(
+            db, user, UUID(obj.to_uid), raise_not_found=True, what='party'
+        )
+        to_address = self.get_party_address(to_record)
+        txn_receipt = token_contract.safe_transfer_from(
+            from_account, from_account.address, to_address,
+            obj.token_id, obj.token_amount, obj.data
+        )
+        logger.debug(f'txn receipt: {txn_receipt}')
+        return PartyTokenTransferReceipt(
+            **obj.dict(), txn_hash=txn_receipt.transactionHash.hex(),
+            from_uid=UID(uid), from_address=from_account.address,
+            to_address=to_address
         )
 
 

@@ -1,6 +1,7 @@
 from typing import List
+from uuid import UUID
 
-from fastapi import Depends
+from fastapi import (Depends, Path)
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
@@ -9,7 +10,8 @@ from ..contracts import ERC1155Contract
 from ..deps import get_erc1155_contract
 from ..services import party_service
 from ..schemas import (
-    PartyCreate, PartyUpdate, PartyGet, PartyBalance
+    PartyCreate, PartyUpdate, PartyGet, PartyTokenBalance, PartyTokenTransfer,
+    PartyTokenTransferReceipt
 )
 from .base_api import BaseAPI
 
@@ -30,16 +32,25 @@ class PartyAPI(BaseAPI):
 
     @router.get("/{uid}/")
     async def get_one(
-            self, uid: str
+            self, uid: UUID
     ) -> PartyGet:
         return await self._get_one(uid)
 
     @router.get("/{uid}/token-balance/{token_id}")
     async def get_token_balance(
-            self, uid: str, token_id: int = 0
-    ) -> PartyBalance:
+            self, uid: UUID, token_id: int = Path(0)
+    ) -> PartyTokenBalance:
         return await self.service.get_token_balance(
             self.db, self.user, uid, token_id,
+            token_contract=self.erc1155_contract
+        )
+
+    @router.post("/{uid}/token-transfer/")
+    async def transfer_tokens(
+            self, uid: UUID, obj: PartyTokenTransfer
+    ) -> PartyTokenTransferReceipt:
+        return await self.service.transfer_tokens(
+            self.db, self.user, uid, obj,
             token_contract=self.erc1155_contract
         )
 
@@ -61,12 +72,12 @@ class PartyAPI(BaseAPI):
 
     @router.put("/{uid}/")
     async def update_one(
-            self, uid: str, obj: PartyUpdate
+            self, uid: UUID, obj: PartyUpdate
     ) -> PartyGet:
         return await self._update_one(obj, uid)
 
     @router.delete("/{uid}/")
     async def delete_one(
-            self, uid: str
+            self, uid: UUID
     ) -> APIMessage:
         return await self._delete_one(uid)

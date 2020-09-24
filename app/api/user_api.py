@@ -1,4 +1,6 @@
 from typing import List
+from uuid import UUID
+
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
@@ -25,7 +27,7 @@ class UserAPI(BaseAPI):
 
     @router.get("/{uid}/")
     async def get_one(
-            self, uid: str
+            self, uid: UUID
     ) -> UserGet:
         return await self._get_one(uid)
 
@@ -37,12 +39,12 @@ class UserAPI(BaseAPI):
 
     @router.put("/{uid}/")
     async def update_one(
-            self, uid: str, obj: UserUpdate
+            self, uid: UUID, obj: UserUpdate
     ) -> UserGet:
         return await self._update_one(obj, uid)
 
     @router.delete("/{uid}/")
     async def delete_one(
-            self, uid: str
+            self, uid: UUID
     ) -> APIMessage:
         return await self._delete_one(uid)

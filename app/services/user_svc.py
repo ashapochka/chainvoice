@@ -22,7 +22,9 @@ class UserService(BaseService):
 
     async def create(self, db: Database, user: UserInDb, obj: UserCreate):
         obj_data = self._to_dict(obj)
-        obj_data['hashed_password'] = get_password_hash(obj.password)
+        obj_data['hashed_password'] = get_password_hash(
+            obj.password.get_secret_value()
+        )
         del obj_data['password']
         return await self._insert(db, obj_data)
 
@@ -32,7 +34,9 @@ class UserService(BaseService):
     ):
         obj_data = self._to_dict(obj)
         if 'password' in obj_data:
-            obj_data['hashed_password'] = get_password_hash(obj.password)
+            obj_data['hashed_password'] = get_password_hash(
+                obj.password.get_secret_value()
+            )
             del obj_data['password']
         query = self.table.update().where(where).values(**obj_data)
         async with db.transaction():

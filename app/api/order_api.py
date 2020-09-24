@@ -1,4 +1,6 @@
 from typing import List
+from uuid import UUID
+
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
@@ -20,7 +22,7 @@ class OrderAPI(BaseAPI):
     @router.get('/')
     async def get_many(
             self, offset: int = 0, limit: int = 20,
-            seller_uid: str = None, customer_uid: str = None
+            seller_uid: UUID = None, customer_uid: UUID = None
     ) -> List[OrderGet]:
         return await self._get_many(
             limit, offset,
@@ -29,7 +31,7 @@ class OrderAPI(BaseAPI):
 
     @router.get("/{uid}/")
     async def get_one(
-            self, uid: str
+            self, uid: UUID
     ) -> OrderGet:
         return await self._get_one(uid)
 
@@ -41,12 +43,12 @@ class OrderAPI(BaseAPI):
 
     @router.put("/{uid}/")
     async def update_one(
-            self, uid: str, obj: OrderUpdate
+            self, uid: UUID, obj: OrderUpdate
     ) -> OrderGet:
         return await self._update_one(obj, uid)
 
     @router.delete("/{uid}/")
     async def delete_one(
-            self, uid: str
+            self, uid: UUID
     ) -> APIMessage:
         return await self._delete_one(uid)

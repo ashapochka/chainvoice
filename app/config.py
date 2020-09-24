@@ -33,6 +33,7 @@ class Settings(APISettings):
     qadmin_private_key: str
     compiled_contracts_path: Optional[DirectoryPath]
     erc1155_contract_address: str
+    invoice_registry_contract_address: str
 
     class Config:
         env_prefix = 'chainvoice_'

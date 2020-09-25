@@ -1,7 +1,6 @@
 from typing import Optional
 
-from hexbytes import HexBytes
-from pydantic import SecretStr, PositiveInt, conint
+from pydantic import (SecretStr, conint)
 
 from .base import (BaseSchema, UIDSchema, UID)
 

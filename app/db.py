@@ -36,7 +36,7 @@ blockchain_contracts = Table(
     metadata,
     Column('id', Integer, primary_key=True),
     Column('uid', UUID, index=True, unique=True, nullable=False),
-    Column('name', String, index=True, unique=True, nullable=False),
+    Column('name', String, index=True, unique=False, nullable=False),
     Column('contract_address', String, index=True, nullable=True),
     Column('contract_code', String, nullable=True),
     Column('contract_abi', String, nullable=True),
@@ -70,7 +70,7 @@ catalogs = Table(
         ForeignKey('parties.id', ondelete='CASCADE'),
         nullable=False
     ),
-    Column('name', String, index=True, unique=True, nullable=False)
+    Column('name', String, index=True, unique=False, nullable=False)
 )
 
 catalog_items = Table(
@@ -83,7 +83,7 @@ catalog_items = Table(
         ForeignKey('catalogs.id', ondelete='CASCADE'),
         nullable=False
     ),
-    Column('name', String, index=True, unique=True, nullable=False),
+    Column('name', String, index=True, unique=False, nullable=False),
     Column('price', Numeric(precision=10, scale=2), nullable=True)
 )
 

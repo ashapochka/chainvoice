@@ -1,0 +1,1651 @@
+{
+    "parties": [
+        {
+            "name": "Hernandez, Brown and Johnson",
+            "catalogs": [
+                {
+                    "name": "Hernandez, Brown and Johnson's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Product 1 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 961.44
+                        },
+                        {
+                            "name": "Part 2 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 134.66
+                        },
+                        {
+                            "name": "Product 3 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 480.53
+                        },
+                        {
+                            "name": "Part 4 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 122.19
+                        },
+                        {
+                            "name": "Service 5 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 273.0
+                        },
+                        {
+                            "name": "Part 6 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 125.28
+                        },
+                        {
+                            "name": "Service 7 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 455.0
+                        },
+                        {
+                            "name": "Part 8 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 79.39
+                        },
+                        {
+                            "name": "Product 9 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 858.33
+                        },
+                        {
+                            "name": "Product 10 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 407.07
+                        },
+                        {
+                            "name": "Product 11 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 202.58
+                        },
+                        {
+                            "name": "Part 12 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 26.61
+                        },
+                        {
+                            "name": "Part 13 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 119.85
+                        },
+                        {
+                            "name": "Service 14 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 209.0
+                        },
+                        {
+                            "name": "Product 15 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 408.08
+                        },
+                        {
+                            "name": "Product 16 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 600.3
+                        },
+                        {
+                            "name": "Product 17 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 944.81
+                        },
+                        {
+                            "name": "Product 18 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 331.35
+                        },
+                        {
+                            "name": "Product 19 from Hernandez, Brown and Johnson's Catalog 1",
+                            "price": 546.14
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Lee, Moore and Hood",
+            "catalogs": [
+                {
+                    "name": "Lee, Moore and Hood's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Product 1 from Lee, Moore and Hood's Catalog 1",
+                            "price": 139.39
+                        },
+                        {
+                            "name": "Service 2 from Lee, Moore and Hood's Catalog 1",
+                            "price": 283.0
+                        },
+                        {
+                            "name": "Part 3 from Lee, Moore and Hood's Catalog 1",
+                            "price": 66.71
+                        },
+                        {
+                            "name": "Part 4 from Lee, Moore and Hood's Catalog 1",
+                            "price": 34.2
+                        },
+                        {
+                            "name": "Product 5 from Lee, Moore and Hood's Catalog 1",
+                            "price": 791.82
+                        },
+                        {
+                            "name": "Product 6 from Lee, Moore and Hood's Catalog 1",
+                            "price": 882.57
+                        },
+                        {
+                            "name": "Part 7 from Lee, Moore and Hood's Catalog 1",
+                            "price": 74.24
+                        },
+                        {
+                            "name": "Product 8 from Lee, Moore and Hood's Catalog 1",
+                            "price": 688.29
+                        },
+                        {
+                            "name": "Product 9 from Lee, Moore and Hood's Catalog 1",
+                            "price": 970.72
+                        },
+                        {
+                            "name": "Service 10 from Lee, Moore and Hood's Catalog 1",
+                            "price": 365.0
+                        },
+                        {
+                            "name": "Part 11 from Lee, Moore and Hood's Catalog 1",
+                            "price": 99.49
+                        },
+                        {
+                            "name": "Part 12 from Lee, Moore and Hood's Catalog 1",
+                            "price": 143.32
+                        },
+                        {
+                            "name": "Product 13 from Lee, Moore and Hood's Catalog 1",
+                            "price": 499.41
+                        },
+                        {
+                            "name": "Part 14 from Lee, Moore and Hood's Catalog 1",
+                            "price": 120.77
+                        },
+                        {
+                            "name": "Product 15 from Lee, Moore and Hood's Catalog 1",
+                            "price": 390.22
+                        },
+                        {
+                            "name": "Product 16 from Lee, Moore and Hood's Catalog 1",
+                            "price": 879.84
+                        },
+                        {
+                            "name": "Product 17 from Lee, Moore and Hood's Catalog 1",
+                            "price": 595.39
+                        },
+                        {
+                            "name": "Part 18 from Lee, Moore and Hood's Catalog 1",
+                            "price": 22.68
+                        },
+                        {
+                            "name": "Service 19 from Lee, Moore and Hood's Catalog 1",
+                            "price": 270.0
+                        },
+                        {
+                            "name": "Service 20 from Lee, Moore and Hood's Catalog 1",
+                            "price": 115.0
+                        },
+                        {
+                            "name": "Product 21 from Lee, Moore and Hood's Catalog 1",
+                            "price": 150.47
+                        },
+                        {
+                            "name": "Product 22 from Lee, Moore and Hood's Catalog 1",
+                            "price": 169.73
+                        },
+                        {
+                            "name": "Product 23 from Lee, Moore and Hood's Catalog 1",
+                            "price": 989.72
+                        },
+                        {
+                            "name": "Part 24 from Lee, Moore and Hood's Catalog 1",
+                            "price": 24.59
+                        },
+                        {
+                            "name": "Service 25 from Lee, Moore and Hood's Catalog 1",
+                            "price": 299.0
+                        },
+                        {
+                            "name": "Part 26 from Lee, Moore and Hood's Catalog 1",
+                            "price": 168.89
+                        },
+                        {
+                            "name": "Part 27 from Lee, Moore and Hood's Catalog 1",
+                            "price": 18.34
+                        },
+                        {
+                            "name": "Product 28 from Lee, Moore and Hood's Catalog 1",
+                            "price": 138.31
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Harris-Atkinson",
+            "catalogs": [
+                {
+                    "name": "Harris-Atkinson's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Harris-Atkinson's Catalog 1",
+                            "price": 137.32
+                        },
+                        {
+                            "name": "Service 2 from Harris-Atkinson's Catalog 1",
+                            "price": 261.0
+                        },
+                        {
+                            "name": "Service 3 from Harris-Atkinson's Catalog 1",
+                            "price": 335.0
+                        },
+                        {
+                            "name": "Part 4 from Harris-Atkinson's Catalog 1",
+                            "price": 80.18
+                        },
+                        {
+                            "name": "Product 5 from Harris-Atkinson's Catalog 1",
+                            "price": 226.51
+                        },
+                        {
+                            "name": "Product 6 from Harris-Atkinson's Catalog 1",
+                            "price": 794.08
+                        },
+                        {
+                            "name": "Part 7 from Harris-Atkinson's Catalog 1",
+                            "price": 141.54
+                        },
+                        {
+                            "name": "Product 8 from Harris-Atkinson's Catalog 1",
+                            "price": 686.17
+                        },
+                        {
+                            "name": "Part 9 from Harris-Atkinson's Catalog 1",
+                            "price": 45.17
+                        },
+                        {
+                            "name": "Part 10 from Harris-Atkinson's Catalog 1",
+                            "price": 155.54
+                        },
+                        {
+                            "name": "Part 11 from Harris-Atkinson's Catalog 1",
+                            "price": 164.72
+                        },
+                        {
+                            "name": "Part 12 from Harris-Atkinson's Catalog 1",
+                            "price": 45.75
+                        },
+                        {
+                            "name": "Part 13 from Harris-Atkinson's Catalog 1",
+                            "price": 100.78
+                        },
+                        {
+                            "name": "Product 14 from Harris-Atkinson's Catalog 1",
+                            "price": 75.85
+                        },
+                        {
+                            "name": "Service 15 from Harris-Atkinson's Catalog 1",
+                            "price": 444.0
+                        },
+                        {
+                            "name": "Service 16 from Harris-Atkinson's Catalog 1",
+                            "price": 455.0
+                        },
+                        {
+                            "name": "Service 17 from Harris-Atkinson's Catalog 1",
+                            "price": 444.0
+                        },
+                        {
+                            "name": "Product 18 from Harris-Atkinson's Catalog 1",
+                            "price": 599.99
+                        },
+                        {
+                            "name": "Part 19 from Harris-Atkinson's Catalog 1",
+                            "price": 44.7
+                        },
+                        {
+                            "name": "Part 20 from Harris-Atkinson's Catalog 1",
+                            "price": 153.08
+                        },
+                        {
+                            "name": "Product 21 from Harris-Atkinson's Catalog 1",
+                            "price": 286.74
+                        },
+                        {
+                            "name": "Product 22 from Harris-Atkinson's Catalog 1",
+                            "price": 714.29
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Skinner-Morrison",
+            "catalogs": [
+                {
+                    "name": "Skinner-Morrison's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Service 1 from Skinner-Morrison's Catalog 1",
+                            "price": 266.0
+                        },
+                        {
+                            "name": "Part 2 from Skinner-Morrison's Catalog 1",
+                            "price": 85.59
+                        },
+                        {
+                            "name": "Product 3 from Skinner-Morrison's Catalog 1",
+                            "price": 227.5
+                        },
+                        {
+                            "name": "Product 4 from Skinner-Morrison's Catalog 1",
+                            "price": 361.96
+                        },
+                        {
+                            "name": "Part 5 from Skinner-Morrison's Catalog 1",
+                            "price": 108.1
+                        },
+                        {
+                            "name": "Service 6 from Skinner-Morrison's Catalog 1",
+                            "price": 330.0
+                        },
+                        {
+                            "name": "Part 7 from Skinner-Morrison's Catalog 1",
+                            "price": 40.74
+                        },
+                        {
+                            "name": "Product 8 from Skinner-Morrison's Catalog 1",
+                            "price": 136.2
+                        },
+                        {
+                            "name": "Part 9 from Skinner-Morrison's Catalog 1",
+                            "price": 140.17
+                        },
+                        {
+                            "name": "Part 10 from Skinner-Morrison's Catalog 1",
+                            "price": 167.6
+                        },
+                        {
+                            "name": "Product 11 from Skinner-Morrison's Catalog 1",
+                            "price": 507.66
+                        },
+                        {
+                            "name": "Part 12 from Skinner-Morrison's Catalog 1",
+                            "price": 29.3
+                        },
+                        {
+                            "name": "Part 13 from Skinner-Morrison's Catalog 1",
+                            "price": 2.99
+                        },
+                        {
+                            "name": "Part 14 from Skinner-Morrison's Catalog 1",
+                            "price": 95.54
+                        },
+                        {
+                            "name": "Product 15 from Skinner-Morrison's Catalog 1",
+                            "price": 321.76
+                        },
+                        {
+                            "name": "Part 16 from Skinner-Morrison's Catalog 1",
+                            "price": 60.51
+                        },
+                        {
+                            "name": "Part 17 from Skinner-Morrison's Catalog 1",
+                            "price": 195.45
+                        },
+                        {
+                            "name": "Part 18 from Skinner-Morrison's Catalog 1",
+                            "price": 182.53
+                        },
+                        {
+                            "name": "Service 19 from Skinner-Morrison's Catalog 1",
+                            "price": 295.0
+                        },
+                        {
+                            "name": "Service 20 from Skinner-Morrison's Catalog 1",
+                            "price": 344.0
+                        },
+                        {
+                            "name": "Part 21 from Skinner-Morrison's Catalog 1",
+                            "price": 104.09
+                        },
+                        {
+                            "name": "Service 22 from Skinner-Morrison's Catalog 1",
+                            "price": 128.0
+                        },
+                        {
+                            "name": "Service 23 from Skinner-Morrison's Catalog 1",
+                            "price": 472.0
+                        },
+                        {
+                            "name": "Product 24 from Skinner-Morrison's Catalog 1",
+                            "price": 626.05
+                        },
+                        {
+                            "name": "Product 25 from Skinner-Morrison's Catalog 1",
+                            "price": 664.03
+                        },
+                        {
+                            "name": "Product 26 from Skinner-Morrison's Catalog 1",
+                            "price": 909.18
+                        },
+                        {
+                            "name": "Part 27 from Skinner-Morrison's Catalog 1",
+                            "price": 38.41
+                        },
+                        {
+                            "name": "Part 28 from Skinner-Morrison's Catalog 1",
+                            "price": 122.53
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Gilbert Ltd",
+            "catalogs": [
+                {
+                    "name": "Gilbert Ltd's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Product 1 from Gilbert Ltd's Catalog 1",
+                            "price": 293.42
+                        },
+                        {
+                            "name": "Part 2 from Gilbert Ltd's Catalog 1",
+                            "price": 199.61
+                        },
+                        {
+                            "name": "Part 3 from Gilbert Ltd's Catalog 1",
+                            "price": 60.15
+                        },
+                        {
+                            "name": "Part 4 from Gilbert Ltd's Catalog 1",
+                            "price": 92.23
+                        },
+                        {
+                            "name": "Part 5 from Gilbert Ltd's Catalog 1",
+                            "price": 100.24
+                        },
+                        {
+                            "name": "Product 6 from Gilbert Ltd's Catalog 1",
+                            "price": 814.13
+                        },
+                        {
+                            "name": "Part 7 from Gilbert Ltd's Catalog 1",
+                            "price": 67.23
+                        },
+                        {
+                            "name": "Product 8 from Gilbert Ltd's Catalog 1",
+                            "price": 794.25
+                        },
+                        {
+                            "name": "Part 9 from Gilbert Ltd's Catalog 1",
+                            "price": 65.98
+                        },
+                        {
+                            "name": "Part 10 from Gilbert Ltd's Catalog 1",
+                            "price": 48.09
+                        },
+                        {
+                            "name": "Part 11 from Gilbert Ltd's Catalog 1",
+                            "price": 37.25
+                        },
+                        {
+                            "name": "Part 12 from Gilbert Ltd's Catalog 1",
+                            "price": 198.97
+                        },
+                        {
+                            "name": "Part 13 from Gilbert Ltd's Catalog 1",
+                            "price": 165.83
+                        },
+                        {
+                            "name": "Part 14 from Gilbert Ltd's Catalog 1",
+                            "price": 105.9
+                        },
+                        {
+                            "name": "Product 15 from Gilbert Ltd's Catalog 1",
+                            "price": 951.01
+                        },
+                        {
+                            "name": "Part 16 from Gilbert Ltd's Catalog 1",
+                            "price": 177.3
+                        },
+                        {
+                            "name": "Product 17 from Gilbert Ltd's Catalog 1",
+                            "price": 252.86
+                        },
+                        {
+                            "name": "Product 18 from Gilbert Ltd's Catalog 1",
+                            "price": 703.23
+                        },
+                        {
+                            "name": "Service 19 from Gilbert Ltd's Catalog 1",
+                            "price": 303.0
+                        },
+                        {
+                            "name": "Part 20 from Gilbert Ltd's Catalog 1",
+                            "price": 52.93
+                        },
+                        {
+                            "name": "Part 21 from Gilbert Ltd's Catalog 1",
+                            "price": 78.3
+                        },
+                        {
+                            "name": "Service 22 from Gilbert Ltd's Catalog 1",
+                            "price": 174.0
+                        },
+                        {
+                            "name": "Part 23 from Gilbert Ltd's Catalog 1",
+                            "price": 166.77
+                        },
+                        {
+                            "name": "Product 24 from Gilbert Ltd's Catalog 1",
+                            "price": 849.52
+                        },
+                        {
+                            "name": "Service 25 from Gilbert Ltd's Catalog 1",
+                            "price": 245.0
+                        },
+                        {
+                            "name": "Product 26 from Gilbert Ltd's Catalog 1",
+                            "price": 841.6
+                        }
+                    ]
+                },
+                {
+                    "name": "Gilbert Ltd's Catalog 2",
+                    "catalog_items": [
+                        {
+                            "name": "Service 1 from Gilbert Ltd's Catalog 2",
+                            "price": 403.0
+                        },
+                        {
+                            "name": "Part 2 from Gilbert Ltd's Catalog 2",
+                            "price": 20.04
+                        },
+                        {
+                            "name": "Service 3 from Gilbert Ltd's Catalog 2",
+                            "price": 377.0
+                        },
+                        {
+                            "name": "Part 4 from Gilbert Ltd's Catalog 2",
+                            "price": 11.21
+                        },
+                        {
+                            "name": "Service 5 from Gilbert Ltd's Catalog 2",
+                            "price": 276.0
+                        },
+                        {
+                            "name": "Part 6 from Gilbert Ltd's Catalog 2",
+                            "price": 112.81
+                        },
+                        {
+                            "name": "Service 7 from Gilbert Ltd's Catalog 2",
+                            "price": 359.0
+                        },
+                        {
+                            "name": "Product 8 from Gilbert Ltd's Catalog 2",
+                            "price": 58.5
+                        },
+                        {
+                            "name": "Part 9 from Gilbert Ltd's Catalog 2",
+                            "price": 96.82
+                        },
+                        {
+                            "name": "Product 10 from Gilbert Ltd's Catalog 2",
+                            "price": 322.88
+                        },
+                        {
+                            "name": "Part 11 from Gilbert Ltd's Catalog 2",
+                            "price": 90.16
+                        },
+                        {
+                            "name": "Product 12 from Gilbert Ltd's Catalog 2",
+                            "price": 696.77
+                        },
+                        {
+                            "name": "Service 13 from Gilbert Ltd's Catalog 2",
+                            "price": 271.0
+                        },
+                        {
+                            "name": "Product 14 from Gilbert Ltd's Catalog 2",
+                            "price": 952.92
+                        },
+                        {
+                            "name": "Part 15 from Gilbert Ltd's Catalog 2",
+                            "price": 2.41
+                        },
+                        {
+                            "name": "Part 16 from Gilbert Ltd's Catalog 2",
+                            "price": 66.88
+                        },
+                        {
+                            "name": "Product 17 from Gilbert Ltd's Catalog 2",
+                            "price": 134.15
+                        },
+                        {
+                            "name": "Service 18 from Gilbert Ltd's Catalog 2",
+                            "price": 434.0
+                        },
+                        {
+                            "name": "Product 19 from Gilbert Ltd's Catalog 2",
+                            "price": 71.35
+                        }
+                    ]
+                },
+                {
+                    "name": "Gilbert Ltd's Catalog 3",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Gilbert Ltd's Catalog 3",
+                            "price": 65.7
+                        },
+                        {
+                            "name": "Product 2 from Gilbert Ltd's Catalog 3",
+                            "price": 443.73
+                        },
+                        {
+                            "name": "Product 3 from Gilbert Ltd's Catalog 3",
+                            "price": 60.9
+                        },
+                        {
+                            "name": "Product 4 from Gilbert Ltd's Catalog 3",
+                            "price": 258.08
+                        },
+                        {
+                            "name": "Product 5 from Gilbert Ltd's Catalog 3",
+                            "price": 931.93
+                        },
+                        {
+                            "name": "Service 6 from Gilbert Ltd's Catalog 3",
+                            "price": 185.0
+                        },
+                        {
+                            "name": "Product 7 from Gilbert Ltd's Catalog 3",
+                            "price": 785.9
+                        },
+                        {
+                            "name": "Product 8 from Gilbert Ltd's Catalog 3",
+                            "price": 899.17
+                        },
+                        {
+                            "name": "Product 9 from Gilbert Ltd's Catalog 3",
+                            "price": 338.95
+                        },
+                        {
+                            "name": "Product 10 from Gilbert Ltd's Catalog 3",
+                            "price": 634.99
+                        },
+                        {
+                            "name": "Service 11 from Gilbert Ltd's Catalog 3",
+                            "price": 367.0
+                        },
+                        {
+                            "name": "Part 12 from Gilbert Ltd's Catalog 3",
+                            "price": 52.56
+                        },
+                        {
+                            "name": "Part 13 from Gilbert Ltd's Catalog 3",
+                            "price": 121.99
+                        },
+                        {
+                            "name": "Product 14 from Gilbert Ltd's Catalog 3",
+                            "price": 643.92
+                        },
+                        {
+                            "name": "Part 15 from Gilbert Ltd's Catalog 3",
+                            "price": 98.76
+                        },
+                        {
+                            "name": "Service 16 from Gilbert Ltd's Catalog 3",
+                            "price": 264.0
+                        },
+                        {
+                            "name": "Part 17 from Gilbert Ltd's Catalog 3",
+                            "price": 133.07
+                        },
+                        {
+                            "name": "Part 18 from Gilbert Ltd's Catalog 3",
+                            "price": 75.17
+                        },
+                        {
+                            "name": "Part 19 from Gilbert Ltd's Catalog 3",
+                            "price": 89.05
+                        },
+                        {
+                            "name": "Part 20 from Gilbert Ltd's Catalog 3",
+                            "price": 165.14
+                        },
+                        {
+                            "name": "Service 21 from Gilbert Ltd's Catalog 3",
+                            "price": 426.0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Werner and Sons",
+            "catalogs": [
+                {
+                    "name": "Werner and Sons's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Product 1 from Werner and Sons's Catalog 1",
+                            "price": 908.36
+                        },
+                        {
+                            "name": "Product 2 from Werner and Sons's Catalog 1",
+                            "price": 779.66
+                        },
+                        {
+                            "name": "Product 3 from Werner and Sons's Catalog 1",
+                            "price": 121.73
+                        },
+                        {
+                            "name": "Product 4 from Werner and Sons's Catalog 1",
+                            "price": 488.43
+                        },
+                        {
+                            "name": "Product 5 from Werner and Sons's Catalog 1",
+                            "price": 68.82
+                        },
+                        {
+                            "name": "Part 6 from Werner and Sons's Catalog 1",
+                            "price": 193.68
+                        },
+                        {
+                            "name": "Service 7 from Werner and Sons's Catalog 1",
+                            "price": 425.0
+                        },
+                        {
+                            "name": "Part 8 from Werner and Sons's Catalog 1",
+                            "price": 47.0
+                        },
+                        {
+                            "name": "Product 9 from Werner and Sons's Catalog 1",
+                            "price": 279.72
+                        },
+                        {
+                            "name": "Part 10 from Werner and Sons's Catalog 1",
+                            "price": 21.37
+                        },
+                        {
+                            "name": "Product 11 from Werner and Sons's Catalog 1",
+                            "price": 172.87
+                        },
+                        {
+                            "name": "Service 12 from Werner and Sons's Catalog 1",
+                            "price": 340.0
+                        },
+                        {
+                            "name": "Product 13 from Werner and Sons's Catalog 1",
+                            "price": 875.89
+                        },
+                        {
+                            "name": "Product 14 from Werner and Sons's Catalog 1",
+                            "price": 695.93
+                        },
+                        {
+                            "name": "Part 15 from Werner and Sons's Catalog 1",
+                            "price": 147.39
+                        },
+                        {
+                            "name": "Product 16 from Werner and Sons's Catalog 1",
+                            "price": 580.15
+                        },
+                        {
+                            "name": "Part 17 from Werner and Sons's Catalog 1",
+                            "price": 162.25
+                        },
+                        {
+                            "name": "Product 18 from Werner and Sons's Catalog 1",
+                            "price": 389.4
+                        },
+                        {
+                            "name": "Service 19 from Werner and Sons's Catalog 1",
+                            "price": 228.0
+                        },
+                        {
+                            "name": "Part 20 from Werner and Sons's Catalog 1",
+                            "price": 133.61
+                        },
+                        {
+                            "name": "Service 21 from Werner and Sons's Catalog 1",
+                            "price": 109.0
+                        },
+                        {
+                            "name": "Product 22 from Werner and Sons's Catalog 1",
+                            "price": 77.27
+                        },
+                        {
+                            "name": "Product 23 from Werner and Sons's Catalog 1",
+                            "price": 105.95
+                        },
+                        {
+                            "name": "Part 24 from Werner and Sons's Catalog 1",
+                            "price": 54.91
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Mcpherson, Diaz and Adkins",
+            "catalogs": [
+                {
+                    "name": "Mcpherson, Diaz and Adkins's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Product 1 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 388.62
+                        },
+                        {
+                            "name": "Part 2 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 7.45
+                        },
+                        {
+                            "name": "Part 3 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 61.23
+                        },
+                        {
+                            "name": "Part 4 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 151.15
+                        },
+                        {
+                            "name": "Product 5 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 385.39
+                        },
+                        {
+                            "name": "Part 6 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 108.92
+                        },
+                        {
+                            "name": "Part 7 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 66.79
+                        },
+                        {
+                            "name": "Service 8 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 279.0
+                        },
+                        {
+                            "name": "Product 9 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 520.98
+                        },
+                        {
+                            "name": "Service 10 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 484.0
+                        },
+                        {
+                            "name": "Product 11 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 472.38
+                        },
+                        {
+                            "name": "Part 12 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 96.3
+                        },
+                        {
+                            "name": "Part 13 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 134.55
+                        },
+                        {
+                            "name": "Part 14 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 52.44
+                        },
+                        {
+                            "name": "Part 15 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 21.3
+                        },
+                        {
+                            "name": "Part 16 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 64.75
+                        },
+                        {
+                            "name": "Product 17 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 806.94
+                        },
+                        {
+                            "name": "Service 18 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 303.0
+                        },
+                        {
+                            "name": "Part 19 from Mcpherson, Diaz and Adkins's Catalog 1",
+                            "price": 151.02
+                        }
+                    ]
+                },
+                {
+                    "name": "Mcpherson, Diaz and Adkins's Catalog 2",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 155.63
+                        },
+                        {
+                            "name": "Part 2 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 156.41
+                        },
+                        {
+                            "name": "Product 3 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 69.56
+                        },
+                        {
+                            "name": "Product 4 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 210.52
+                        },
+                        {
+                            "name": "Part 5 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 149.44
+                        },
+                        {
+                            "name": "Service 6 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 360.0
+                        },
+                        {
+                            "name": "Product 7 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 541.78
+                        },
+                        {
+                            "name": "Service 8 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 276.0
+                        },
+                        {
+                            "name": "Part 9 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 116.29
+                        },
+                        {
+                            "name": "Part 10 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 181.33
+                        },
+                        {
+                            "name": "Part 11 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 111.68
+                        },
+                        {
+                            "name": "Part 12 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 123.22
+                        },
+                        {
+                            "name": "Product 13 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 586.52
+                        },
+                        {
+                            "name": "Service 14 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 449.0
+                        },
+                        {
+                            "name": "Product 15 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 341.38
+                        },
+                        {
+                            "name": "Product 16 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 896.46
+                        },
+                        {
+                            "name": "Product 17 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 479.83
+                        },
+                        {
+                            "name": "Part 18 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 51.9
+                        },
+                        {
+                            "name": "Part 19 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 6.73
+                        },
+                        {
+                            "name": "Product 20 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 302.86
+                        },
+                        {
+                            "name": "Product 21 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 594.68
+                        },
+                        {
+                            "name": "Service 22 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 446.0
+                        },
+                        {
+                            "name": "Product 23 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 137.74
+                        },
+                        {
+                            "name": "Part 24 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 109.31
+                        },
+                        {
+                            "name": "Service 25 from Mcpherson, Diaz and Adkins's Catalog 2",
+                            "price": 154.0
+                        }
+                    ]
+                },
+                {
+                    "name": "Mcpherson, Diaz and Adkins's Catalog 3",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 150.97
+                        },
+                        {
+                            "name": "Product 2 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 402.68
+                        },
+                        {
+                            "name": "Part 3 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 135.18
+                        },
+                        {
+                            "name": "Product 4 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 686.23
+                        },
+                        {
+                            "name": "Part 5 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 118.67
+                        },
+                        {
+                            "name": "Product 6 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 196.33
+                        },
+                        {
+                            "name": "Part 7 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 83.71
+                        },
+                        {
+                            "name": "Part 8 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 55.07
+                        },
+                        {
+                            "name": "Part 9 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 30.91
+                        },
+                        {
+                            "name": "Part 10 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 119.25
+                        },
+                        {
+                            "name": "Service 11 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 467.0
+                        },
+                        {
+                            "name": "Service 12 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 488.0
+                        },
+                        {
+                            "name": "Part 13 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 63.74
+                        },
+                        {
+                            "name": "Service 14 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 108.0
+                        },
+                        {
+                            "name": "Part 15 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 179.6
+                        },
+                        {
+                            "name": "Part 16 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 19.38
+                        },
+                        {
+                            "name": "Service 17 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 431.0
+                        },
+                        {
+                            "name": "Part 18 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 141.26
+                        },
+                        {
+                            "name": "Product 19 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 412.32
+                        },
+                        {
+                            "name": "Part 20 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 105.31
+                        },
+                        {
+                            "name": "Part 21 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 40.55
+                        },
+                        {
+                            "name": "Service 22 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 335.0
+                        },
+                        {
+                            "name": "Part 23 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 175.19
+                        },
+                        {
+                            "name": "Part 24 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 126.26
+                        },
+                        {
+                            "name": "Part 25 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 46.79
+                        },
+                        {
+                            "name": "Product 26 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 322.96
+                        },
+                        {
+                            "name": "Product 27 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 883.21
+                        },
+                        {
+                            "name": "Part 28 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 25.69
+                        },
+                        {
+                            "name": "Product 29 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 78.86
+                        },
+                        {
+                            "name": "Part 30 from Mcpherson, Diaz and Adkins's Catalog 3",
+                            "price": 43.0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Thompson-Hayes",
+            "catalogs": [
+                {
+                    "name": "Thompson-Hayes's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Service 1 from Thompson-Hayes's Catalog 1",
+                            "price": 441.0
+                        },
+                        {
+                            "name": "Service 2 from Thompson-Hayes's Catalog 1",
+                            "price": 227.0
+                        },
+                        {
+                            "name": "Product 3 from Thompson-Hayes's Catalog 1",
+                            "price": 80.56
+                        },
+                        {
+                            "name": "Part 4 from Thompson-Hayes's Catalog 1",
+                            "price": 167.21
+                        },
+                        {
+                            "name": "Part 5 from Thompson-Hayes's Catalog 1",
+                            "price": 135.38
+                        },
+                        {
+                            "name": "Product 6 from Thompson-Hayes's Catalog 1",
+                            "price": 930.88
+                        },
+                        {
+                            "name": "Service 7 from Thompson-Hayes's Catalog 1",
+                            "price": 271.0
+                        },
+                        {
+                            "name": "Part 8 from Thompson-Hayes's Catalog 1",
+                            "price": 17.32
+                        },
+                        {
+                            "name": "Service 9 from Thompson-Hayes's Catalog 1",
+                            "price": 199.0
+                        },
+                        {
+                            "name": "Part 10 from Thompson-Hayes's Catalog 1",
+                            "price": 161.78
+                        },
+                        {
+                            "name": "Part 11 from Thompson-Hayes's Catalog 1",
+                            "price": 20.14
+                        },
+                        {
+                            "name": "Part 12 from Thompson-Hayes's Catalog 1",
+                            "price": 66.02
+                        },
+                        {
+                            "name": "Part 13 from Thompson-Hayes's Catalog 1",
+                            "price": 125.07
+                        },
+                        {
+                            "name": "Service 14 from Thompson-Hayes's Catalog 1",
+                            "price": 370.0
+                        },
+                        {
+                            "name": "Part 15 from Thompson-Hayes's Catalog 1",
+                            "price": 131.87
+                        },
+                        {
+                            "name": "Product 16 from Thompson-Hayes's Catalog 1",
+                            "price": 463.57
+                        },
+                        {
+                            "name": "Part 17 from Thompson-Hayes's Catalog 1",
+                            "price": 48.99
+                        },
+                        {
+                            "name": "Part 18 from Thompson-Hayes's Catalog 1",
+                            "price": 122.9
+                        },
+                        {
+                            "name": "Part 19 from Thompson-Hayes's Catalog 1",
+                            "price": 114.13
+                        },
+                        {
+                            "name": "Product 20 from Thompson-Hayes's Catalog 1",
+                            "price": 768.81
+                        },
+                        {
+                            "name": "Service 21 from Thompson-Hayes's Catalog 1",
+                            "price": 456.0
+                        },
+                        {
+                            "name": "Part 22 from Thompson-Hayes's Catalog 1",
+                            "price": 19.71
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Clay-Brooks",
+            "catalogs": [
+                {
+                    "name": "Clay-Brooks's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Clay-Brooks's Catalog 1",
+                            "price": 91.7
+                        },
+                        {
+                            "name": "Product 2 from Clay-Brooks's Catalog 1",
+                            "price": 753.29
+                        },
+                        {
+                            "name": "Service 3 from Clay-Brooks's Catalog 1",
+                            "price": 305.0
+                        },
+                        {
+                            "name": "Product 4 from Clay-Brooks's Catalog 1",
+                            "price": 900.73
+                        },
+                        {
+                            "name": "Product 5 from Clay-Brooks's Catalog 1",
+                            "price": 74.62
+                        },
+                        {
+                            "name": "Part 6 from Clay-Brooks's Catalog 1",
+                            "price": 130.87
+                        },
+                        {
+                            "name": "Service 7 from Clay-Brooks's Catalog 1",
+                            "price": 231.0
+                        },
+                        {
+                            "name": "Part 8 from Clay-Brooks's Catalog 1",
+                            "price": 34.96
+                        },
+                        {
+                            "name": "Part 9 from Clay-Brooks's Catalog 1",
+                            "price": 36.13
+                        },
+                        {
+                            "name": "Service 10 from Clay-Brooks's Catalog 1",
+                            "price": 122.0
+                        },
+                        {
+                            "name": "Part 11 from Clay-Brooks's Catalog 1",
+                            "price": 158.02
+                        },
+                        {
+                            "name": "Product 12 from Clay-Brooks's Catalog 1",
+                            "price": 442.64
+                        },
+                        {
+                            "name": "Part 13 from Clay-Brooks's Catalog 1",
+                            "price": 112.34
+                        },
+                        {
+                            "name": "Part 14 from Clay-Brooks's Catalog 1",
+                            "price": 54.74
+                        },
+                        {
+                            "name": "Part 15 from Clay-Brooks's Catalog 1",
+                            "price": 46.15
+                        },
+                        {
+                            "name": "Part 16 from Clay-Brooks's Catalog 1",
+                            "price": 146.4
+                        }
+                    ]
+                },
+                {
+                    "name": "Clay-Brooks's Catalog 2",
+                    "catalog_items": [
+                        {
+                            "name": "Service 1 from Clay-Brooks's Catalog 2",
+                            "price": 244.0
+                        },
+                        {
+                            "name": "Service 2 from Clay-Brooks's Catalog 2",
+                            "price": 439.0
+                        },
+                        {
+                            "name": "Part 3 from Clay-Brooks's Catalog 2",
+                            "price": 21.15
+                        },
+                        {
+                            "name": "Part 4 from Clay-Brooks's Catalog 2",
+                            "price": 188.04
+                        },
+                        {
+                            "name": "Part 5 from Clay-Brooks's Catalog 2",
+                            "price": 128.26
+                        },
+                        {
+                            "name": "Part 6 from Clay-Brooks's Catalog 2",
+                            "price": 107.54
+                        },
+                        {
+                            "name": "Part 7 from Clay-Brooks's Catalog 2",
+                            "price": 190.41
+                        },
+                        {
+                            "name": "Service 8 from Clay-Brooks's Catalog 2",
+                            "price": 341.0
+                        },
+                        {
+                            "name": "Product 9 from Clay-Brooks's Catalog 2",
+                            "price": 993.52
+                        },
+                        {
+                            "name": "Product 10 from Clay-Brooks's Catalog 2",
+                            "price": 697.28
+                        },
+                        {
+                            "name": "Service 11 from Clay-Brooks's Catalog 2",
+                            "price": 274.0
+                        },
+                        {
+                            "name": "Product 12 from Clay-Brooks's Catalog 2",
+                            "price": 589.86
+                        },
+                        {
+                            "name": "Product 13 from Clay-Brooks's Catalog 2",
+                            "price": 700.03
+                        },
+                        {
+                            "name": "Service 14 from Clay-Brooks's Catalog 2",
+                            "price": 113.0
+                        },
+                        {
+                            "name": "Part 15 from Clay-Brooks's Catalog 2",
+                            "price": 79.99
+                        },
+                        {
+                            "name": "Service 16 from Clay-Brooks's Catalog 2",
+                            "price": 483.0
+                        },
+                        {
+                            "name": "Product 17 from Clay-Brooks's Catalog 2",
+                            "price": 916.55
+                        },
+                        {
+                            "name": "Part 18 from Clay-Brooks's Catalog 2",
+                            "price": 105.28
+                        },
+                        {
+                            "name": "Product 19 from Clay-Brooks's Catalog 2",
+                            "price": 217.17
+                        },
+                        {
+                            "name": "Service 20 from Clay-Brooks's Catalog 2",
+                            "price": 204.0
+                        },
+                        {
+                            "name": "Product 21 from Clay-Brooks's Catalog 2",
+                            "price": 953.21
+                        },
+                        {
+                            "name": "Product 22 from Clay-Brooks's Catalog 2",
+                            "price": 836.35
+                        },
+                        {
+                            "name": "Part 23 from Clay-Brooks's Catalog 2",
+                            "price": 53.62
+                        },
+                        {
+                            "name": "Part 24 from Clay-Brooks's Catalog 2",
+                            "price": 62.63
+                        },
+                        {
+                            "name": "Product 25 from Clay-Brooks's Catalog 2",
+                            "price": 481.39
+                        },
+                        {
+                            "name": "Product 26 from Clay-Brooks's Catalog 2",
+                            "price": 383.15
+                        },
+                        {
+                            "name": "Product 27 from Clay-Brooks's Catalog 2",
+                            "price": 51.17
+                        },
+                        {
+                            "name": "Part 28 from Clay-Brooks's Catalog 2",
+                            "price": 140.2
+                        },
+                        {
+                            "name": "Service 29 from Clay-Brooks's Catalog 2",
+                            "price": 190.0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Campbell Group",
+            "catalogs": [
+                {
+                    "name": "Campbell Group's Catalog 1",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Campbell Group's Catalog 1",
+                            "price": 148.01
+                        },
+                        {
+                            "name": "Part 2 from Campbell Group's Catalog 1",
+                            "price": 180.58
+                        },
+                        {
+                            "name": "Product 3 from Campbell Group's Catalog 1",
+                            "price": 899.14
+                        },
+                        {
+                            "name": "Part 4 from Campbell Group's Catalog 1",
+                            "price": 163.18
+                        },
+                        {
+                            "name": "Service 5 from Campbell Group's Catalog 1",
+                            "price": 489.0
+                        },
+                        {
+                            "name": "Part 6 from Campbell Group's Catalog 1",
+                            "price": 104.76
+                        },
+                        {
+                            "name": "Part 7 from Campbell Group's Catalog 1",
+                            "price": 9.47
+                        },
+                        {
+                            "name": "Product 8 from Campbell Group's Catalog 1",
+                            "price": 520.98
+                        },
+                        {
+                            "name": "Product 9 from Campbell Group's Catalog 1",
+                            "price": 286.29
+                        },
+                        {
+                            "name": "Part 10 from Campbell Group's Catalog 1",
+                            "price": 199.64
+                        }
+                    ]
+                },
+                {
+                    "name": "Campbell Group's Catalog 2",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Campbell Group's Catalog 2",
+                            "price": 79.92
+                        },
+                        {
+                            "name": "Part 2 from Campbell Group's Catalog 2",
+                            "price": 145.52
+                        },
+                        {
+                            "name": "Service 3 from Campbell Group's Catalog 2",
+                            "price": 266.0
+                        },
+                        {
+                            "name": "Part 4 from Campbell Group's Catalog 2",
+                            "price": 189.62
+                        },
+                        {
+                            "name": "Part 5 from Campbell Group's Catalog 2",
+                            "price": 86.32
+                        },
+                        {
+                            "name": "Service 6 from Campbell Group's Catalog 2",
+                            "price": 142.0
+                        },
+                        {
+                            "name": "Part 7 from Campbell Group's Catalog 2",
+                            "price": 83.44
+                        },
+                        {
+                            "name": "Part 8 from Campbell Group's Catalog 2",
+                            "price": 186.37
+                        },
+                        {
+                            "name": "Part 9 from Campbell Group's Catalog 2",
+                            "price": 81.47
+                        },
+                        {
+                            "name": "Product 10 from Campbell Group's Catalog 2",
+                            "price": 612.68
+                        },
+                        {
+                            "name": "Service 11 from Campbell Group's Catalog 2",
+                            "price": 394.0
+                        },
+                        {
+                            "name": "Part 12 from Campbell Group's Catalog 2",
+                            "price": 78.49
+                        },
+                        {
+                            "name": "Product 13 from Campbell Group's Catalog 2",
+                            "price": 73.22
+                        },
+                        {
+                            "name": "Product 14 from Campbell Group's Catalog 2",
+                            "price": 824.87
+                        },
+                        {
+                            "name": "Product 15 from Campbell Group's Catalog 2",
+                            "price": 409.47
+                        },
+                        {
+                            "name": "Product 16 from Campbell Group's Catalog 2",
+                            "price": 613.33
+                        }
+                    ]
+                },
+                {
+                    "name": "Campbell Group's Catalog 3",
+                    "catalog_items": [
+                        {
+                            "name": "Part 1 from Campbell Group's Catalog 3",
+                            "price": 178.67
+                        },
+                        {
+                            "name": "Product 2 from Campbell Group's Catalog 3",
+                            "price": 749.51
+                        },
+                        {
+                            "name": "Part 3 from Campbell Group's Catalog 3",
+                            "price": 62.82
+                        },
+                        {
+                            "name": "Part 4 from Campbell Group's Catalog 3",
+                            "price": 13.06
+                        },
+                        {
+                            "name": "Part 5 from Campbell Group's Catalog 3",
+                            "price": 76.57
+                        },
+                        {
+                            "name": "Part 6 from Campbell Group's Catalog 3",
+                            "price": 46.16
+                        },
+                        {
+                            "name": "Product 7 from Campbell Group's Catalog 3",
+                            "price": 955.95
+                        },
+                        {
+                            "name": "Part 8 from Campbell Group's Catalog 3",
+                            "price": 130.33
+                        },
+                        {
+                            "name": "Part 9 from Campbell Group's Catalog 3",
+                            "price": 155.72
+                        },
+                        {
+                            "name": "Product 10 from Campbell Group's Catalog 3",
+                            "price": 60.57
+                        },
+                        {
+                            "name": "Part 11 from Campbell Group's Catalog 3",
+                            "price": 23.96
+                        },
+                        {
+                            "name": "Part 12 from Campbell Group's Catalog 3",
+                            "price": 38.69
+                        },
+                        {
+                            "name": "Part 13 from Campbell Group's Catalog 3",
+                            "price": 171.78
+                        },
+                        {
+                            "name": "Part 14 from Campbell Group's Catalog 3",
+                            "price": 110.28
+                        },
+                        {
+                            "name": "Product 15 from Campbell Group's Catalog 3",
+                            "price": 526.74
+                        },
+                        {
+                            "name": "Product 16 from Campbell Group's Catalog 3",
+                            "price": 525.95
+                        },
+                        {
+                            "name": "Service 17 from Campbell Group's Catalog 3",
+                            "price": 144.0
+                        },
+                        {
+                            "name": "Part 18 from Campbell Group's Catalog 3",
+                            "price": 143.76
+                        },
+                        {
+                            "name": "Part 19 from Campbell Group's Catalog 3",
+                            "price": 121.96
+                        },
+                        {
+                            "name": "Product 20 from Campbell Group's Catalog 3",
+                            "price": 921.9
+                        },
+                        {
+                            "name": "Part 21 from Campbell Group's Catalog 3",
+                            "price": 163.12
+                        },
+                        {
+                            "name": "Part 22 from Campbell Group's Catalog 3",
+                            "price": 177.84
+                        },
+                        {
+                            "name": "Part 23 from Campbell Group's Catalog 3",
+                            "price": 96.59
+                        },
+                        {
+                            "name": "Part 24 from Campbell Group's Catalog 3",
+                            "price": 24.1
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

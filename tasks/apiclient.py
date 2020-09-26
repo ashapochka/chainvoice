@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Type, List
 
 import httpx
 from devtools import debug
@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from app.config import get_settings
 from app.schemas import (
     Token, PartyGet, PartyCreate, CatalogCreate, CatalogGet,
-    CatalogItemCreate, CatalogItemGet
+    CatalogItemCreate, CatalogItemGet, UserGet
 )
 
 from .fixtures import RootPartiesFixture
@@ -61,75 +61,92 @@ class ApiClient:
         )
 
 
-# @task
-# def api_parties_get(c):
-#     client = authenticate()
-#     debug(get_many_api_parties__get(client=client))
-#
-#
-# @task
-# def api_users_get(c):
-#     client = authenticate()
-#     debug(get_many_api_users__get(client=client))
-#
-#
-# @task
-# def api_party_create(c, name):
-#     client = authenticate()
-#     party = create_one_api_parties__post(
-#         client=client,
-#         json_body=PartyCreate(name=name)
-#     )
-#     debug(party.to_dict())
+def authorized_client() -> httpx.Client:
+    api_client = ApiClient()
+    api_client.authenticate()
+    return api_client.new_client()
 
 
+def create_party(client, new_party_name):
+    return create_one(
+        client, 'parties', PartyCreate(name=new_party_name), PartyGet
+    )
+
+
+def create_one(
+        client, obj_path, obj: BaseModel, obj_get_class: Type[BaseModel]
+):
+    response = client.post(
+        f'/api/{obj_path}/', data=obj.json()
+    )
+    check_response(response)
+    new_obj = obj_get_class.parse_obj(response.json())
+    return new_obj
+
+
+def get_many(
+        client: httpx.Client,
+        obj_path: str, obj_class: Type[BaseModel],
+        limit: int = 20
+) -> List:
+    response = client.get(f'/api/{obj_path}/', params={'limit': limit})
+    check_response(response)
+    objs = [obj_class.parse_obj(obj) for obj in response.json()]
+    return objs
+
+
+@task
+def api_parties_get(c):
+    with authorized_client() as client:
+        debug(get_many(client, 'parties', PartyGet))
+
+
+@task
+def api_users_get(c):
+    with authorized_client() as client:
+        debug(get_many(client, 'users', UserGet))
+
+
+@task
+def api_party_create(c, name):
+    with authorized_client() as client:
+        party = create_party(client, name)
+        debug(party)
+
+
+# noinspection PyTypeChecker
 @task
 def create_demo_data(c):
     root = RootPartiesFixture.parse_file(
         './fixtures/parties-catalogs.json'
     )
-
-    api_client = ApiClient()
-    api_client.authenticate()
-
-    with api_client.new_client() as client:
-        response = client.get('/api/parties/', params={'limit': 100})
-        check_response(response)
-        parties = [PartyGet.parse_obj(obj) for obj in response.json()]
+    with authorized_client() as client:
+        parties = get_many(client, 'parties', PartyGet, limit=100)
         party_names = {p.name for p in parties}
         for p in root.parties:
-            if p.name in party_names:
+            new_party_name = p.name
+            if new_party_name in party_names:
                 continue
-            response = client.post(
-                '/api/parties/', data=PartyCreate(name=p.name).json()
-            )
-            check_response(response)
-            new_party = PartyGet.parse_obj(response.json())
+            new_party: PartyGet = create_party(client, new_party_name)
             debug(new_party=new_party)
             if not p.catalogs:
                 continue
             for c in p.catalogs:
-                response = client.post(
-                    '/api/catalogs/',
-                    data=CatalogCreate(
+                new_catalog: CatalogGet = create_one(
+                    client, 'catalogs', CatalogCreate(
                         name=c.name,
                         seller_uid=new_party.uid
-                    ).json()
+                    ), CatalogGet
                 )
-                check_response(response)
-                new_catalog = CatalogGet.parse_obj(response.json())
                 debug(new_catalog=new_catalog)
                 for item in c.catalog_items:
-                    response = client.post(
-                        '/api/catalog-items/',
-                        data=CatalogItemCreate(
+                    new_item = create_one(
+                        client, 'catalog-items', CatalogItemCreate(
                             name=item.name,
                             price=item.price,
                             catalog_uid=new_catalog.uid
-                        ).json()
+                        ), CatalogItemGet
                     )
-                    check_response(response)
-                    new_item = CatalogItemGet.parse_obj(response.json())
                     debug(new_item=new_item)
 
 
@@ -150,10 +167,10 @@ def fixture_gen(c):
         catalogs = []
         for j in range(random.randint(1, 3)):
             items = []
-            catalog_name = f"{party_name}'s Catalog {j+1}"
+            catalog_name = f"{party_name}'s Catalog {j + 1}"
             for k in range(random.randint(10, 30)):
                 item_type = random.choice(
-                    3*('Product',) + 5*('Part',) + 2*('Service',)
+                    3 * ('Product',) + 5 * ('Part',) + 2 * ('Service',)
                 )
                 if item_type == 'Product':
                     low, high = 50, 1000
@@ -168,7 +185,7 @@ def fixture_gen(c):
                     round_digits = 2
                 item_price = round(item_price, round_digits)
                 items.append(CatalogItemFixture(
-                    name=f"{item_type} {k+1} from {catalog_name}",
+                    name=f"{item_type} {k + 1} from {catalog_name}",
                     price=item_price
                 ))
             catalogs.append(CatalogFixture(
@@ -182,5 +199,3 @@ def fixture_gen(c):
         f.write(RootPartiesFixture(parties=parties).json(
             exclude_unset=True, indent=4
         ))
-
-

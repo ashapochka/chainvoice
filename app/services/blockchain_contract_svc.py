@@ -1,20 +1,25 @@
 from databases import Database
+from fastapi import Depends
 from sqlalchemy.sql import select
 
-from ..db import (blockchain_contracts, parties)
+from ..db import (blockchain_contracts, parties, get_db)
 from .base_svc import BaseService
 from ..schemas import (UserInDb, BlockchainContractCreate)
 
 
 class BlockchainContractService(BaseService):
-    async def create(
+    def __init__(
             self,
-            db: Database, user: UserInDb,
-            obj: BlockchainContractCreate
+            db: Database = Depends(get_db),
+    ):
+        super().__init__(blockchain_contracts, db)
+
+    async def create(
+            self, user: UserInDb, obj: BlockchainContractCreate
     ):
         obj_data = self._to_dict(obj)
-        await self._uid_to_fk(db, obj_data, parties, 'owner')
-        return await self._insert(db, obj_data)
+        await self._uid_to_fk(obj_data, parties, 'owner')
+        return await self._insert(obj_data)
 
     def _select_query(self):
         return select([
@@ -26,5 +31,3 @@ class BlockchainContractService(BaseService):
             parties.c.uid.label('owner_uid')
         ]).select_from(blockchain_contracts.join(parties))
 
-
-blockchain_contract_service = BlockchainContractService(blockchain_contracts)

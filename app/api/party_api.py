@@ -1,16 +1,17 @@
 from typing import List
 from uuid import UUID
 
+from loguru import logger
+
 from fastapi import (Depends, Path)
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
-from ..contracts import ERC1155Contract
-from ..deps import get_erc1155_contract
-from ..services import party_service
+from ..services import PartyService
 from ..schemas import (
-    PartyCreate, PartyUpdate, PartyGet, PartyTokenBalance, PartyTokenTransfer,
+    PartyCreate, PartyUpdate, PartyGet,
+    PartyTokenBalance, PartyTokenTransfer,
     PartyTokenTransferReceipt
 )
 from .base_api import BaseAPI
@@ -21,8 +22,7 @@ router = InferringRouter()
 # noinspection PyTypeChecker
 @cbv(router)
 class PartyAPI(BaseAPI):
-    erc1155_contract: ERC1155Contract = Depends(get_erc1155_contract)
-    service = party_service
+    service: PartyService = Depends()
 
     @router.get('/')
     async def get_many(
@@ -41,8 +41,7 @@ class PartyAPI(BaseAPI):
             self, uid: UUID, token_id: int = Path(0)
     ) -> PartyTokenBalance:
         return await self.service.get_token_balance(
-            self.db, self.user, uid, token_id,
-            token_contract=self.erc1155_contract
+            self.user, uid, token_id
         )
 
     @router.post("/{uid}/token-transfer/")
@@ -50,8 +49,7 @@ class PartyAPI(BaseAPI):
             self, uid: UUID, obj: PartyTokenTransfer
     ) -> PartyTokenTransferReceipt:
         return await self.service.transfer_tokens(
-            self.db, self.user, uid, obj,
-            token_contract=self.erc1155_contract
+            self.user, uid, obj
         )
 
     @router.post("/")
@@ -62,11 +60,10 @@ class PartyAPI(BaseAPI):
             initial_amount: int = 1_000_000_00
     ) -> PartyGet:
         result = await self.service.create(
-            self.db, self.user, obj,
+            self.user, obj,
             create_blockchain_account=create_blockchain_account,
             token_id=token_id,
-            initial_amount=initial_amount,
-            token_contract=self.erc1155_contract
+            initial_amount=initial_amount
         )
         return {**obj.dict(), **result['obj']}
 

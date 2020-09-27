@@ -1,11 +1,12 @@
 from typing import List
 from uuid import UUID
 
+from fastapi import Depends
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
-from ..services import blockchain_contract_service
+from ..services import BlockchainContractService
 from ..schemas import (
     BlockchainContractCreate, BlockchainContractUpdate, BlockchainContractGet,
 )
@@ -17,7 +18,7 @@ router = InferringRouter()
 # noinspection PyTypeChecker
 @cbv(router)
 class BlockchainContractAPI(BaseAPI):
-    service = blockchain_contract_service
+    service: BlockchainContractService = Depends()
 
     @router.get('/')
     async def get_many(

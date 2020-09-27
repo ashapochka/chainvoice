@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from ..schemas import (Token, UserGet)
 from ..deps import (get_db, get_current_user)
-from ..services import user_service
+from ..services import UserService
 from ..config import get_settings
 from ..security import create_access_token
 
@@ -13,14 +13,14 @@ router = APIRouter()
 
 @router.post("/access-token", response_model=Token)
 async def login_access_token(
-        db=Depends(get_db),
+        user_service: UserService = Depends(),
         form_data: OAuth2PasswordRequestForm = Depends()
 ):
     """
     OAuth2 compatible token login, get an access token for future requests
     """
     user = await user_service.authenticate(
-        db, None, form_data.username, form_data.password
+        None, form_data.username, form_data.password
     )
     if not user:
         raise HTTPException(

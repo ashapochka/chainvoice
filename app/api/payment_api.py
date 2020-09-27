@@ -1,11 +1,12 @@
 from typing import List
 from uuid import UUID
 
+from fastapi import Depends
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
-from ..services import payment_service
+from ..services import PaymentService
 from ..schemas import (
     PaymentCreate, PaymentUpdate, PaymentGet,
 )
@@ -17,7 +18,7 @@ router = InferringRouter()
 # noinspection PyTypeChecker
 @cbv(router)
 class PaymentAPI(BaseAPI):
-    service = payment_service
+    service: PaymentService = Depends()
 
     @router.get('/')
     async def get_many(

@@ -195,3 +195,7 @@ class DbClient:
 
 
 db_client = DbClient(metadata)
+
+
+def get_db() -> Database:
+    return db_client.database

@@ -1,4 +1,4 @@
-from typing import Type, cast, Union
+from typing import Type, Union
 
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
@@ -7,7 +7,7 @@ from databases import Database
 
 from app.config import get_settings
 from app.contracts import ERC1155Contract, BaseContract, InvoiceRegistryContract
-from app.services import (blockchain_contract_service, party_service)
+from app.services import BlockchainContractService
 from app.schemas import (
     BlockchainContractGet, BlockchainContractCreate,
     PartyGet
@@ -26,27 +26,31 @@ class BlockchainClient:
         self.w3 = Web3(Web3.HTTPProvider(f'{qnode_url}/{qnode_key}'))
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-    async def init_contracts(self, db: Database):
+    async def init_contracts(self, db: Database, qadmin_party: PartyGet):
         s = get_settings()
         self.erc1155_contract = await self.init_contract(
             db, 'ChainvoiceERC1155',
             s.erc1155_contract_address,
-            ERC1155Contract
+            ERC1155Contract,
+            qadmin_party
         )
         self.invoice_registry_contract = await self.init_contract(
             db, 'InvoiceRegistry',
             s.invoice_registry_contract_address,
-            InvoiceRegistryContract
+            InvoiceRegistryContract,
+            qadmin_party
         )
 
     async def init_contract(
             self, db: Database,
             contract_name: str,
             default_contract_address: str,
-            contract_class: Type[BaseContract]
+            contract_class: Type[BaseContract],
+            qadmin_party: PartyGet
     ) -> Union[ERC1155Contract, InvoiceRegistryContract]:
-        contract_record = await blockchain_contract_service.get_one_by_name(
-            db, None, contract_name
+        contract_service = BlockchainContractService(db)
+        contract_record = await contract_service.get_one_by_name(
+            None, contract_name
         )
         if contract_record is None:
             s = get_settings()
@@ -55,17 +59,13 @@ class BlockchainClient:
             with open(contract_path) as f:
                 compiled_contract = json.load(f)
                 contract_abi = compiled_contract['abi']
-            qadmin = await party_service.get_one_by_name(
-                db, None, 'qadmin'
-            )
-            qadmin_party = PartyGet(**qadmin)
             new_record = BlockchainContractCreate(
                 owner_uid=qadmin_party.uid,
                 name=contract_name,
                 contract_address=contract_address,
                 contract_abi=json.dumps(contract_abi)
             )
-            await blockchain_contract_service.create(db, None, new_record)
+            await contract_service.create(None, new_record)
         else:
             contract = BlockchainContractGet(**contract_record)
             contract_abi = contract.contract_abi
@@ -76,3 +76,7 @@ class BlockchainClient:
 
 
 blockchain_client = BlockchainClient()
+
+
+def get_erc1155_contract() -> ERC1155Contract:
+    return blockchain_client.erc1155_contract

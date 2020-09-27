@@ -1,16 +1,23 @@
 from databases import Database
+from fastapi import Depends
 from sqlalchemy.sql import select
 
-from ..db import (catalog_items, catalogs)
+from ..db import (catalog_items, catalogs, get_db)
 from .base_svc import BaseService
 from ..schemas import (CatalogItemCreate, UserInDb)
 
 
 class CatalogItemService(BaseService):
-    async def create(self, db: Database, user: UserInDb, obj: CatalogItemCreate):
+    def __init__(
+            self,
+            db: Database = Depends(get_db),
+    ):
+        super().__init__(catalog_items, db)
+
+    async def create(self, user: UserInDb, obj: CatalogItemCreate):
         obj_data = self._to_dict(obj)
-        await self._uid_to_fk(db, obj_data, catalogs, 'catalog')
-        return await self._insert(db, obj_data)
+        await self._uid_to_fk(obj_data, catalogs, 'catalog')
+        return await self._insert(obj_data)
 
     def _select_query(self):
         return select([
@@ -20,5 +27,3 @@ class CatalogItemService(BaseService):
             catalogs.c.uid.label('catalog_uid')
         ]).select_from(catalog_items.join(catalogs))
 
-
-catalog_item_service = CatalogItemService(catalog_items)

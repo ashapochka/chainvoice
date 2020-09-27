@@ -23,7 +23,7 @@ class LoginFormData(BaseModel):
 
 def check_response(response: Response):
     if response.is_error:
-        debug(response)
+        debug(response.json())
         response.raise_for_status()
 
 
@@ -76,9 +76,9 @@ def create_party(client, new_party_name):
 def create_one(
         client, obj_path, obj: BaseModel, obj_get_class: Type[BaseModel]
 ):
-    response = client.post(
-        f'/api/{obj_path}/', data=obj.json()
-    )
+    obj_json = obj.json(exclude_unset=True)
+    debug(obj_json)
+    response = client.post(f'/api/{obj_path}/', data=obj_json)
     check_response(response)
     new_obj = obj_get_class.parse_obj(response.json())
     return new_obj

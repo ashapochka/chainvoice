@@ -1,20 +1,24 @@
 from databases import Database
+from fastapi import Depends
 from sqlalchemy.sql import select
 from loguru import logger
 
-from ..db import (orders, parties)
+from ..db import (orders, parties, get_db)
 from ..schemas import (OrderCreate, UserInDb)
 from .base_svc import BaseService
 from .utils import current_time
 
 
 class OrderService(BaseService):
-    async def create(self, db: Database, user: UserInDb, obj: OrderCreate):
+    def __init__(self, db: Database = Depends(get_db)):
+        super().__init__(orders, db)
+
+    async def create(self, user: UserInDb, obj: OrderCreate):
         obj_data = self._to_dict(obj)
-        await self._uid_to_fk(db, obj_data, parties, 'seller')
-        await self._uid_to_fk(db, obj_data, parties, 'customer', nullable=True)
+        await self._uid_to_fk(obj_data, parties, 'seller')
+        await self._uid_to_fk(obj_data, parties, 'customer', nullable=True)
         obj_data['created_at'] = current_time()
-        return await self._insert(db, obj_data)
+        return await self._insert(obj_data)
 
     def _select_query(self):
         sellers = parties.alias()
@@ -35,5 +39,3 @@ class OrderService(BaseService):
         logger.debug(query)
         return query
 
-
-order_service = OrderService(orders)

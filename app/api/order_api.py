@@ -1,11 +1,12 @@
 from typing import List
 from uuid import UUID
 
+from fastapi import Depends
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
-from ..services import order_service
+from ..services import OrderService
 from ..schemas import (
     OrderCreate, OrderUpdate, OrderGet,
 )
@@ -17,7 +18,7 @@ router = InferringRouter()
 # noinspection PyTypeChecker
 @cbv(router)
 class OrderAPI(BaseAPI):
-    service = order_service
+    service: OrderService = Depends()
 
     @router.get('/')
     async def get_many(

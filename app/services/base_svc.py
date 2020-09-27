@@ -29,12 +29,13 @@ class BaseService:
         query = self._select_query()
         logger.debug(query)
         if len(kwargs):
-            query_alias = query.alias()
-            where_clauses = [query_alias.c[key] == value for (key, value) in
-                             kwargs.items() if value is not None]
+            query_from = query.froms[0]
+            where_clauses = [
+                query_from.c[key] == value for (key, value) in
+                kwargs.items() if value is not None
+            ]
             if len(where_clauses):
                 query = query.where(and_(*where_clauses))
-                logger.debug(query)
         query = query.offset(offset).limit(limit)
         logger.debug(query)
         result = await self.db.fetch_all(query)

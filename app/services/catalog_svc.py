@@ -1,3 +1,4 @@
+from loguru import logger
 from databases import Database
 from fastapi import Depends
 from sqlalchemy.sql import select
@@ -20,9 +21,15 @@ class CatalogService(BaseService):
         return await self._insert(obj_data)
 
     def _select_query(self):
-        return select([
-            catalogs.c.uid,
-            catalogs.c.name,
+        party_catalogs = select([
+            catalogs.c.uid.label('uid'),
+            catalogs.c.name.label('name'),
             parties.c.uid.label('seller_uid')
-        ]).select_from(catalogs.join(parties))
+        ]).select_from(catalogs.join(parties)).alias('party_catalogs')
+        query = select([
+            party_catalogs.c.uid.label('uid'),
+            party_catalogs.c.name.label('name'),
+            party_catalogs.c.seller_uid.label('seller_uid')
+        ]).select_from(party_catalogs)
+        return query
 

@@ -1,3 +1,4 @@
+import random
 from typing import Dict, Type, List
 
 import httpx
@@ -87,9 +88,16 @@ def create_one(
 def get_many(
         client: httpx.Client,
         obj_path: str, obj_class: Type[BaseModel],
-        limit: int = 20
+        offset: int = 0,
+        limit: int = 20,
+        **kwargs
 ) -> List:
-    response = client.get(f'/api/{obj_path}/', params={'limit': limit})
+    params = {
+        'offset': offset if offset >= 0 else 0,
+        'limit': limit if limit >= 0 else 0,
+        **kwargs
+    }
+    response = client.get(f'/api/{obj_path}/', params=params)
     check_response(response)
     objs = [obj_class.parse_obj(obj) for obj in response.json()]
     return objs
@@ -112,6 +120,55 @@ def api_party_create(c, name):
     with authorized_client() as client:
         party = create_party(client, name)
         debug(party)
+
+
+@task
+def create_random_order(c, max_attempts=10):
+    with authorized_client() as client:
+        parties = get_many(client, 'parties', PartyGet, limit=100)
+        # select a seller
+        attempts = 0
+        while attempts < max_attempts:
+            seller = random.choice(parties)
+            catalogs = get_many(
+                client, 'catalogs', CatalogGet, seller_uid=seller.uid
+            )
+            if not len(catalogs) or not seller.blockchain_account_address:
+                attempts += 1  # party cannot be a seller
+            else:
+                break  # seller found
+        else:
+            debug(f'seller not found after {attempts} attempts, exiting.')
+            return
+        # select a buyer
+        attempts = 0
+        while attempts < max_attempts:
+            buyer = random.choice(parties)
+            if buyer is seller or not buyer.blockchain_account_address:
+                attempts += 1  # party cannot be a buyer
+            else:
+                break  # buyer found
+        else:
+            debug(f'buyer not found after {attempts} attempts, exiting.')
+            return
+        debug(seller)
+        debug(buyer)
+        # buyer selects seller's catalogs to buy items from
+        n_catalogs_to_select = random.randint(1, len(catalogs))
+        selected_catalogs = []
+        attempts = 0
+        while attempts < max_attempts * n_catalogs_to_select:
+            catalog = random.choice(catalogs)
+            if catalog in selected_catalogs:
+                attempts += 1
+            else:
+                selected_catalogs.append(catalog)
+                if len(selected_catalogs) == n_catalogs_to_select:
+                    break  # buyer selected catalogs
+        else:
+            debug(f'failed to select {n_catalogs_to_select} catalogs, exiting.')
+            return
+        debug(selected_catalogs)
 
 
 # noinspection PyTypeChecker

@@ -68,7 +68,8 @@ catalogs = Table(
     Column(
         'seller_id', None,
         ForeignKey('parties.id', ondelete='CASCADE'),
-        nullable=False
+        nullable=False,
+        index=True
     ),
     Column('name', String, index=True, unique=False, nullable=False)
 )

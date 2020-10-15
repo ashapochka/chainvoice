@@ -20,10 +20,16 @@ class CatalogItemService(BaseService):
         return await self._insert(obj_data)
 
     def _select_query(self):
-        return select([
-            catalog_items.c.uid,
-            catalog_items.c.name,
-            catalog_items.c.price,
+        catalogs_items = select([
+            catalog_items.c.uid.label('uid'),
+            catalog_items.c.name.label('name'),
+            catalog_items.c.price.label('price'),
             catalogs.c.uid.label('catalog_uid')
-        ]).select_from(catalog_items.join(catalogs))
-
+        ]).select_from(catalog_items.join(catalogs)).alias('catalogs_items')
+        query = select([
+            catalogs_items.c.uid.label('uid'),
+            catalogs_items.c.name.label('name'),
+            catalogs_items.c.price.label('price'),
+            catalogs_items.c.catalog_uid.label('catalog_uid')
+        ]).select_from(catalogs_items)
+        return query

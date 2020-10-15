@@ -1,16 +1,19 @@
 import random
+import time
+from collections import Counter
 from typing import Dict, Type, List
 
 import httpx
 from devtools import debug
 from httpx import Response
-from invoke import task
+from invoke import task, Exit
 from pydantic import BaseModel
 
 from app.config import get_settings
 from app.schemas import (
     Token, PartyGet, PartyCreate, CatalogCreate, CatalogGet,
-    CatalogItemCreate, CatalogItemGet, UserGet
+    CatalogItemCreate, CatalogItemGet, UserGet, OrderCreate, OrderItemCreate,
+    OrderGet, OrderItemGet
 )
 
 from .fixtures import RootPartiesFixture
@@ -122,6 +125,7 @@ def api_party_create(c, name):
         debug(party)
 
 
+# noinspection PyTypeChecker
 @task
 def create_random_order(c, max_attempts=10):
     with authorized_client() as client:
@@ -138,8 +142,7 @@ def create_random_order(c, max_attempts=10):
             else:
                 break  # seller found
         else:
-            debug(f'seller not found after {attempts} attempts, exiting.')
-            return
+            raise Exit(f'seller not found after {attempts} attempts, exiting.')
         # select a buyer
         attempts = 0
         while attempts < max_attempts:
@@ -149,8 +152,7 @@ def create_random_order(c, max_attempts=10):
             else:
                 break  # buyer found
         else:
-            debug(f'buyer not found after {attempts} attempts, exiting.')
-            return
+            raise Exit(f'buyer not found after {attempts} attempts, exiting.')
         debug(seller)
         debug(buyer)
         # buyer selects seller's catalogs to buy items from
@@ -166,9 +168,38 @@ def create_random_order(c, max_attempts=10):
                 if len(selected_catalogs) == n_catalogs_to_select:
                     break  # buyer selected catalogs
         else:
-            debug(f'failed to select {n_catalogs_to_select} catalogs, exiting.')
-            return
+            raise Exit(
+                f'failed to select {n_catalogs_to_select} catalogs, exiting.'
+            )
         debug(selected_catalogs)
+        selected_items = []
+        for catalog in selected_catalogs:
+            catalog_items = get_many(
+                client, 'catalog-items', CatalogItemGet, catalog_uid=catalog.uid
+            )
+            n_items = random.randint(1, min(5, len(catalog_items)))
+            selected_items.extend(random.choices(catalog_items, k=n_items))
+        debug(selected_items)
+        item_map = {item.uid: item for item in selected_items}
+        item_quantities = dict(Counter(item.uid for item in selected_items))
+        order: OrderGet = create_one(
+            client, 'orders', OrderCreate(
+                seller_uid=seller.uid,
+                customer_uid=buyer.uid,
+                ref_id=f'PO-{int(time.time())}'
+            ), OrderGet
+        )
+        debug(order)
+        for item_uid, item in item_map.items():
+            order_item: OrderItemGet = create_one(
+                client, 'order-items', OrderItemCreate(
+                    order_uid=order.uid,
+                    catalog_item_uid=item_uid,
+                    quantity=item_quantities[item_uid],
+                    base_price=item.price
+                ), OrderItemGet
+            )
+            debug(order_item)
 
 
 # noinspection PyTypeChecker

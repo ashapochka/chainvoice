@@ -18,15 +18,15 @@ class InvoiceService(BaseService):
         return await self._insert(obj_data)
 
     def _select_query(self):
-        query = select([
-            invoices.c.uid,
-            invoices.c.ref_id,
+        from_query = select([
+            invoices.c.uid.label('uid'),
+            invoices.c.ref_id.label('ref_id'),
             orders.c.uid.label('order_uid'),
-            invoices.c.due_date,
-            invoices.c.state
+            invoices.c.due_date.label('due_date'),
+            invoices.c.state.label('state')
         ]).select_from(
             invoices.join(orders)
-        )
-        logger.debug(query)
+        ).alias('from_query')
+        query = select(from_query.c).select_from(from_query)
         return query
 

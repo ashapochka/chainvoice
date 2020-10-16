@@ -18,13 +18,15 @@ class OrderItemService(BaseService):
         return await self._insert(obj_data)
 
     def _select_query(self):
-        return select([
-            order_items.c.uid,
-            order_items.c.quantity,
-            order_items.c.base_price,
+        from_query = select([
+            order_items.c.uid.label('uid'),
+            order_items.c.quantity.label('quantity'),
+            order_items.c.base_price.label('base_price'),
             orders.c.uid.label('order_uid'),
             catalog_items.c.uid.label('catalog_item_uid')
         ]).select_from(
             order_items.join(orders).join(catalog_items)
-        )
+        ).alias('from_query')
+        query = select(from_query.c).select_from(from_query)
+        return query
 

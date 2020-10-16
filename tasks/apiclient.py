@@ -96,9 +96,9 @@ def get_many(
         **kwargs
 ) -> List:
     params = {
-        'offset': offset if offset >= 0 else 0,
-        'limit': limit if limit >= 0 else 0,
-        **kwargs
+        'offset': max(offset, 0),
+        'limit': max(limit, 0),
+        **{k: v for k, v in kwargs.items() if v is not None}
     }
     response = client.get(f'/api/{obj_path}/', params=params)
     check_response(response)
@@ -116,6 +116,13 @@ def api_parties_get(c):
 def api_users_get(c):
     with authorized_client() as client:
         debug(get_many(client, 'users', UserGet))
+
+
+@task
+def api_orders_get(c, ref_id=None, seller_id=None, customer_id=None):
+    filters = dict(ref_id=ref_id, seller_id=seller_id, customer_id=customer_id)
+    with authorized_client() as client:
+        debug(get_many(client, 'orders', OrderGet, **filters))
 
 
 @task

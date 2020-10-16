@@ -26,6 +26,7 @@ class BaseService:
             offset: int, limit: int,
             **kwargs
     ):
+        logger.debug(kwargs)
         query = self._select_query()
         logger.debug(query)
         if len(kwargs):

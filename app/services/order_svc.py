@@ -23,19 +23,19 @@ class OrderService(BaseService):
     def _select_query(self):
         sellers = parties.alias()
         customers = parties.alias()
-        query = select([
-            orders.c.uid,
-            orders.c.ref_id,
+        from_query = select([
+            orders.c.uid.label('uid'),
+            orders.c.ref_id.label('ref_id'),
             sellers.c.uid.label('seller_uid'),
             customers.c.uid.label('customer_uid'),
-            orders.c.created_at
+            orders.c.created_at.label('created_at')
         ]).select_from(
             orders.join(
                 sellers, orders.c.seller_id == sellers.c.id
             ).outerjoin(
                 customers, orders.c.customer_id == customers.c.id
             )
-        )
-        logger.debug(query)
+        ).alias('from_query')
+        query = select(from_query.c).select_from(from_query)
         return query
 

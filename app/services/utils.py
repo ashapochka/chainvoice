@@ -1,3 +1,4 @@
+from decimal import Decimal
 from uuid import uuid4
 from datetime import datetime
 
@@ -35,3 +36,21 @@ def raise_not_found_if_none(obj, what, by, msg=None):
         msg = 'object not found'
     if obj is None:
         raise_not_found(what, by, msg=msg)
+
+
+def raise_forbidden(msg='action forbidden', **kwargs):
+    raise_4xx(
+        status.HTTP_403_FORBIDDEN,
+        detail={
+            'msg': msg,
+            **kwargs
+        }
+    )
+
+
+def money_to_token(money_amount) -> int:
+    return int(round(money_amount * 100))
+
+
+def token_to_money(token_amount: int) -> Decimal:
+    return round(Decimal(token_amount) / 100, ndigits=2)

@@ -1,6 +1,7 @@
 import random
 import time
 from collections import Counter
+from json import JSONDecodeError
 from typing import Dict, Type, List
 
 import httpx
@@ -13,7 +14,7 @@ from app.config import get_settings
 from app.schemas import (
     Token, PartyGet, PartyCreate, CatalogCreate, CatalogGet,
     CatalogItemCreate, CatalogItemGet, UserGet, OrderCreate, OrderItemCreate,
-    OrderGet, OrderItemGet
+    OrderGet, OrderItemGet, InvoiceGet, InvoiceCreate
 )
 
 from .fixtures import RootPartiesFixture
@@ -27,7 +28,10 @@ class LoginFormData(BaseModel):
 
 def check_response(response: Response):
     if response.is_error:
-        debug(response.json())
+        try:
+            debug(response.json())
+        except JSONDecodeError:
+            pass
         response.raise_for_status()
 
 
@@ -130,6 +134,18 @@ def api_party_create(c, name):
     with authorized_client() as client:
         party = create_party(client, name)
         debug(party)
+
+
+# noinspection PyTypeChecker
+@task
+def api_invoice_create(c, order_uid):
+    with authorized_client() as client:
+        invoice: InvoiceGet = create_one(
+            client, 'invoices', InvoiceCreate(
+                order_uid=order_uid,
+            ), InvoiceGet
+        )
+        debug(invoice)
 
 
 # noinspection PyTypeChecker

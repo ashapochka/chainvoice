@@ -64,7 +64,7 @@ class PartyService(BaseService):
                 token_owner = self.get_party_account(qadmin)
 
             def _transfer_tokens():
-                self.token_contract.safe_transfer_from(
+                tx_receipt = self.token_contract.safe_transfer_from(
                     signer=token_owner,
                     from_address=token_owner.address,
                     to_address=obj.blockchain_account_address,
@@ -72,6 +72,7 @@ class PartyService(BaseService):
                     amount=initial_amount,
                     data=b'initial amount transfer'
                 )
+                logger.debug(tx_receipt)
             # when calling from request, execute on the background,
             # else execute as part of the same flow
             if self.background_tasks is not None:

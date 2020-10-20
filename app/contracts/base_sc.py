@@ -15,11 +15,13 @@ class BaseContract:
             abi=contract_abi
         )
 
-    def send_tx(self, contract_call, signer: LocalAccount) -> TxReceipt:
+    def send_tx(
+            self, contract_call, signer: LocalAccount
+    ) -> TxReceipt:
         nonce = self.w3.eth.getTransactionCount(signer.address)
         txn = contract_call.buildTransaction({
             'nonce': nonce,
-            'gas': 100000
+            'gas': 1000000,  # TODO: make gas configurable
         })
         signed_txn = self.w3.eth.account.sign_transaction(
             txn, private_key=signer.key

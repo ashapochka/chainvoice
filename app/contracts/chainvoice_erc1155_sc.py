@@ -6,9 +6,9 @@ from .base_sc import BaseContract
 class ERC1155Contract(BaseContract):
     def safe_transfer_from(
             self, signer: LocalAccount,
-            from_address: str, to_address:str,
+            from_address: str, to_address: str,
             token_id: int, amount: int,
-            data: bytes
+            data: str
     ) -> TxReceipt:
         contract_call = self.contract.functions.safeTransferFrom(
             from_address, to_address, token_id, amount, data

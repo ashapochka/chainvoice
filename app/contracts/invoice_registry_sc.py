@@ -7,12 +7,12 @@ class InvoiceRegistryContract(BaseContract):
 
     def register_invoice(
             self, seller_account: LocalAccount,
-            invoice_id: bytes, buyer_address:str,
+            invoice_id: str, buyer_address: str,
             token_id: int, amount: int
     ) -> TxReceipt:
         """
         registerInvoice(
-            bytes memory invoiceId,
+            uint256 invoiceId,
             address buyer,
             uint256 tokenId,
             uint256 amount
@@ -30,10 +30,10 @@ class InvoiceRegistryContract(BaseContract):
         return self.send_tx(contract_call, seller_account)
 
     def publish_invoice(
-            self, seller_account: LocalAccount, invoice_id: bytes
+            self, seller_account: LocalAccount, invoice_id: str
     ) -> TxReceipt:
         """
-        publishInvoice(bytes memory invoiceId)
+        publishInvoice(uint256 invoiceId)
         :param seller_account:
         :param invoice_id:
         :return:
@@ -44,10 +44,10 @@ class InvoiceRegistryContract(BaseContract):
         return self.send_tx(contract_call, seller_account)
 
     def cancel_invoice(
-            self, seller_account: LocalAccount, invoice_id: bytes
+            self, seller_account: LocalAccount, invoice_id: str
     ) -> TxReceipt:
         """
-        cancelInvoice(bytes memory invoiceId)
+        cancelInvoice(uint256 invoiceId)
         :param seller_account:
         :param invoice_id:
         :return:
@@ -57,9 +57,9 @@ class InvoiceRegistryContract(BaseContract):
         )
         return self.send_tx(contract_call, seller_account)
 
-    def get_invoice(self, invoice_id: bytes):
+    def get_invoice(self, invoice_id: str):
         """
-        mapping(bytes => Invoice) public invoices;
+        mapping(uint256 => Invoice) public invoices;
         :param invoice_id:
         :return:
         """

@@ -30,25 +30,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
     address immutable public tokenContract;
     mapping(bytes => Invoice) public invoices;
 
-    event InvoiceRegistered(
-        bytes invoiceId,
-        address seller,
-        address buyer,
-        uint256 tokenId,
-        uint256 amount,
-        InvoiceState state
-    );
-
-    event InvoicePublished(
-        bytes invoiceId,
-        address seller,
-        address buyer,
-        uint256 tokenId,
-        uint256 amount,
-        InvoiceState state
-    );
-
-    event InvoiceCanceled(
+    event InvoiceStateChanged(
         bytes invoiceId,
         address seller,
         address buyer,
@@ -66,7 +48,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         uint256 tokenId,
         uint256 amount,
         uint256 paidAmount,
-        uint256 value,
+        uint256 paymentValue,
         InvoiceState state
     );
 
@@ -87,6 +69,17 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
             return 0;
         }
     }
+
+//    function onERC1155Received(
+//        address operator,
+//        address from,
+//        uint256 id,
+//        uint256 value,
+//        bytes memory data
+//    ) public virtual override returns (bytes4) {
+//        payInvoice(data, operator, from, id, value);
+//        return this.onERC1155Received.selector;
+//    }
 
     function payInvoice(
         bytes memory invoiceId,
@@ -122,12 +115,12 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
             IERC1155 erc1155 = IERC1155(tokenContract);
             erc1155.safeTransferFrom(
                 address(this), invoice.seller,
-                invoice.tokenId, value, invoice.invoiceId
+                invoice.tokenId, value, abi.encode(invoice.invoiceId)
             );
         }
         emit InvoicePaid(
-            invoiceId, operator, from, invoice.seller, tokenId,
-            invoice.amount, paidAmount, value, invoice.state
+            invoiceId, operator, from, invoice.seller, invoice.tokenId,
+            invoice.amount, invoice.paidAmount, value, invoice.state
         );
         return true;
     }
@@ -137,7 +130,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         address buyer,
         uint256 tokenId,
         uint256 amount
-    ) public returns (bool){
+    ) public {
         Invoice storage invoice = invoices[invoiceId];
         require(!invoice.isRegistered, "Invoice already registered");
         invoice.isRegistered = true;
@@ -148,10 +141,42 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
         invoice.amount = amount;
         invoice.paidAmount = 0;
         invoice.state = InvoiceState.DRAFT;
-        emit InvoiceRegistered(
-            invoiceId, invoice.seller, buyer, tokenId, amount, invoice.state
+        emit InvoiceStateChanged(
+            invoice.invoiceId,
+            invoice.seller,
+            invoice.buyer,
+            invoice.tokenId,
+            invoice.amount,
+            invoice.paidAmount,
+            invoice.state
         );
-        return true;
+    }
+
+    function registerInvoice1(
+        bytes memory invoiceId,
+        address buyer,
+        uint256 tokenId,
+        uint256 amount
+    ) public {
+        Invoice storage invoice = invoices[invoiceId];
+        require(!invoice.isRegistered, "Invoice already registered");
+        invoice.isRegistered = true;
+        invoice.invoiceId = invoiceId;
+        invoice.seller = msg.sender;
+        invoice.buyer = buyer;
+        invoice.tokenId = tokenId;
+        invoice.amount = amount;
+        invoice.paidAmount = 0;
+        invoice.state = InvoiceState.DRAFT;
+        emit InvoiceStateChanged(
+            invoice.invoiceId,
+            invoice.seller,
+            invoice.buyer,
+            invoice.tokenId,
+            invoice.amount,
+            invoice.paidAmount,
+            invoice.state
+        );
     }
 
     function publishInvoice(bytes memory invoiceId) public {
@@ -166,12 +191,13 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
             "Invoice is not in DRAFT mode"
         );
         invoice.state = InvoiceState.UNPAID;
-        emit InvoicePublished(
+        emit InvoiceStateChanged(
             invoice.invoiceId,
             invoice.seller,
             invoice.buyer,
             invoice.tokenId,
             invoice.amount,
+            invoice.paidAmount,
             invoice.state
         );
     }
@@ -184,7 +210,7 @@ contract InvoiceRegistry is ERC1155Holder, Ownable, AccessControl {
             "Invoice canceller is different from seller"
         );
         invoice.state = InvoiceState.CANCELED;
-        emit InvoiceCanceled(
+        emit InvoiceStateChanged(
             invoice.invoiceId,
             invoice.seller,
             invoice.buyer,

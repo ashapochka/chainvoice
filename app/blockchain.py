@@ -1,5 +1,6 @@
 from typing import Type, Union
 
+from loguru import logger
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 import json
@@ -14,6 +15,23 @@ from app.schemas import (
 )
 
 
+def debug_middleware(make_request, w3):
+    # do one-time setup operations here
+
+    def middleware(method, params):
+        # do pre-processing here
+        logger.debug(method)
+        logger.debug(params)
+        # perform the RPC request, getting the response
+        response = make_request(method, params)
+        logger.debug(response)
+        # do post-processing here
+
+        # finally return the response
+        return response
+    return middleware
+
+
 class BlockchainClient:
     w3: Web3
     erc1155_contract: ERC1155Contract
@@ -25,6 +43,7 @@ class BlockchainClient:
         qnode_key = s.qnode_key
         self.w3 = Web3(Web3.HTTPProvider(f'{qnode_url}/{qnode_key}'))
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        # self.w3.middleware_onion.inject(debug_middleware, layer=0)
 
     async def init_contracts(self, db: Database, qadmin_party: PartyGet):
         s = get_settings()
@@ -41,6 +60,7 @@ class BlockchainClient:
             qadmin_party
         )
 
+    # noinspection PyTypeChecker
     async def init_contract(
             self, db: Database,
             contract_name: str,
@@ -80,3 +100,7 @@ blockchain_client = BlockchainClient()
 
 def get_erc1155_contract() -> ERC1155Contract:
     return blockchain_client.erc1155_contract
+
+
+def get_invoice_registry_contract() -> InvoiceRegistryContract:
+    return blockchain_client.invoice_registry_contract

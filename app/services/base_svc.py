@@ -1,5 +1,5 @@
 from typing import Any
-from uuid import UUID
+# from uuid import UUID
 
 from databases import Database
 from fastapi.encoders import jsonable_encoder
@@ -53,7 +53,7 @@ class BaseService:
         return await self.get_one_where(user, self.table.c.id == obj_id)
 
     async def get_one_by_uid(
-            self, user: UserInDb, uid: UUID,
+            self, user: UserInDb, uid,
             raise_not_found: bool = False,
             what=None,
             msg=None
@@ -77,7 +77,8 @@ class BaseService:
         return jsonable_encoder(obj, exclude_unset=True)
 
     async def _insert(self, obj_data):
-        obj_data['uid'] = new_uid()
+        if 'uid' not in obj_data:
+            obj_data['uid'] = new_uid()
         query = self.table.insert().values(**obj_data)
         async with self.db.transaction():
             return dict(id=await self.db.execute(query), obj=obj_data)
@@ -98,7 +99,7 @@ class BaseService:
         )
 
     async def update_by_uid(
-            self, user: UserInDb, uid: UUID, obj: BaseModel
+            self, user: UserInDb, uid, obj: BaseModel
     ):
         return await self.update_where(
             user, self.table.c.uid == str(uid), obj
@@ -112,10 +113,10 @@ class BaseService:
     async def delete(self, user: UserInDb, obj_id: Any):
         return await self.delete_where(user, self.table.c.id == obj_id)
 
-    async def delete_by_uid(self, user: UserInDb, uid: UUID):
+    async def delete_by_uid(self, user: UserInDb, uid):
         return await self.delete_where(user, self.table.c.uid == str(uid))
 
-    async def get_id_by_uid(self, table: Table, uid: UUID):
+    async def get_id_by_uid(self, table: Table, uid):
         query = select([table.c.id]).where(table.c.uid == str(uid))
         return await self.db.fetch_val(query, column=0)
 

@@ -47,6 +47,24 @@ class InvoiceAPI(BaseAPI):
     ) -> InvoiceGet:
         return await self._update_one(obj, uid)
 
+    @router.post("/{uid}/publish")
+    async def publish_one(
+            self, uid: UUID
+    ) -> APIMessage:
+        await self.service.publish(self.user, uid)
+        return APIMessage(
+            detail=f"Invoice with uid: {uid} published!"
+        )
+
+    @router.post("/{uid}/cancel")
+    async def cancel_one(
+            self, uid: UUID
+    ) -> APIMessage:
+        await self.service.cancel(self.user, uid)
+        return APIMessage(
+            detail=f"Invoice with uid: {uid} cancelled!"
+        )
+
     @router.delete("/{uid}/")
     async def delete_one(
             self, uid: UUID

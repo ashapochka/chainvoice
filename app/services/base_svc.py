@@ -1,8 +1,6 @@
 from typing import Any
-# from uuid import UUID
 
 from databases import Database
-from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy import (Table, and_)
 from sqlalchemy.sql import select
@@ -74,7 +72,7 @@ class BaseService:
 
     @staticmethod
     def _to_dict(obj):
-        return jsonable_encoder(obj, exclude_unset=True)
+        return obj.dict(exclude_unset=True)
 
     async def _insert(self, obj_data):
         if 'uid' not in obj_data:

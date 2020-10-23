@@ -1,4 +1,5 @@
 from eth_account.signers.local import LocalAccount
+from web3 import Web3
 from web3.types import TxReceipt
 from .base_sc import BaseContract
 
@@ -24,6 +25,7 @@ class InvoiceRegistryContract(BaseContract):
         :param amount:
         :return:
         """
+        invoice_id = Web3.toBytes(hexstr=invoice_id)
         contract_call = self.contract.functions.registerInvoice(
             invoice_id, buyer_address, token_id, amount
         )
@@ -38,6 +40,7 @@ class InvoiceRegistryContract(BaseContract):
         :param invoice_id:
         :return:
         """
+        invoice_id = Web3.toBytes(hexstr=invoice_id)
         contract_call = self.contract.functions.publishInvoice(
             invoice_id
         )
@@ -52,6 +55,7 @@ class InvoiceRegistryContract(BaseContract):
         :param invoice_id:
         :return:
         """
+        invoice_id = Web3.toBytes(hexstr=invoice_id)
         contract_call = self.contract.functions.cancelInvoice(
             invoice_id
         )
@@ -63,4 +67,5 @@ class InvoiceRegistryContract(BaseContract):
         :param invoice_id:
         :return:
         """
+        invoice_id = Web3.toBytes(hexstr=invoice_id)
         return self.contract.functions.invoices(invoice_id).call()

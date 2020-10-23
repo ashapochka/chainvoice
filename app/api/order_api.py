@@ -8,7 +8,7 @@ from fastapi_utils.api_model import APIMessage
 
 from ..services import OrderService
 from ..schemas import (
-    OrderCreate, OrderUpdate, OrderGet,
+    OrderCreate, OrderUpdate, OrderGet, OrderAmount,
 )
 from .base_api import BaseAPI
 
@@ -40,6 +40,16 @@ class OrderAPI(BaseAPI):
             self, uid: UUID
     ) -> OrderGet:
         return await self._get_one(uid)
+
+    @router.get("/{uid}/total-amount/")
+    async def get_total_amount(
+            self, uid: UUID
+    ) -> OrderAmount:
+        amount = await self.service.get_total_amount(self.user, uid)
+        return OrderAmount(
+            uid=str(uid),
+            amount=amount
+        )
 
     @router.post("/")
     async def create_one(

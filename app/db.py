@@ -166,7 +166,7 @@ payments = Table(
     ),
     Column('amount', Numeric(precision=10, scale=2), nullable=False),
     Column('paid_at', TIMESTAMP(timezone=True), index=True, nullable=False),
-    Column('blockchain_tx_address', String, index=True, nullable=True)
+    Column('blockchain_tx_hash', String, index=True, nullable=True)
 )
 
 
@@ -175,8 +175,8 @@ class DbClient:
     database: Database = None
     engine = None
 
-    def __init__(self, metadata):
-        self.metadata = metadata
+    def __init__(self, _metadata):
+        self.metadata = _metadata
         self.engine = create_engine(
             get_settings().database_url,
             poolclass=pool.NullPool

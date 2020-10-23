@@ -48,6 +48,12 @@ def raise_forbidden(msg='action forbidden', **kwargs):
     )
 
 
+def to_money(amount) -> Decimal:
+    if not isinstance(amount, Decimal):
+        amount = Decimal(amount)
+    return round(amount, ndigits=2)
+
+
 def money_to_token(money_amount) -> int:
     return int(round(money_amount * 100))
 

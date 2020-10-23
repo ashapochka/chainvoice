@@ -35,7 +35,7 @@ class PartyTokenBalance(PartyGet, TokenAmount):
 class PartyTokenTransfer(TokenAmount):
     token_amount: conint(gt=0)
     to_uid: UID
-    data: bytes
+    data: str
 
 
 class PartyTokenTransferReceipt(PartyTokenTransfer):
@@ -43,3 +43,4 @@ class PartyTokenTransferReceipt(PartyTokenTransfer):
     from_address: str
     to_address: str
     txn_hash: str
+    txn_status: int

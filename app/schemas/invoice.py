@@ -30,3 +30,14 @@ class InvoiceUpdate(InvoiceBase):
 
 class InvoiceGet(InvoiceBase, UIDSchema):
     pass
+
+
+class InvoiceBlockchainGet(UIDSchema):
+    isRegistered: bool
+    invoiceId_base64: str
+    seller: str
+    buyer: str
+    tokenId: int
+    amount: int
+    paidAmount: int
+    state: str

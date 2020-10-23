@@ -70,7 +70,7 @@ class PartyService(BaseService):
                     to_address=obj.blockchain_account_address,
                     token_id=token_id,
                     amount=initial_amount,
-                    data=b'initial amount transfer'
+                    data='initial amount transfer'
                 )
                 logger.debug(tx_receipt)
             # when calling from request, execute on the background,
@@ -90,10 +90,28 @@ class PartyService(BaseService):
 
     @staticmethod
     def get_party_account(party_record) -> LocalAccount:
+        # TODO: check address exists
+        # TODO: check key exists
         account_address = PartyService.get_party_address(party_record)
         account_key = secret_service.get_secret_value(account_address)
         account = Account.from_key(account_key)
         return account
+
+    async def get_account_by_uid(
+            self, user, uid, raise_not_found_: bool = False
+    ) -> LocalAccount:
+        record = await self.get_one_by_uid(
+            user, uid, raise_not_found=raise_not_found_
+        )
+        return PartyService.get_party_account(record)
+
+    async def get_address_by_uid(
+            self, user, uid, raise_not_found_: bool = False
+    ) -> str:
+        record = await self.get_one_by_uid(
+            user, uid, raise_not_found=raise_not_found_
+        )
+        return PartyService.get_party_address(record)
 
     @staticmethod
     def save_blockchain_account(account: LocalAccount):
@@ -161,7 +179,8 @@ class PartyService(BaseService):
         txn_input = self.token_contract.decode_tx_input(txn_hash)
         logger.debug(f'txn input: {txn_input}')
         return PartyTokenTransferReceipt(
-            **obj.dict(), txn_hash=txn_hash,
+            **obj.dict(),
+            txn_hash=txn_hash, txn_status=txn_receipt['status'],
             from_uid=UID(uid), from_address=from_account.address,
             to_address=to_address
         )

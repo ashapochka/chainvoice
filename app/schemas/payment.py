@@ -11,7 +11,7 @@ class PaymentBase(BaseSchema):
     amount: Optional[condecimal(
         max_digits=10, decimal_places=2, ge=Decimal(0.0)
     )] = None
-    blockchain_tx_address: Optional[str] = None
+    blockchain_tx_hash: Optional[str] = None
 
 
 class PaymentCreate(PaymentBase):

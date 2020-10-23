@@ -7,12 +7,14 @@ from uuid import uuid4
 
 from devtools import debug
 from eth_account import Account
+from sqlalchemy import select
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 from invoke import task
 from loguru import logger
 
 from app.config import get_settings
+from app.db import db_client, parties, invoices, orders
 from app.main import startup
 from app.blockchain import blockchain_client
 from .utils import run_command
@@ -228,3 +230,26 @@ def try_kv(c):
     print(secret.name)
     print(secret.value)
     print(secret.properties.version)
+
+
+@task
+def test_query(c):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(_test_query())
+
+
+async def _test_query():
+    await db_client.connect()
+    db = db_client.database
+    customers = parties.alias('customers')
+    query = select([
+        customers.c.uid  # .label('customer_uid')
+    ]).select_from(
+        invoices.join(orders).join(
+            customers, orders.c.customer_id == customers.c.id
+        )
+    ).where(invoices.c.uid == "a731739e-efe6-4f4a-b955-2b9c57160192")
+    debug(str(query))
+    result = await db.fetch_one(query)
+    debug(result)

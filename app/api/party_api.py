@@ -26,9 +26,10 @@ class PartyAPI(BaseAPI):
 
     @router.get('/')
     async def get_many(
-            self, offset: int = 0, limit: int = 20
+            self, offset: int = 0, limit: int = 20,
+            name: str = None
     ) -> List[PartyGet]:
-        return await self._get_many(limit, offset)
+        return await self._get_many(limit, offset, name=name)
 
     @router.get("/{uid}/")
     async def get_one(
@@ -36,7 +37,7 @@ class PartyAPI(BaseAPI):
     ) -> PartyGet:
         return await self._get_one(uid)
 
-    @router.get("/{uid}/token-balance/{token_id}")
+    @router.get("/{uid}/token-balance/{token_id}/")
     async def get_token_balance(
             self, uid: UUID, token_id: int = Path(0)
     ) -> PartyTokenBalance:

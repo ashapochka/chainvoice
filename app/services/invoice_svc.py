@@ -1,3 +1,4 @@
+import base64
 import time
 from datetime import date, timedelta
 from uuid import uuid4, UUID
@@ -17,7 +18,8 @@ from ..blockchain import get_invoice_registry_contract
 from ..contracts import InvoiceRegistryContract
 from ..contracts.utils import check_tx_success, uuid_to_hex
 from ..db import (invoices, orders, get_db)
-from ..schemas import (InvoiceCreate, UserInDb, InvoiceUpdate, InvoiceState)
+from ..schemas import (InvoiceCreate, UserInDb, InvoiceUpdate, InvoiceState,
+                       InvoiceBlockchainGet)
 from .base_svc import BaseService
 
 
@@ -64,21 +66,16 @@ class InvoiceService(BaseService):
             )
         await self._uid_to_fk(obj_data, orders, 'order')
         order = await self._get_order(user, obj.order_uid)
-        seller_account = await self._get_seller_account(
-            user, order['seller_uid']
+        seller_account = await self.party_service.get_account_by_uid(
+            user, order['seller_uid'], raise_not_found_=True
         )
-        buyer = await self.party_service.get_one_by_uid(
-            user, order['customer_uid'], raise_not_found=True
+        buyer_address = await self.party_service.get_address_by_uid(
+            user, order['customer_uid'], raise_not_found_=True
         )
-        buyer_address = buyer['blockchain_account_address']
         # TODO: check address exists
-        order_items = await self.order_item_service.get_many(
-            user, 0, 1000, order_uid=str(obj.order_uid)
-        )
-        # TODO: what if there are more than 1000 items?
         # TODO: do we allow invoice for the order with 0 items?
-        total_amount = sum(
-            item['base_price'] * item['quantity'] for item in order_items
+        total_amount = await self.order_item_service.get_order_amount(
+            user, obj.order_uid
         )
         blockchain_invoice_id = uuid_to_hex(invoice_uid)
         tx_receipt = self.invoice_registry_contract.register_invoice(
@@ -118,17 +115,6 @@ class InvoiceService(BaseService):
         )
         return order
 
-    async def _get_seller_account(self, user, seller_uid):
-        seller = await self.party_service.get_one_by_uid(
-            user, seller_uid, raise_not_found=True
-        )
-        seller_address = seller['blockchain_account_address']
-        # TODO: check address exists
-        seller_key = secret_service.get_secret_value(seller_address)
-        # TODO: check key exists
-        seller_account = Account.from_key(seller_key)
-        return seller_account
-
     def _select_query(self):
         from_query = select([
             invoices.c.uid.label('uid'),
@@ -147,8 +133,8 @@ class InvoiceService(BaseService):
     ):
         invoice = await self.get_one_by_uid(user, uid, raise_not_found=True)
         order = await self._get_order(user, invoice['order_uid'])
-        seller_account = await self._get_seller_account(
-            user, order['seller_uid']
+        seller_account = await self.party_service.get_account_by_uid(
+            user, order['seller_uid'], raise_not_found_=True
         )
         blockchain_uid = uuid_to_hex(uid)
         if new_state == InvoiceState.unpaid:
@@ -171,3 +157,35 @@ class InvoiceService(BaseService):
 
     async def cancel(self, user: UserInDb, uid: UUID):
         await self._change_state(user, uid, InvoiceState.canceled)
+
+    def get_blockchain_state(
+            self, user: UserInDb, invoice_uid: UUID
+    ) -> InvoiceBlockchainGet:
+        blockchain_invoice_id = uuid_to_hex(invoice_uid)
+        blockchain_state = self.invoice_registry_contract.get_invoice(
+            blockchain_invoice_id
+        )
+        blockchain_state[1] = base64.b64encode(
+            blockchain_state[1]
+        ).decode('ascii')
+        invoice = InvoiceBlockchainGet.parse_obj({
+            'uid': str(invoice_uid),
+            **dict(
+                zip(list(InvoiceBlockchainGet.__fields__)[1:], blockchain_state)
+            )
+        })
+        return invoice
+
+    async def sync_state_from_blockchain(self, user: UserInDb, uid: UUID):
+        blockchain_state = self.get_blockchain_state(user, uid)
+        new_state = {
+            '0': InvoiceState.draft,
+            '1': InvoiceState.unpaid,
+            '2': InvoiceState.paid,
+            '3': InvoiceState.canceled
+        }[blockchain_state.state]
+        return await self.update_by_uid(user, uid, InvoiceUpdate(
+            state=new_state
+        ))
+
+

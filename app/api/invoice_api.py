@@ -8,7 +8,7 @@ from fastapi_utils.api_model import APIMessage
 
 from ..services import InvoiceService
 from ..schemas import (
-    InvoiceCreate, InvoiceUpdate, InvoiceGet,
+    InvoiceCreate, InvoiceUpdate, InvoiceGet, InvoiceBlockchainGet,
 )
 from .base_api import BaseAPI
 
@@ -35,6 +35,12 @@ class InvoiceAPI(BaseAPI):
     ) -> InvoiceGet:
         return await self._get_one(uid)
 
+    @router.get("/{uid}/blockchain-state/")
+    async def get_blockchain_state(
+            self, uid: UUID
+    ) -> InvoiceBlockchainGet:
+        return self.service.get_blockchain_state(self.user, uid)
+
     @router.post("/")
     async def create_one(
             self, obj: InvoiceCreate
@@ -47,7 +53,7 @@ class InvoiceAPI(BaseAPI):
     ) -> InvoiceGet:
         return await self._update_one(obj, uid)
 
-    @router.post("/{uid}/publish")
+    @router.post("/{uid}/publish/")
     async def publish_one(
             self, uid: UUID
     ) -> APIMessage:
@@ -56,7 +62,7 @@ class InvoiceAPI(BaseAPI):
             detail=f"Invoice with uid: {uid} published!"
         )
 
-    @router.post("/{uid}/cancel")
+    @router.post("/{uid}/cancel/")
     async def cancel_one(
             self, uid: UUID
     ) -> APIMessage:

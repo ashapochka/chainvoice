@@ -182,7 +182,8 @@ class DbClient:
             poolclass=pool.NullPool
         )
         self.database = Database(
-            get_settings().database_url, min_size=1, max_size=1
+            get_settings().database_url,
+            min_size=1, max_size=1, ssl=True
         )
 
     def create_schema(self):

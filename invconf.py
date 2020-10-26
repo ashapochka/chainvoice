@@ -44,7 +44,7 @@ db = {
     'sku': 'B_Gen5_1',
     'server_name': f'{tenant_prefix}-{app_name}',
     'db_name': f'{app_name}',
-    'admin_username': f'{app_name}_admin' # don't use 'admin' it's reserved
+    'admin_username': f'{app_name}_admin'  # don't use 'admin' it's reserved
 }
 
 # blockchain service

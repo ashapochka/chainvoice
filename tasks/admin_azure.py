@@ -144,7 +144,16 @@ def chainvoice_settings_set(c):
         'su_username',
         'su_password',
         'su_email',
-        'su_name'
+        'su_name',
+        'key_vault_url',
+        'qnode_url',
+        'qnode_key',
+        'qadmin_name',
+        'qadmin_address',
+        'qadmin_private_key',
+        'compiled_contracts_path',
+        'erc1155_contract_address',
+        'invoice_registry_contract_address'
     ]
     var_values = ' '.join(f'chainvoice_{name}="{settings[name]}"'
                           for name in included_vars)

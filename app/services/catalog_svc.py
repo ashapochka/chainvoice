@@ -15,10 +15,10 @@ class CatalogService(BaseService):
     ):
         super().__init__(catalogs, db)
 
-    async def create(self, user: UserInDb, obj: CatalogCreate):
+    async def create(self, user: UserInDb, obj: CatalogCreate, tx: bool = True):
         obj_data = self._to_dict(obj)
         await self._uid_to_fk(obj_data, parties, 'seller')
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     def _select_query(self):
         party_catalogs = select([
@@ -32,4 +32,3 @@ class CatalogService(BaseService):
             party_catalogs.c.seller_uid.label('seller_uid')
         ]).select_from(party_catalogs)
         return query
-

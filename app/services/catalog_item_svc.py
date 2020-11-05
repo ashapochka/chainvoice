@@ -14,10 +14,12 @@ class CatalogItemService(BaseService):
     ):
         super().__init__(catalog_items, db)
 
-    async def create(self, user: UserInDb, obj: CatalogItemCreate):
+    async def create(
+            self, user: UserInDb, obj: CatalogItemCreate, tx: bool = True
+    ):
         obj_data = self._to_dict(obj)
         await self._uid_to_fk(obj_data, catalogs, 'catalog')
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     def _select_query(self):
         catalogs_items = select([

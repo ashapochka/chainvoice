@@ -15,11 +15,11 @@ class BlockchainContractService(BaseService):
         super().__init__(blockchain_contracts, db)
 
     async def create(
-            self, user: UserInDb, obj: BlockchainContractCreate
+            self, user: UserInDb, obj: BlockchainContractCreate, tx: bool = True
     ):
         obj_data = self._to_dict(obj)
         await self._uid_to_fk(obj_data, parties, 'owner')
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     def _select_query(self):
         return select([
@@ -30,4 +30,3 @@ class BlockchainContractService(BaseService):
             blockchain_contracts.c.contract_abi,
             parties.c.uid.label('owner_uid')
         ]).select_from(blockchain_contracts.join(parties))
-

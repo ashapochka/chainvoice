@@ -6,7 +6,7 @@ from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.api_model import APIMessage
 
-from ..services import OrderService
+from ..services import OrderService, RandomOrderService
 from ..schemas import (
     OrderCreate, OrderUpdate, OrderGet, OrderAmount,
 )
@@ -19,6 +19,7 @@ router = InferringRouter()
 @cbv(router)
 class OrderAPI(BaseAPI):
     service: OrderService = Depends()
+    random_order_service: RandomOrderService = Depends()
 
     @router.get('/')
     async def get_many(
@@ -66,6 +67,11 @@ class OrderAPI(BaseAPI):
             self, obj: OrderCreate
     ) -> OrderGet:
         return await self._create_one(obj)
+
+    @router.post("/random/")
+    async def create_random(self) -> OrderGet:
+        result = await self.random_order_service.create(self.user)
+        return result['obj']
 
     @router.put("/{uid}/")
     async def update_one(

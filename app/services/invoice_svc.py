@@ -42,7 +42,7 @@ class InvoiceService(BaseService):
 
     async def create(
             self, user: UserInDb, obj: InvoiceCreate,
-            token_id: int = 0,
+            token_id: int = 0, tx: bool = True
     ):
         await self._check_for_active_invoices(user, obj.order_uid)
         obj_data = obj.dict(exclude_unset=True)
@@ -86,7 +86,7 @@ class InvoiceService(BaseService):
             amount=money_to_token(total_amount)
         )
         self._check_invoice_tx(blockchain_invoice_id, tx_receipt)
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     def _check_invoice_tx(self, blockchain_invoice_id, tx_receipt):
         logger.debug(tx_receipt)
@@ -129,7 +129,8 @@ class InvoiceService(BaseService):
         return query
 
     async def _change_state(
-            self, user: UserInDb, uid: UUID, new_state: InvoiceState
+            self, user: UserInDb, uid: UUID, new_state: InvoiceState,
+            tx: bool = True
     ):
         invoice = await self.get_one_by_uid(user, uid, raise_not_found=True)
         order = await self._get_order(user, invoice['order_uid'])
@@ -149,14 +150,14 @@ class InvoiceService(BaseService):
             raise ValueError(f"Change of state to {new_state} not supported")
         self._check_invoice_tx(blockchain_uid, tx_receipt)
         await self.update_by_uid(
-            user, uid, InvoiceUpdate(state=new_state)
+            user, uid, InvoiceUpdate(state=new_state), tx=tx
         )
 
-    async def publish(self, user: UserInDb, uid: UUID):
-        await self._change_state(user, uid, InvoiceState.unpaid)
+    async def publish(self, user: UserInDb, uid: UUID, tx: bool = True):
+        await self._change_state(user, uid, InvoiceState.unpaid, tx=tx)
 
-    async def cancel(self, user: UserInDb, uid: UUID):
-        await self._change_state(user, uid, InvoiceState.canceled)
+    async def cancel(self, user: UserInDb, uid: UUID, tx: bool = True):
+        await self._change_state(user, uid, InvoiceState.canceled, tx=tx)
 
     def get_blockchain_state(
             self, user: UserInDb, invoice_uid: UUID
@@ -176,7 +177,9 @@ class InvoiceService(BaseService):
         })
         return invoice
 
-    async def sync_state_from_blockchain(self, user: UserInDb, uid: UUID):
+    async def sync_state_from_blockchain(
+            self, user: UserInDb, uid: UUID, tx: bool = True
+    ):
         blockchain_state = self.get_blockchain_state(user, uid)
         new_state = {
             '0': InvoiceState.draft,
@@ -185,7 +188,5 @@ class InvoiceService(BaseService):
             '3': InvoiceState.canceled
         }[blockchain_state.state]
         return await self.update_by_uid(user, uid, InvoiceUpdate(
-            state=new_state
+            state=new_state, tx=tx
         ))
-
-

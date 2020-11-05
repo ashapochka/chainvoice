@@ -24,17 +24,17 @@ class UserService(BaseService):
         else:
             return UserInDb(**user_record)
 
-    async def create(self, user: UserInDb, obj: UserCreate):
+    async def create(self, user: UserInDb, obj: UserCreate, tx: bool = True):
         obj_data = self._to_dict(obj)
         obj_data['hashed_password'] = get_password_hash(
             obj.password.get_secret_value()
         )
         del obj_data['password']
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     async def update_where(
             self, user: UserInDb,
-            where: Any, obj: UserUpdate
+            where: Any, obj: UserUpdate, tx: bool = True
     ):
         obj_data = self._to_dict(obj)
         if 'password' in obj_data:
@@ -43,8 +43,11 @@ class UserService(BaseService):
             )
             del obj_data['password']
         query = self.table.update().where(where).values(**obj_data)
-        async with self.db.transaction():
-            return await self.db.execute(query)
+        return await self._execute_in_tx(
+            tx, lambda: self.db.execute(query)
+        )
+        # async with self.db.transaction():
+        #     return await self.db.execute(query)
 
     async def authenticate(
             self, user: UserInDb, username: str, password: str
@@ -70,5 +73,4 @@ class UserService(BaseService):
                     name=settings.su_name,
                     is_active=True,
                     is_superuser=True
-                ))
-
+                ), tx=False)

@@ -14,11 +14,13 @@ class OrderItemService(BaseService):
     def __init__(self, db: Database = Depends(get_db)):
         super().__init__(order_items, db)
 
-    async def create(self, user: UserInDb, obj: OrderItemCreate):
+    async def create(
+            self, user: UserInDb, obj: OrderItemCreate, tx: bool = True
+    ):
         obj_data = self._to_dict(obj)
         await self._uid_to_fk(obj_data, orders, 'order')
         await self._uid_to_fk(obj_data, catalog_items, 'catalog_item')
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     async def get_order_amount(
             self, user: UserInDb, order_uid, offset: int = 0, limit: int = 1000
@@ -43,4 +45,3 @@ class OrderItemService(BaseService):
         ).alias('from_query')
         query = select(from_query.c).select_from(from_query)
         return query
-

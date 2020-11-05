@@ -66,53 +66,74 @@ class BaseService:
     async def get_one_by_name(self, user: UserInDb, name: str):
         return await self.get_one_where(user, self.table.c.name == str(name))
 
-    async def create(self, user: UserInDb, obj: BaseModel):
+    async def create(self, user: UserInDb, obj: BaseModel, tx: bool = True):
         obj_data = self._to_dict(obj)
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     @staticmethod
     def _to_dict(obj):
         return obj.dict(exclude_unset=True)
 
-    async def _insert(self, obj_data):
+    async def _execute_in_tx(self, tx, func):
+        if tx:
+            async with self.db.transaction():
+                return await func()
+        else:
+            return await func()
+
+    async def _insert(self, obj_data, tx: bool = True):
         if 'uid' not in obj_data:
             obj_data['uid'] = new_uid()
         query = self.table.insert().values(**obj_data)
-        async with self.db.transaction():
+
+        async def f():
             return dict(id=await self.db.execute(query), obj=obj_data)
+        return await self._execute_in_tx(tx, f)
+        # async with self.db.transaction():
+        #     return dict(id=await self.db.execute(query), obj=obj_data)
 
     async def update_where(
-            self, user: UserInDb, where: Any, obj: BaseModel
+            self, user: UserInDb, where: Any, obj: BaseModel, tx: bool = True
     ):
         obj_data = self._to_dict(obj)
         query = self.table.update().where(where).values(**obj_data)
-        async with self.db.transaction():
+
+        async def f():
             return await self.db.execute(query)
+        return await self._execute_in_tx(tx, f)
+        # async with self.db.transaction():
+        #     return await self.db.execute(query)
 
     async def update(
-            self, user: UserInDb, obj_id: Any, obj: BaseModel
+            self, user: UserInDb, obj_id: Any, obj: BaseModel, tx: bool = True
     ):
         return await self.update_where(
-            user, self.table.c.id == obj_id, obj
+            user, self.table.c.id == obj_id, obj, tx=tx
         )
 
     async def update_by_uid(
-            self, user: UserInDb, uid, obj: BaseModel
+            self, user: UserInDb, uid, obj: BaseModel, tx: bool = True
     ):
         return await self.update_where(
-            user, self.table.c.uid == str(uid), obj
+            user, self.table.c.uid == str(uid), obj, tx=tx
         )
 
-    async def delete_where(self, user: UserInDb, where: Any):
+    async def delete_where(self, user: UserInDb, where: Any, tx: bool = True):
         query = self.table.delete().where(where)
-        async with self.db.transaction():
+
+        async def f():
             return await self.db.execute(query)
+        return await self._execute_in_tx(tx, f)
+        # async with self.db.transaction():
+        #     return await self.db.execute(query)
 
-    async def delete(self, user: UserInDb, obj_id: Any):
-        return await self.delete_where(user, self.table.c.id == obj_id)
+    async def delete(self, user: UserInDb, obj_id: Any, tx: bool = True):
+        return await self.delete_where(user, self.table.c.id == obj_id, tx=tx)
 
-    async def delete_by_uid(self, user: UserInDb, uid):
-        return await self.delete_where(user, self.table.c.uid == str(uid))
+    async def delete_by_uid(self, user: UserInDb, uid, tx: bool = True):
+        return await self.delete_where(
+            user, self.table.c.uid == str(uid), tx=tx
+        )
 
     async def get_id_by_uid(self, table: Table, uid):
         query = select([table.c.id]).where(table.c.uid == str(uid))

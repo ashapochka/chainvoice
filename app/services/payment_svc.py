@@ -35,7 +35,7 @@ class PaymentService(BaseService):
         self.token_contract = token_contract
         self.invoice_registry = invoice_registry
 
-    async def create(self, user: UserInDb, obj: PaymentCreate):
+    async def create(self, user: UserInDb, obj: PaymentCreate, tx: bool = True):
         obj_data = self._to_dict(obj)
         await self._uid_to_fk(obj_data, invoices, 'invoice')
         customers = parties.alias('customers')
@@ -73,7 +73,7 @@ class PaymentService(BaseService):
         self._check_payment_tx(blockchain_invoice_id, tx_receipt)
         obj_data['blockchain_tx_hash'] = tx_receipt['transactionHash'].hex()
         obj_data['paid_at'] = current_time()
-        result = await self._insert(obj_data)
+        result = await self._insert(obj_data, tx=tx)
         await self.invoice_service.sync_state_from_blockchain(user, invoice_uid)
         return result
 
@@ -96,4 +96,3 @@ class PaymentService(BaseService):
         )
         logger.debug(query)
         return query
-

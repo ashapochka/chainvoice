@@ -37,7 +37,8 @@ class PartyService(BaseService):
             create_blockchain_account: bool = True,
             token_id: int = 0,
             initial_amount: int = 1_000_000_00,
-            token_owner: LocalAccount = None
+            token_owner: LocalAccount = None,
+            tx: bool = True
     ):
         account = None
         if create_blockchain_account:
@@ -52,7 +53,7 @@ class PartyService(BaseService):
             self.save_blockchain_account(account)
         obj_data = self._to_dict(obj)
         obj_data.pop('blockchain_account_key', '')
-        result = await self._insert(obj_data)
+        result = await self._insert(obj_data, tx=tx)
         if initial_amount > 0 and obj.blockchain_account_address is not None:
             if token_owner is None:
                 qadmin_name = get_settings().qadmin_name
@@ -135,7 +136,8 @@ class PartyService(BaseService):
                         blockchain_account_address=settings.qadmin_address,
                         blockchain_account_key=settings.qadmin_private_key
                     ),
-                    create_blockchain_account=False, initial_amount=0
+                    create_blockchain_account=False, initial_amount=0,
+                    tx=False
                 )
             qadmin = await self.get_one_by_name(user, settings.qadmin_name)
             return PartyGet(**qadmin)
@@ -184,4 +186,3 @@ class PartyService(BaseService):
             from_uid=UID(uid), from_address=from_account.address,
             to_address=to_address
         )
-

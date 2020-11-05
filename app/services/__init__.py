@@ -4,6 +4,7 @@ from .catalog_item_svc import CatalogItemService
 from .catalog_svc import CatalogService
 from .invoice_svc import InvoiceService
 from .order_svc import OrderService
+from .rnd_order_svc import RandomOrderService
 from .order_item_svc import OrderItemService
 from .party_svc import PartyService
 from .payment_svc import PaymentService

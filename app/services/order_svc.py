@@ -23,18 +23,18 @@ class OrderService(BaseService):
         super().__init__(orders, db)
         self.order_item_service = order_item_service
 
-    async def create(self, user: UserInDb, obj: OrderCreate):
+    async def create(self, user: UserInDb, obj: OrderCreate, tx: bool = True):
         obj_data = self._to_dict(obj)
         await self._uid_to_fk(obj_data, parties, 'seller')
         await self._uid_to_fk(obj_data, parties, 'customer', nullable=True)
         obj_data['created_at'] = current_time()
-        return await self._insert(obj_data)
+        return await self._insert(obj_data, tx=tx)
 
     async def get_total_amount(self, user: UserInDb, uid) -> Decimal:
         return await self.order_item_service.get_order_amount(user, uid)
 
     # noinspection PyUnusedLocal
-    async def update_total_amount(self, user: UserInDb, uid):
+    async def update_total_amount(self, user: UserInDb, uid, tx: bool = True):
         amount_calc_stmt = select(
             [func.sum(order_items.c.quantity * order_items.c.base_price)]
         ).where(
@@ -47,8 +47,11 @@ class OrderService(BaseService):
             orders.c.uid,
             orders.c.amount
         )
-        async with self.db.transaction():
-            return await self.db.fetch_one(query)
+        return await self._execute_in_tx(
+            tx, lambda: self.db.fetch_one(query)
+        )
+        # async with self.db.transaction():
+        #     return await self.db.fetch_one(query)
 
     def _select_query(self):
         sellers = parties.alias()

@@ -21,14 +21,13 @@ class OrderUpdate(OrderBase):
     pass
 
 
-class OrderGet(OrderBase, UIDSchema):
+class OrderAmount(UIDSchema):
     amount: Optional[condecimal(
         max_digits=10, decimal_places=2, ge=Decimal(0.0)
     )] = None
+
+
+class OrderGet(OrderBase, OrderAmount, UIDSchema):
+    seller_name: Optional[str] = None
+    customer_name: Optional[str] = None
     created_at: Optional[datetime]
-
-
-class OrderAmount(UIDSchema):
-    amount: condecimal(
-        max_digits=10, decimal_places=2, ge=Decimal(0.0)
-    )

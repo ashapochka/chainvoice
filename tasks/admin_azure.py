@@ -180,9 +180,10 @@ def webapp_identity_assign(c):
 
 @task
 def webapp_perm_cr_pull(c):
+    scope = f'--scope /subscriptions/{c.config.subscription}/resourceGroups/'
     command = f'az role assignment create ' \
               f'--assignee {c.config.appservice.webapp_principal} ' \
-              f'--scope /subscriptions/{c.config.subscription}/resourceGroups/' \
+              f'{scope}' \
               f'{c.config.rg.name}/providers/Microsoft.ContainerRegistry/' \
               f'registries/{c.config.cr.name} ' \
               f'--role "AcrPull"'
@@ -260,4 +261,3 @@ def keyvault_create(c):
               f'--location {c.config.rg.location} ' \
               f'--tags {c.config.tags.owner}'
     run_command(command, c, logger)
-

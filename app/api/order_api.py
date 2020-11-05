@@ -51,6 +51,16 @@ class OrderAPI(BaseAPI):
             amount=amount
         )
 
+    @router.put("/{uid}/total-amount/")
+    async def update_total_amount(
+            self, uid: UUID
+    ) -> OrderAmount:
+        record = await self.service.update_total_amount(self.user, uid)
+        return OrderAmount(
+            uid=str(uid),
+            amount=record['amount']
+        )
+
     @router.post("/")
     async def create_one(
             self, obj: OrderCreate

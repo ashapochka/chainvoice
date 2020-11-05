@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 
 from ..schemas import (Token, UserGet)
-from ..deps import (get_db, get_current_user)
+from ..deps import get_current_user
 from ..services import UserService
 from ..config import get_settings
 from ..security import create_access_token
@@ -11,7 +11,7 @@ from ..security import create_access_token
 router = APIRouter()
 
 
-@router.post("/access-token", response_model=Token)
+@router.post("/access-token/", response_model=Token)
 async def login_access_token(
         user_service: UserService = Depends(),
         form_data: OAuth2PasswordRequestForm = Depends()
@@ -19,6 +19,7 @@ async def login_access_token(
     """
     OAuth2 compatible token login, get an access token for future requests
     """
+    # noinspection PyTypeChecker
     user = await user_service.authenticate(
         None, form_data.username, form_data.password
     )
@@ -39,9 +40,9 @@ async def login_access_token(
     }
 
 
-@router.post("/token-test", response_model=UserGet)
-async def test_token(current_user=Depends(get_current_user)):
+@router.get("/me/", response_model=UserGet)
+async def me(current_user=Depends(get_current_user)):
     """
-    Test access token
+    Get authenticated user
     """
     return current_user

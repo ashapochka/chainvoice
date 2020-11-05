@@ -16,11 +16,13 @@ class UserService(BaseService):
     async def get_one_by_username(
             self, user: UserInDb, username: str
     ) -> Optional[UserInDb]:
-        return UserInDb(
-            **await self.get_one_where(
-                user, self.table.c.username == username
-            )
+        user_record = await self.get_one_where(
+            user, self.table.c.username == username
         )
+        if not user_record:
+            return None
+        else:
+            return UserInDb(**user_record)
 
     async def create(self, user: UserInDb, obj: UserCreate):
         obj_data = self._to_dict(obj)

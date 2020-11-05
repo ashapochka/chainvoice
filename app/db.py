@@ -107,7 +107,8 @@ orders = Table(
         index=True,
         nullable=True
     ),
-    Column('created_at', TIMESTAMP(timezone=True), index=True, nullable=False)
+    Column('created_at', TIMESTAMP(timezone=True), index=True, nullable=False),
+    Column('amount', Numeric(precision=10, scale=2), nullable=True)
 )
 
 order_items = Table(

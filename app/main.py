@@ -1,8 +1,14 @@
+from typing import Union
+
 import uvicorn
+from fastapi.exceptions import RequestValidationError, ValidationError
 from loguru import logger
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_utils.timing import add_timing_middleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
 from app.db import db_client
 from app.api import api_router
@@ -22,6 +28,18 @@ app.add_middleware(
 add_timing_middleware(app, record=logger.info)
 
 app.include_router(api_router, prefix='/api')
+
+
+async def http422_error_handler(
+    req: Request, exc: Union[RequestValidationError, ValidationError]
+) -> JSONResponse:
+    logger.error(await req.json())
+    return JSONResponse(
+        {"errors": exc.errors()}, status_code=HTTP_422_UNPROCESSABLE_ENTITY
+    )
+
+app.add_exception_handler(ValidationError, http422_error_handler)
+app.add_exception_handler(RequestValidationError, http422_error_handler)
 
 
 @app.on_event("startup")

@@ -27,9 +27,11 @@ class PartyAPI(BaseAPI):
     @router.get('/')
     async def get_many(
             self, offset: int = 0, limit: int = 20,
-            name: str = None
+            name: str = None, active_only: bool = False
     ) -> List[PartyGet]:
-        return await self._get_many(limit, offset, name=name)
+        return await self._get_many(
+            limit, offset, name=name, active=True if active_only else None
+        )
 
     @router.get("/{uid}/")
     async def get_one(

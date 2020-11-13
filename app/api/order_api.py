@@ -27,13 +27,15 @@ class OrderAPI(BaseAPI):
             offset: int = 0, limit: int = 20,
             ref_id: str = None,
             seller_uid: UUID = None,
-            customer_uid: UUID = None
+            customer_uid: UUID = None,
+            active_parties_only: bool = False
     ) -> List[OrderGet]:
         return await self._get_many(
             limit, offset,
             ref_id=ref_id,
             seller_uid=seller_uid,
-            customer_uid=customer_uid
+            customer_uid=customer_uid,
+            active_parties=True if active_parties_only else None
         )
 
     @router.get("/{uid}/")

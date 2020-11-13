@@ -8,6 +8,7 @@ from .base import (BaseSchema, UIDSchema, UID)
 class PartyBase(BaseSchema):
     name: Optional[str] = None
     blockchain_account_address: Optional[str] = None
+    active: Optional[bool] = True
 
 
 class PartyCreate(PartyBase):

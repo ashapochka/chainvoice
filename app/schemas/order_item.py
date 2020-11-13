@@ -25,4 +25,4 @@ class OrderItemUpdate(OrderItemBase):
 
 
 class OrderItemGet(OrderItemBase, UIDSchema):
-    pass
+    catalog_item_name: Optional[str] = None

@@ -18,6 +18,7 @@ class BaseService:
     def __init__(self, table: Table, db: Database):
         self.table = table
         self.db = db
+        self.query = self._select_query()
 
     async def get_many(
             self, user: UserInDb,
@@ -25,7 +26,7 @@ class BaseService:
             **kwargs
     ):
         logger.debug(kwargs)
-        query = self._select_query()
+        query = self.query
         logger.debug(query)
         if len(kwargs):
             query_from = query.froms[0]
@@ -41,14 +42,17 @@ class BaseService:
         return result
 
     async def get_one_where(self, user: UserInDb, where):
-        query = self._select_query().where(where)
+        query = self.query.where(where)
+        logger.debug(query)
         return await self.db.fetch_one(query)
 
     def _select_query(self):
         return self.table.select()
 
     async def get_one(self, user: UserInDb, obj_id: Any):
-        return await self.get_one_where(user, self.table.c.id == obj_id)
+        return await self.get_one_where(
+            user, self.query.froms[0].c.id == obj_id
+        )
 
     async def get_one_by_uid(
             self, user: UserInDb, uid,
@@ -56,7 +60,9 @@ class BaseService:
             what=None,
             msg=None
     ):
-        obj = await self.get_one_where(user, self.table.c.uid == str(uid))
+        obj = await self.get_one_where(
+            user, self.query.froms[0].c.uid == str(uid)
+        )
         if raise_not_found:
             if not what:
                 what = self.table.name
@@ -64,7 +70,9 @@ class BaseService:
         return obj
 
     async def get_one_by_name(self, user: UserInDb, name: str):
-        return await self.get_one_where(user, self.table.c.name == str(name))
+        return await self.get_one_where(
+            user, self.query.froms[0].c.name == str(name)
+        )
 
     async def create(self, user: UserInDb, obj: BaseModel, tx: bool = True):
         obj_data = self._to_dict(obj)

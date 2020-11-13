@@ -38,7 +38,7 @@ class RandomOrderService:
     ):
         async with self.db.transaction():
             parties = await self.party_service.get_many(
-                user, offset=offset, limit=limit
+                user, offset=offset, limit=limit, active=True
             )
 
             # select a seller

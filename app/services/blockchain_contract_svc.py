@@ -22,11 +22,13 @@ class BlockchainContractService(BaseService):
         return await self._insert(obj_data, tx=tx)
 
     def _select_query(self):
-        return select([
-            blockchain_contracts.c.uid,
-            blockchain_contracts.c.name,
-            blockchain_contracts.c.contract_address,
-            blockchain_contracts.c.contract_code,
-            blockchain_contracts.c.contract_abi,
-            parties.c.uid.label('owner_uid')
-        ]).select_from(blockchain_contracts.join(parties))
+        from_query = select([
+            blockchain_contracts.c.uid.label('uid'),
+            blockchain_contracts.c.name.label('name'),
+            blockchain_contracts.c.contract_address.label('contract_address'),
+            blockchain_contracts.c.contract_code.label('contract_code'),
+            blockchain_contracts.c.contract_abi.label('contract_abi'),
+            parties.c.uid.label('owner_uid').label('owner_uid')
+        ]).select_from(blockchain_contracts.join(parties)).alias('from_query')
+        query = select(from_query.c).select_from(from_query)
+        return query

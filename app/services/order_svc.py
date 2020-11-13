@@ -3,12 +3,12 @@ from decimal import Decimal
 from databases import Database
 from fastapi import Depends
 from sqlalchemy.sql import select
-from sqlalchemy import desc, func
+from sqlalchemy import desc, func, and_
 
 # from loguru import logger
 
 from .order_item_svc import OrderItemService
-from ..db import (orders, order_items, parties, get_db)
+from ..db import (orders, order_items, parties, get_db, invoices)
 from ..schemas import (OrderCreate, UserInDb)
 from .base_svc import BaseService
 from .utils import current_time
@@ -54,9 +54,17 @@ class OrderService(BaseService):
         #     return await self.db.fetch_one(query)
 
     def _select_query(self):
+        invoiced_query = select([
+            (func.count(invoices.c.id) > 0).label('invoiced'),
+            invoices.c.order_id
+        ]).where(
+            invoices.c.state.in_(['DRAFT', 'UNPAID', 'PAID'])
+        ).group_by(invoices.c.order_id).alias('invoiced_query')
+
         sellers = parties.alias()
         customers = parties.alias()
         from_query = select([
+            orders.c.id.label('id'),
             orders.c.uid.label('uid'),
             orders.c.ref_id.label('ref_id'),
             orders.c.amount.label('amount'),
@@ -64,14 +72,19 @@ class OrderService(BaseService):
             sellers.c.name.label('seller_name'),
             customers.c.uid.label('customer_uid'),
             customers.c.name.label('customer_name'),
-            orders.c.created_at.label('created_at')
+            orders.c.created_at.label('created_at'),
+            invoiced_query.c.invoiced.label('invoiced'),
+            (sellers.c.active & customers.c.active).label('active_parties')
         ]).select_from(
             orders.join(
                 sellers, orders.c.seller_id == sellers.c.id
             ).outerjoin(
                 customers, orders.c.customer_id == customers.c.id
+            ).outerjoin(
+                invoiced_query, orders.c.id == invoiced_query.c.order_id
             )
         ).alias('from_query')
+
         query = select(from_query.c).select_from(from_query).order_by(
             desc(from_query.c.created_at)
         )

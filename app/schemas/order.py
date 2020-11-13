@@ -30,4 +30,5 @@ class OrderAmount(UIDSchema):
 class OrderGet(OrderBase, OrderAmount, UIDSchema):
     seller_name: Optional[str] = None
     customer_name: Optional[str] = None
-    created_at: Optional[datetime]
+    created_at: Optional[datetime] = None,
+    invoiced: Optional[bool] = None

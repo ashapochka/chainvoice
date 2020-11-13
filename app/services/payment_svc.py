@@ -85,14 +85,14 @@ class PaymentService(BaseService):
         ))
 
     def _select_query(self):
-        query = select([
-            payments.c.uid,
+        from_query = select([
+            payments.c.uid.label('uid'),
             invoices.c.uid.label('invoice_uid'),
-            payments.c.amount,
-            payments.c.paid_at,
-            payments.c.blockchain_tx_address
+            payments.c.amount.label('amount'),
+            payments.c.paid_at.label('paid_at'),
+            payments.c.blockchain_tx_hash.label('blockchain_tx_hash')
         ]).select_from(
             payments.join(invoices)
-        )
-        logger.debug(query)
+        ).alias('from_query')
+        query = select(from_query.c).select_from(from_query)
         return query

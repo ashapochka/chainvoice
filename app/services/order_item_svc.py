@@ -39,7 +39,8 @@ class OrderItemService(BaseService):
             order_items.c.quantity.label('quantity'),
             order_items.c.base_price.label('base_price'),
             orders.c.uid.label('order_uid'),
-            catalog_items.c.uid.label('catalog_item_uid')
+            catalog_items.c.uid.label('catalog_item_uid'),
+            catalog_items.c.name.label('catalog_item_name')
         ]).select_from(
             order_items.join(orders).join(catalog_items)
         ).alias('from_query')

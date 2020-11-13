@@ -29,6 +29,7 @@ parties = Table(
     Column('uid', UUID, index=True, unique=True, nullable=False),
     Column('name', String, index=True, unique=True, nullable=False),
     Column('blockchain_account_address', String, index=True, nullable=True),
+    Column('active', Boolean, nullable=False, default=True),
 )
 
 blockchain_contracts = Table(

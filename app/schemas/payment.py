@@ -26,4 +26,4 @@ class PaymentUpdate(PaymentBase):
 
 
 class PaymentGet(PaymentBase, UIDSchema):
-    created_at: Optional[datetime]
+    paid_at: Optional[datetime]

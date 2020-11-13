@@ -58,7 +58,7 @@ class ApiClient:
         )
         with self.new_client(authenticated=False) as client:
             response = client.post(
-                url='/api/login/access-token', data=form_data.dict()
+                url='/api/login/access-token/', data=form_data.dict()
             )
             check_response(response)
             token = Token.parse_obj(response.json())

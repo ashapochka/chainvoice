@@ -13,7 +13,7 @@ from . import schemas
 from .services import UserService
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login/access-token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login/access-token/")
 
 
 async def get_current_user(
@@ -50,4 +50,3 @@ def get_current_active_superuser(
             status_code=400, detail="The user doesn't have enough privileges"
         )
     return current_user
-

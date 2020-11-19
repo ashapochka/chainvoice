@@ -1,6 +1,7 @@
 from .blockchain_contract import *
 from .catalog import *
 from .catalog_item import *
+from .eth import *
 from .invoice import *
 from .order import *
 from .order_item import *

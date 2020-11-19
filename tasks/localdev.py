@@ -3,6 +3,7 @@ import json
 import os
 import string
 import secrets
+from operator import attrgetter, itemgetter
 from uuid import uuid4
 
 from devtools import debug
@@ -17,6 +18,7 @@ from app.config import get_settings
 from app.db import db_client, parties, invoices, orders
 from app.main import startup
 from app.blockchain import blockchain_client
+from app.schemas import TransactionGet, TransactionInputGet, TransactionEventGet
 from .utils import run_command
 from app.contracts import ERC1155Contract, InvoiceRegistryContract
 
@@ -84,15 +86,102 @@ def create_w3_local() -> Web3:
     return w3
 
 
-@task
-def token_transfer(c):
-    w3 = create_w3()
+def create_erc1155(w3):
     with open('build/contracts/ChainvoiceERC1155.json') as f:
         compiled_contract = json.load(f)
         contract_abi = compiled_contract['abi']
         assert contract_abi
     contract_address = os.getenv('chainvoice_erc1155_contract_address')
     erc1155 = ERC1155Contract(w3, contract_address, contract_abi)
+    return erc1155
+
+
+def create_invoice_registry(w3):
+    with open('build/contracts/InvoiceRegistry.json') as f:
+        compiled_contract = json.load(f)
+        contract_abi = compiled_contract['abi']
+        assert contract_abi
+    contract_address = os.getenv('chainvoice_invoice_registry_contract_address')
+    contract = InvoiceRegistryContract(w3, contract_address, contract_abi)
+    return contract
+
+
+@task
+def read_blocks(c):
+    w3 = create_w3()
+    erc1155 = create_erc1155(w3)
+    invoice_registry = create_invoice_registry(w3)
+    last_block_number = w3.eth.block_number()
+    # print(f'last block: {last_block_number}')
+    # block_num = last_block_number
+    # for i in range(5):
+    #     tx_count = 0
+    #     while tx_count == 0:
+    #         tx_count = w3.eth.getBlockTransactionCount(block_num)
+    #         block_num -= 1
+    #     print(f'block: {block_num}, txs: {tx_count}')
+    #     if block_num == -1:
+    #         break
+    # print('done!')
+    # block = w3.eth.getBlock(last_block_number-10)
+    # debug(block)
+    # debug(tx)
+    # tx_count = w3.eth.getBlockTransactionCount(tx.blockNumber)
+    # print(f'tx count {tx_count}')
+    paid_events = invoice_registry.contract.events.InvoicePaid.createFilter(
+        fromBlock=0, toBlock=last_block_number).get_all_entries()
+    transfer_events = erc1155.contract.events.TransferSingle.createFilter(
+        fromBlock=0, toBlock=last_block_number).get_all_entries()
+    entries = []
+    for event in paid_events:
+        tx_hash = event.transactionHash
+        tx = w3.eth.getTransaction(tx_hash)
+        tx_input = erc1155.contract.decode_function_input(tx.input)
+        tx_args = tx_input[1]
+        tx_args['data'] = Web3.toHex(tx_input[1]['data'])
+        paid_event_entry = {
+            'name': event.event,
+            'args': dict(event.args),
+            'address': event.address,
+            'log_index': event.logIndex
+        }
+        paid_event_entry['args']['invoiceId'] = Web3.toHex(event.args.invoiceId)
+        transfer_event_entries = [
+            {
+                'name': event.event,
+                'args': dict(event.args),
+                'address': event.address,
+                'log_index': event.logIndex
+            } for event in transfer_events if event.transactionHash == tx_hash
+        ]
+        tx_entry = TransactionGet(
+            hash=Web3.toHex(tx_hash),
+            block_number=tx.blockNumber,
+            index_in_block=tx.transactionIndex,
+            from_address=tx['from'],
+            to_address=tx['to'],
+            input={
+                'contract': 'ChainvoiceERC1155',
+                'address': tx_input[0].address,
+                'function': str(tx_input[0]),
+                'args': tx_args
+            },
+            events=sorted([
+                paid_event_entry,
+                *transfer_event_entries
+            ], key=itemgetter('log_index'))
+        )
+        entries.append(tx_entry)
+    entries.sort(
+        key=attrgetter('block_number', 'index_in_block'), reverse=True
+    )
+    debug(entries)
+
+
+@task
+def token_transfer(c):
+    w3 = create_w3()
+    erc1155 = create_erc1155(w3)
     owner_key = os.getenv('chainvoice_qadmin_private_key')
     owner = Account.from_key(owner_key)
     other_address = os.getenv('chainvoice_other_address')
@@ -110,21 +199,11 @@ def token_transfer(c):
 
 @task
 def invoice_register(c):
-    # w3 = create_w3_local()
     w3 = create_w3()
-    with open('build/contracts/InvoiceRegistry.json') as f:
-        compiled_contract = json.load(f)
-        contract_abi = compiled_contract['abi']
-        assert contract_abi
-    # contract_address = '0x59d3631c86BbE35EF041872d502F218A39FBa150'
-    contract_address = os.getenv('chainvoice_invoice_registry_contract_address')
-    contract = InvoiceRegistryContract(w3, contract_address, contract_abi)
-    # owner_key =
-    # '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d'
+    contract = create_invoice_registry(w3)
     owner_key = os.getenv('chainvoice_qadmin_private_key')
     owner = Account.from_key(owner_key)
     debug(w3.eth.getBalance(owner.address))
-    # other_address = '0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0'
     other_address = os.getenv('chainvoice_other_address')
     debug(owner.address)
     debug(other_address)

@@ -1,10 +1,12 @@
 from fastapi import APIRouter
+
 from . import (
     party_api, user_api, login_api,
     catalog_api, catalog_item_api,
     order_api, order_item_api,
     invoice_api, payment_api,
-    blockchain_contract_api
+    blockchain_contract_api,
+    ledger_state_api
 )
 
 apis = [
@@ -17,7 +19,8 @@ apis = [
     (order_api, 'orders'),
     (order_item_api, 'order-items'),
     (invoice_api, 'invoices'),
-    (payment_api, 'payments')
+    (payment_api, 'payments'),
+    (ledger_state_api, 'ledger')
 ]
 
 

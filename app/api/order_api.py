@@ -58,6 +58,7 @@ class OrderAPI(BaseAPI):
     async def update_total_amount(
             self, uid: UUID
     ) -> OrderAmount:
+        self.ensure_authenticated()
         record = await self.service.update_total_amount(self.user, uid)
         return OrderAmount(
             uid=str(uid),

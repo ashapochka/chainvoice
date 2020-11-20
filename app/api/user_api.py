@@ -24,28 +24,33 @@ class UserAPI(BaseAPI):
     async def get_many(
             self, offset: int = 0, limit: int = 20
     ) -> List[UserGet]:
+        self.ensure_superuser()
         return await self._get_many(limit, offset)
 
     @router.get("/{uid}/")
     async def get_one(
             self, uid: UUID
     ) -> UserGet:
+        self.ensure_superuser()
         return await self._get_one(uid)
 
     @router.post("/")
     async def create_one(
             self, obj: UserCreate
     ) -> UserGet:
+        self.ensure_superuser()
         return await self._create_one(obj)
 
     @router.put("/{uid}/")
     async def update_one(
             self, uid: UUID, obj: UserUpdate
     ) -> UserGet:
+        self.ensure_superuser()
         return await self._update_one(obj, uid)
 
     @router.delete("/{uid}/")
     async def delete_one(
             self, uid: UUID
     ) -> APIMessage:
+        self.ensure_superuser()
         return await self._delete_one(uid)

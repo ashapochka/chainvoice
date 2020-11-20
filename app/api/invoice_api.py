@@ -57,6 +57,7 @@ class InvoiceAPI(BaseAPI):
     async def publish_one(
             self, uid: UUID
     ) -> APIMessage:
+        self.ensure_authenticated()
         await self.service.publish(self.user, uid)
         return APIMessage(
             detail=f"Invoice with uid: {uid} published!"
@@ -66,6 +67,7 @@ class InvoiceAPI(BaseAPI):
     async def cancel_one(
             self, uid: UUID
     ) -> APIMessage:
+        self.ensure_authenticated()
         await self.service.cancel(self.user, uid)
         return APIMessage(
             detail=f"Invoice with uid: {uid} cancelled!"

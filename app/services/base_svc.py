@@ -6,7 +6,7 @@ from sqlalchemy import (Table, and_)
 from sqlalchemy.sql import select
 from loguru import logger
 
-from .utils import new_uid, raise_not_found_if_none
+from .utils import (new_uid, raise_not_found_if_none)
 from ..schemas import UserInDb
 
 

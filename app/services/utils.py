@@ -4,6 +4,8 @@ from datetime import datetime
 
 from fastapi import (HTTPException, status)
 
+from app.schemas import UserInDb
+
 
 def new_uid() -> str:
     return str(uuid4())
@@ -13,10 +15,26 @@ def current_time() -> datetime:
     return datetime.now()
 
 
-def raise_4xx(status_code, detail):
+def raise_4xx(status_code, detail, headers=None):
     raise HTTPException(
         status_code=status_code,
-        detail=detail
+        detail=detail,
+        headers=headers
+    )
+
+
+def raise_not_authenticated():
+    raise_4xx(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Not authenticated",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+
+def raise_unauthorized():
+    raise_4xx(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Not authorized for operation",
     )
 
 
@@ -60,3 +78,14 @@ def money_to_token(money_amount) -> int:
 
 def token_to_money(token_amount: int) -> Decimal:
     return round(Decimal(token_amount) / 100, ndigits=2)
+
+
+def ensure_authenticated(user: UserInDb):
+    if not user or not user.is_active or user.is_anonymous:
+        raise_not_authenticated()
+
+
+def ensure_superuser(user: UserInDb):
+    ensure_authenticated(user)
+    if not user.is_superuser:
+        raise_unauthorized()

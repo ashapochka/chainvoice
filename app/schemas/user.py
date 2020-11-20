@@ -10,6 +10,7 @@ class UserBase(BaseSchema):
     name: Optional[str] = None
     is_active: Optional[bool] = False
     is_superuser: bool = False
+    is_anonymous: Optional[bool] = False
 
 
 # Properties to receive via API on creation
@@ -29,4 +30,4 @@ class UserGet(UserBase, UIDSchema):
 
 class UserInDb(UserGet):
     id: int
-    hashed_password: str
+    hashed_password: Optional[str] = None

@@ -1,8 +1,6 @@
 from typing import List
 from uuid import UUID
 
-from loguru import logger
-
 from fastapi import (Depends, Path)
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
@@ -51,6 +49,7 @@ class PartyAPI(BaseAPI):
     async def transfer_tokens(
             self, uid: UUID, obj: PartyTokenTransfer
     ) -> PartyTokenTransferReceipt:
+        self.ensure_authenticated()
         return await self.service.transfer_tokens(
             self.user, uid, obj
         )
@@ -62,6 +61,7 @@ class PartyAPI(BaseAPI):
             token_id: int = 0,
             initial_amount: int = 1_000_000_00
     ) -> PartyGet:
+        self.ensure_authenticated()
         result = await self.service.create(
             self.user, obj,
             create_blockchain_account=create_blockchain_account,

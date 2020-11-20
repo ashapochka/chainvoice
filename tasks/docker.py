@@ -1,7 +1,7 @@
 from loguru import logger
 from invoke import task
 from .utils import run_command
-from .admin_azure import acr_login
+from .admin_azure import acr_login, webapp_restart
 
 
 @task
@@ -44,4 +44,9 @@ def docker_push_acr(c):
     docker_build, docker_tag_acr, acr_login, docker_push_acr
 ])
 def docker_build_push(c):
+    pass
+
+
+@task(pre=[docker_build_push, webapp_restart])
+def redeploy(c):
     pass

@@ -73,6 +73,7 @@ class OrderAPI(BaseAPI):
 
     @router.post("/random/")
     async def create_random(self) -> OrderGet:
+        self.ensure_authenticated()
         result = await self.random_order_service.create(self.user)
         return result['obj']
 

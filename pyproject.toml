@@ -8,14 +8,14 @@ authors = ["Andriy Shapochka <ashapochka@gmail.com>"]
 python = "^3.8"
 invoke = "^1.4.1"
 ipython = "^7.18.1"
-fastapi = {extras = ["all"], version = "^0.61.1"}
+fastapi = {extras = ["all"], version = "^0.62.0"}
 pytest = "^6.1.1"
-python-dotenv = "^0.14.0"
+python-dotenv = "^0.15.0"
 sqlalchemy = "^1.3.20"
 # if psycorg2 compilation fails check xcode cmd tools and openssl (LDFLAGS etc.)
-databases = {extras = ["postgresql"], version = "^0.4.0"}
+databases = {extras = ["postgresql"], version = "^0.4.1"}
 pytest-asyncio = "^0.14.0"
-httpx = "^0.14.3"
+httpx = "^0.16.1"
 alembic = "^1.4.3"
 passlib = {extras = ["argon2_cffi"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.2.0"}
@@ -26,9 +26,10 @@ web3 = "^5.12.3"
 azure-keyvault-secrets = "^4.2.0"
 azure-identity = "1.3.1"
 assertpy = "^1.1"
-faker = "^4.14.0"
+faker = "^5.0.0"
 devtools = {extras = ["pygments"], version = "^0.6.1"}
 rusty-rlp = "^0.1.15"
+azure-storage-blob = "^12.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.2"

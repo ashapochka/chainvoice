@@ -1,7 +1,7 @@
-fastapi[all]==0.61.1
-python-dotenv==0.14.0
+fastapi[all]==0.62.0
+python-dotenv==0.15.0
 sqlalchemy==1.3.20
-databases[postgresql]==0.4.0
+databases[postgresql]==0.4.1
 alembic==1.4.3
 argon2_cffi==20.1.0
 passlib[argon2_cffi]==1.7.4
@@ -11,5 +11,6 @@ loguru==0.5.3
 web3==5.12.3
 azure-keyvault-secrets==4.2.0
 azure-identity==1.3.1
+azure-storage-blob==12.6.0
 assertpy==1.1
 rusty-rlp==0.1.15

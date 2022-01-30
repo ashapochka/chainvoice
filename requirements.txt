@@ -7,7 +7,7 @@ argon2_cffi==20.1.0
 passlib[argon2_cffi]==1.7.4
 python-jose[cryptography]==3.2.0
 fastapi-utils==0.2.1
-loguru==0.5.3
+loguru==0.6.0
 web3==5.12.3
 azure-keyvault-secrets==4.2.0
 azure-identity==1.3.1

@@ -22,7 +22,7 @@
   "devDependencies": {
     "@nomiclabs/buidler": "^1.4.8",
     "@openzeppelin/cli": "^2.8.2",
-    "@openzeppelin/contracts": "^3.2.0",
+    "@openzeppelin/contracts": "^4.7.2",
     "@openzeppelin/test-environment": "^0.1.5",
     "@truffle/hdwallet-provider": "^1.0.44",
     "ava": "^3.12.1",

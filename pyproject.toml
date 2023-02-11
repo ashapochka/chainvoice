@@ -7,7 +7,7 @@ authors = ["Andriy Shapochka <ashapochka@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 invoke = "^1.4.1"
-ipython = "^7.18.1"
+ipython = "^8.10.0"
 fastapi = {extras = ["all"], version = "^0.62.0"}
 pytest = "^6.1.1"
 python-dotenv = "^0.15.0"

@@ -1,4 +1,4 @@
-fastapi[all]==0.62.0
+fastapi==0.109.1
 python-dotenv==0.15.0
 sqlalchemy==1.3.20
 databases[postgresql]==0.4.1
@@ -14,3 +14,8 @@ azure-identity==1.3.1
 azure-storage-blob==12.6.0
 assertpy==1.1
 rusty-rlp==0.1.15
+eth-abi>=5.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
+eth-keyfile>=0.6.0 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+starlette>=0.27.0 # not directly required, pinned by Snyk to avoid a vulnerability
+websockets>=10.0 # not directly required, pinned by Snyk to avoid a vulnerability
